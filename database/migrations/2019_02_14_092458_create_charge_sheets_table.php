@@ -15,9 +15,10 @@ class CreateChargeSheetsTable extends Migration
     {
         Schema::create('charge_sheets', function (Blueprint $table) {
             $table->increments('id');
-             $table->double('cost');
+            $table->double('cost');
             $table->string('covered_by');
-            $table->integer('test_type_id')->unsigned()->foreign('test_type_id')->references('id')->on('test_types');
+            $table->integer('test_type_id')->unsigned()
+                ->foreign('test_type_id')->references('id')->on('test_types');
             $table->timestamps();
         });
     }

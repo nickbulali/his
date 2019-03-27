@@ -15,10 +15,11 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-             $table->string('requested_by');
-           $table->boolean('status');
-           $table->integer('charge_sheet_id')->unsigned()->foreign('charge_sheet_id')->references('id')->on('charge_sheet');
-           $table->integer('invoice_id')->unsigned()->foreign('invoice_id')->references('id')->on('invoices');
+            $table->string('requested_by');
+            $table->boolean('status');
+            $table->integer('charge_sheet_id')->unsigned()
+                ->foreign('charge_sheet_id')->references('id')->on('charge_sheet');
+            $table->integer('invoice_id')->unsigned()->foreign('invoice_id')->references('id')->on('invoices');
             $table->timestamps();
         });
     }

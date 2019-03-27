@@ -16,10 +16,11 @@ class CreateInvoicesTable extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->increments('id');
             $table->string('invoice_no')->unique();
-           $table->integer('encounter_id')->unsigned()->foreign('encounter_id')->references('id')->on('encounters');
-           $table->string('opened_by');
-           $table->boolean('status');
-           $table->double('total')->default(0);
+            $table->integer('encounter_id')->unsigned()
+                ->foreign('encounter_id')->references('id')->on('encounters');
+            $table->string('opened_by');
+            $table->boolean('status');
+            $table->double('total')->default(0);
             $table->timestamps();
         });
     }
