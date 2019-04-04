@@ -372,15 +372,19 @@ class CreateEmrTables extends Migration
             $table->increments('id');
         });
 
-        // @description asthma|diabetes|hypertension
+        /*
+         * @description asthma|diabetes|hypertension
+         */
         Schema::create('condition_types', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('code_id')->unsigned();
             $table->string('description');
         });
 
-        // @is_drug 1/0...yes,no
-        // todo:check for missing information ... when discovered
+        /*
+         * @is_drug 1/0...yes,no
+         * todo:check for missing information ... when discovered
+         */
         Schema::create('allergies', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('code_id')->unsigned();
@@ -388,10 +392,12 @@ class CreateEmrTables extends Migration
             $table->string('is_drug');
         });
 
-        //@body_temperature:todo check best data type
-        //@respiratory_rate:todo check best data type
-        //@heart_rate:todo check best data type
-        //@blood_pressure:todo check best data type
+        /*
+         * @body_temperature:todo check best data type
+         * @respiratory_rate:todo check best data type
+         * @heart_rate:todo check best data type
+         * @blood_pressure:todo check best data type
+         */
         Schema::create('vital_signs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('body_temperature');
@@ -400,10 +406,12 @@ class CreateEmrTables extends Migration
             $table->string('blood_pressure');
         });
 
-        //@height:todo check best data type
-        //@weight:todo check best data type
-        //@body_mass_index:todo check best data type
-        //@body_surface_area:todo check best data type
+        /*
+         * @height:todo check best data type
+         * @weight:todo check best data type
+         * @body_mass_index:todo check best data type
+         * @body_surface_area:todo check best data type
+         */
         Schema::create('anthropometric_measurements', function (Blueprint $table) {
             $table->increments('id');
             $table->string('height');
@@ -417,7 +425,9 @@ class CreateEmrTables extends Migration
             $table->string('comment');
         });
 
-        // @condition_types diabetes|cancer|hypertension|tuberculosis|asthma|mental illness
+        /*
+         * @condition_types diabetes|cancer|hypertension|tuberculosis|asthma|mental illness
+         */
         Schema::create('family_history', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('condition_type_id')->unsigned();
@@ -431,7 +441,9 @@ class CreateEmrTables extends Migration
             $table->string('residence');
         });
 
-        // todo:confirm appropriateness of the fields
+        /*
+         * todo:confirm appropriateness of the fields
+         */
         Schema::create('alcohol', function (Blueprint $table) {
             $table->increments('id');
             $table->string('kind');
@@ -439,14 +451,18 @@ class CreateEmrTables extends Migration
             $table->string('quantity');
         });
 
-        // todo:confirm appropriateness of the fields
+        /*
+         * todo:confirm appropriateness of the fields
+         */
         Schema::create('smoking', function (Blueprint $table) {
             $table->increments('id');
             $table->string('kind');
             $table->string('frequency');
         });
 
-        // todo:confirm appropriateness of the fields
+        /*
+         * todo:confirm appropriateness of the fields
+         */
         Schema::create('drug_abuse', function (Blueprint $table) {
             $table->increments('id');
             $table->string('kind');
@@ -469,10 +485,12 @@ class CreateEmrTables extends Migration
             $table->string('comments')->nullable();
         });
 
-        //@maturity weeks
-        //@type_of_delivery Spontaneous Vertex Delivery, Vacuum Extraction, Caeserian Section, Other
-        //@bwt kg
-        //@sex M/F
+        /*
+         * @maturity weeks
+         * @type_of_delivery Spontaneous Vertex Delivery, Vacuum Extraction, Caeserian Section, Other
+         * @bwt kg
+         * @sex M/F
+         */
         Schema::create('obstetric_histories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('year');
@@ -485,9 +503,11 @@ class CreateEmrTables extends Migration
             $table->string('puerperium');
         });
 
-        //@last_normal_menstrual_period [LNMP]{date - LNMP (day) + 7 | LNMP (month) + 9}
-        //@expected_date_of_delivery [EDD](date)
-        //@gestation weeks
+        /*
+         * @last_normal_menstrual_period [LNMP]{date - LNMP (day) + 7 | LNMP (month) + 9}
+         * @expected_date_of_delivery [EDD](date)
+         * @gestation weeks
+         */
         Schema::create('present_pregnancies', function (Blueprint $table) {
             $table->increments('id');
             $table->string('last_normal_menstrual_period');
@@ -495,13 +515,15 @@ class CreateEmrTables extends Migration
             $table->string('gestation');
         });
 
-        //@age_at_menarche in years
-        //@duration_of_menstrual_cycle in days
-        //@length_of_menstrual_cycle in days
-        //@any_menstrual_problem in prose
-        //@history_of_gynecological_operation myomectomy, dilatation, curettage, Other
-        //@history_of_sti gonorrhea, syphilis, chlamydia, trichomoniasis, Other
-        //@contraception_history pill, injection, coil, implant, other
+        /*
+         * @age_at_menarche in years
+         * @duration_of_menstrual_cycle in days
+         * @length_of_menstrual_cycle in days
+         * @any_menstrual_problem in prose
+         * @history_of_gynecological_operation myomectomy, dilatation, curettage, Other
+         * @history_of_sti gonorrhea, syphilis, chlamydia, trichomoniasis, Other
+         * @contraception_history pill, injection, coil, implant, other
+         */
         Schema::create('gynecologic_histories', function (Blueprint $table) {
             $table->increments('id');
             $table->string('age_at_menarche');
@@ -513,9 +535,11 @@ class CreateEmrTables extends Migration
             $table->string('contraception_history');
         });
 
-        //@contraception_history Urinalysis
-        //@contraception_history weeks
-        //@contraception_history Beats/min
+        /*
+         * @contraception_history Urinalysis
+         * @contraception_history weeks
+         * @contraception_history Beats/min
+         */
         Schema::create('antenatal_history', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('encounter_id')->unsigned();
@@ -550,14 +574,67 @@ class CreateEmrTables extends Migration
             $table->string('comments';
         });
 
-        Schema::create('prescription', function (Blueprint $table) {
+        /*
+         * todo explore what forms this actually take in practice if there is such a thing in the first place
+         */
+        Schema::create('drug_categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('encounter_id')->unsigned();
             $table->string('description');
-            $table->string('dosage');
-            $table->string('frequency');
         });
 
+        Schema::create('drugs', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('generic_name');
+            $table->string('trade_name');
+            $table->string('strength_value');
+            $table->string('strength_unit');
+            $table->string('dosage_form');
+            $table->string('administration_route');
+        });
+
+        Schema::create('drug_category_drug', function (Blueprint $table) {
+            $table->integer('drug_id')->unsigned();
+            $table->integer('drug_category_id')->unsigned();
+        });
+
+        /*
+         * @description OD(once daily)|BD(twice daily)|TDS (thrice daily)
+         *              QID(four times daily)|PRN(as needed)|other(custom:specify times)
+         * @todo expand resource to help generate medication sheets
+         */
+        Schema::create('dosages', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('description');
+        });
+
+        /*
+         * used by both doctor for prescription and pharmacist for dispensing
+         * @dosage_id OD(once daily)|BD(twice daily)|TDS (thrice daily)
+         *            QID(four times daily)|PRN(as needed)|other(custom:specify times)
+         */
+        Schema::create('medications', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('patient_id')->unsigned();
+            $table->integer('drug_id')->unsigned();
+            $table->integer('prescribed_by')->unsigned()
+                ->foreign('test_type_id')->references('id')->on('test_types');
+            $table->integer('dosage_id')->unsigned();
+            $table->string('quantity');
+            $table->string('start_time');
+            $table->string('end_time');
+            $table->string('refill');
+            $table->string('comments');
+        });
+
+        /*
+         * @medication_id links to dosage|start|end|intervals(calculated)
+         *                generated by a click, after all required information is entered
+         */
+        Schema::create('medication_sheets', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('medication_id')->unsigned();
+            $table->timestamp('time_due')->nullable();
+        });
 
         Eloquent::unguard();
 
