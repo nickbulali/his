@@ -293,9 +293,11 @@ class CreateEmrTables extends Migration
             $table->timestamps();
         });
 
+
         /*
          * @system HISv1.0 defined
          * @identifier Unique ID for external records
+         * @todo organize to have this information comming from blis especially for incomplete tests
          */
         Schema::create('tests', function (Blueprint $table) {
             $table->increments('id');
@@ -329,7 +331,7 @@ class CreateEmrTables extends Migration
          * @system HISv1.0 defined
          * @description can be number|string
          */
-        Schema::create('lab_result_types', function (Blueprint $table) {
+        Schema::create('test_result_types', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('code_id')->unsigned()->nullable();
             $table->integer('test_type_id')->unsigned();
@@ -342,14 +344,14 @@ class CreateEmrTables extends Migration
             $table->unique(['test_type_id', 'specimen_type_id']);
         });
 
-
         /*
          * @system HISv1.0 defined
          * @description isolated organisms and gram results also listed
          */
-        Schema::create('lab_results', function (Blueprint $table) {
+        Schema::create('test_results', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('test_id')->unsigned();
+            $table->string('parameter');
             $table->integer('measure_id')->unsigned();
             $table->string('result')->nullable();
             $table->integer('lab_result_type_id')->unsigned()->nullable();
@@ -360,13 +362,203 @@ class CreateEmrTables extends Migration
             $table->unique(['test_id', 'measure_id', 'measure_range_id']);
         });
 
+
         /*
          * @system HISv1.0 defined
-         * @description incrementing and resetting patient accession_identifier auto-increment component
+         * @description incrementing and resetting patient accession_identifier
+         *              auto-increment component
          */
         Schema::create('counter', function (Blueprint $table) {
             $table->increments('id');
         });
+
+        // @description asthma|diabetes|hypertension
+        Schema::create('condition_types', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('code_id')->unsigned();
+            $table->string('description');
+        });
+
+        // @is_drug 1/0...yes,no
+        // todo:check for missing information ... when discovered
+        Schema::create('allergies', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('code_id')->unsigned();
+            $table->string('substance');
+            $table->string('is_drug');
+        });
+
+        //@body_temperature:todo check best data type
+        //@respiratory_rate:todo check best data type
+        //@heart_rate:todo check best data type
+        //@blood_pressure:todo check best data type
+        Schema::create('vital_signs', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('body_temperature');
+            $table->string('respiratory_rate');
+            $table->string('heart_rate');
+            $table->string('blood_pressure');
+        });
+
+        //@height:todo check best data type
+        //@weight:todo check best data type
+        //@body_mass_index:todo check best data type
+        //@body_surface_area:todo check best data type
+        Schema::create('anthropometric_measurements', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('height');
+            $table->string('weight');
+            $table->string('body_mass_index');
+            $table->string('body_surface_area');
+        });
+
+        Schema::create('medical_surgical_histories', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('comment');
+        });
+
+        // @condition_types diabetes|cancer|hypertension|tuberculosis|asthma|mental illness
+        Schema::create('family_history', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('condition_type_id')->unsigned();
+            $table->string('description');
+            $table->string('relation');
+        });
+
+        Schema::create('social_history', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('occupation');
+            $table->string('residence');
+        });
+
+        // todo:confirm appropriateness of the fields
+        Schema::create('alcohol', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('kind');
+            $table->string('frequency');
+            $table->string('quantity');
+        });
+
+        // todo:confirm appropriateness of the fields
+        Schema::create('smoking', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('kind');
+            $table->string('frequency');
+        });
+
+        // todo:confirm appropriateness of the fields
+        Schema::create('drug_abuse', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('kind');
+            $table->string('frequency');
+        });
+
+        Schema::create('presenting_complaints', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('comment');
+        });
+
+        Schema::create('history_of_presenting_illness', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('comment');
+        });
+
+        Schema::create('conditions', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('condition_type_id')->unsigned();
+            $table->string('comments')->nullable();
+        });
+
+        //@maturity weeks
+        //@type_of_delivery Spontaneous Vertex Delivery, Vacuum Extraction, Caeserian Section, Other
+        //@bwt kg
+        //@sex M/F
+        Schema::create('obstetric_histories', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('year');
+            $table->string('place');
+            $table->string('maturity');
+            $table->string('type_of_delivery');
+            $table->string('bwt');
+            $table->string('sex');
+            $table->string('fate');
+            $table->string('puerperium');
+        });
+
+        //@last_normal_menstrual_period [LNMP]{date - LNMP (day) + 7 | LNMP (month) + 9}
+        //@expected_date_of_delivery [EDD](date)
+        //@gestation weeks
+        Schema::create('present_pregnancies', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('last_normal_menstrual_period');
+            $table->string('expected_date_of_delivery');
+            $table->string('gestation');
+        });
+
+        //@age_at_menarche in years
+        //@duration_of_menstrual_cycle in days
+        //@length_of_menstrual_cycle in days
+        //@any_menstrual_problem in prose
+        //@history_of_gynecological_operation myomectomy, dilatation, curettage, Other
+        //@history_of_sti gonorrhea, syphilis, chlamydia, trichomoniasis, Other
+        //@contraception_history pill, injection, coil, implant, other
+        Schema::create('gynecologic_histories', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('age_at_menarche');
+            $table->string('duration_of_menstrual_cycle');
+            $table->string('length_of_menstrual_cycle');
+            $table->string('any_menstrual_problem');
+            $table->string('history_of_sti');
+            $table->string('history_of_gynecological_operation');
+            $table->string('contraception_history');
+        });
+
+        //@contraception_history Urinalysis
+        //@contraception_history weeks
+        //@contraception_history Beats/min
+        Schema::create('antenatal_history', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
+            $table->integer('test_id')->unsigned();
+            $table->string('fundal_height');
+            $table->string('presentation');
+            $table->string('fhr');
+            $table->string('comments');
+            $table->string('date_of_next_visit');
+        });
+
+        Schema::create('body_systems', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+        });
+
+        Schema::create('system_enquiry', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
+            $table->integer('body_system_id')->unsigned();
+        });
+
+        Schema::create('diagnostic_tests', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
+        });
+
+        Schema::create('x_rays', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
+            $table->string('image_url';
+            $table->string('comments';
+        });
+
+        Schema::create('prescription', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
+            $table->string('description');
+            $table->string('dosage');
+            $table->string('frequency');
+        });
+
+
         Eloquent::unguard();
 
         //Super Admin
@@ -432,8 +624,6 @@ class CreateEmrTables extends Migration
 
             // inventory and equipment
             ['name' => 'manage_inventory', 'display_name' => 'Can manage inventory'],
-            ['name' => 'request_topup', 'display_name' => 'Can request top-up'],
-            ['name' => 'manage_equipment', 'display_name' => 'Can manage equipment'],
         ];
 
         foreach ($permissions as $permission) {
@@ -443,7 +633,9 @@ class CreateEmrTables extends Migration
         /* Roles table */
         $superRole = \App\Models\Role::create(['name' => 'Superadmin']);
 
-        \App\Models\Role::create(['name' => 'Technologist']);
+        \App\Models\Role::create(['name' => 'Administrator']);
+        \App\Models\Role::create(['name' => 'Doctor']);
+        \App\Models\Role::create(['name' => 'Nurse']);
         \App\Models\Role::create(['name' => 'Receptionist']);
 
         $superUser = \App\User::find($superUser->id);
