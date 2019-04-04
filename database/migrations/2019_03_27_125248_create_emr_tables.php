@@ -13,8 +13,10 @@ class CreateEmrTables extends Migration
      */
     public function up()
     {
-        // Create table for general configurations
-        // explore putting on .env file
+       /*
+        * Create table for general configurations
+        * explore putting on .env file
+        */
         Schema::create('general_configuration', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
@@ -27,7 +29,9 @@ class CreateEmrTables extends Migration
             $table->timestamps();
         });
 
-        // Create table for storing roles
+       /*
+        * Create table for storing roles
+        */
         Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
@@ -36,7 +40,9 @@ class CreateEmrTables extends Migration
             $table->timestamps();
         });
 
-        // Create table for associating roles to users (Many-to-Many)
+       /*
+        * Create table for associating roles to users (Many-to-Many)
+        */
         Schema::create('role_user', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
@@ -48,7 +54,9 @@ class CreateEmrTables extends Migration
                 ->onUpdate('cascade')->onDelete('cascade');
         });
 
-        // Create table for storing permissions
+       /*
+        * Create table for storing permissions
+        */
         Schema::create('permissions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
@@ -57,7 +65,9 @@ class CreateEmrTables extends Migration
             $table->timestamps();
         });
 
-        // Create table for associating permissions to roles (Many-to-Many)
+       /*
+        * Create table for associating permissions to roles (Many-to-Many)
+        */
         Schema::create('permission_role', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('permission_id')->unsigned();
