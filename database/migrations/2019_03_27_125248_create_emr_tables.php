@@ -271,6 +271,9 @@ class CreateEmrTables extends Migration
             $table->string('practitioner_name')->nullable();
             $table->string('practitioner_contact')->nullable();
             $table->string('practitioner_organisation')->nullable();
+            // in-patient encounter
+            $table->string('previous_goals_met')->nullable();
+            $table->string('new_goals')->nullable();
 
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->foreign('encounter_class_id')->references('id')->on('encounter_classes');
@@ -618,6 +621,14 @@ class CreateEmrTables extends Migration
         });
 
         /*
+         * @display active|hold|complete|canceled
+         */
+        Schema::create('medication_statuses', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('display');
+        });
+
+        /*
          * used by both doctor for prescription and pharmacist for dispensing
          * @dosage_id OD(once daily)|BD(twice daily)|TDS (thrice daily)
          *            QID(four times daily)|PRN(as needed)|other(custom:specify times)
@@ -625,6 +636,7 @@ class CreateEmrTables extends Migration
         Schema::create('medications', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('patient_id')->unsigned();
+            $table->integer('medication_status_id')->unsigned();
             $table->integer('drug_id')->unsigned();
             $table->integer('prescribed_by')->unsigned()
                 ->foreign('test_type_id')->references('id')->on('test_types');
@@ -663,6 +675,7 @@ class CreateEmrTables extends Migration
 
         /*
          * todo check typical surgery requirements
+         * todo anticipate billing logic
          */
         Schema::create('surgeries', function (Blueprint $table) {
             $table->increments('id');
