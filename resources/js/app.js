@@ -4,6 +4,34 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+ import Vue from 'vue'
+
+import App from './App.vue'
+import router from './router'
+import bar from './components/progress'
+import swal from 'sweetalert2'
+window.swal = swal;
+
+const toast = swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000
+});
+
+window.toast = toast;
+
+router.beforeEach((to, from, next) => {
+    bar.start()
+    next()
+})
+
+Vue.filter('formatMoney', (value) => {
+    return Number(value)
+        .toFixed(2)
+        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+})
+
 
 require('./bootstrap');
 
@@ -17,8 +45,8 @@ window.Vue = require('vue');
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+// const files = require.context('./', true, /\.vue$/i);
+// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
@@ -29,5 +57,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  */
 
 const app = new Vue({
-    el: '#app'
-});
+    el: '#root',
+    render: h => h(App),
+    router
+})
