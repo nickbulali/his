@@ -646,6 +646,29 @@ class CreateEmrTables extends Migration
             $table->timestamp('time_due')->nullable();
         });
 
+        /*
+         * todo check typical admission and discharge requirements
+         */
+        Schema::create('admissions', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('reason_for_admission');
+            $table->string('reason_for_discharge')->nullable();
+            $table->string('comments')->nullable();
+        });
+
+        Schema::create('admission_encounter', function (Blueprint $table) {
+            $table->integer('admission_id')->unsigned();
+            $table->integer('encounter_id')->unsigned();
+        });
+
+        /*
+         * todo check typical surgery requirements
+         */
+        Schema::create('surgeries', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
+        });
+
         Eloquent::unguard();
 
         //Super Admin
