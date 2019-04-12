@@ -64,6 +64,168 @@ Route::delete('/order/{id}', 'API\OrderController@delete');
 
 
 
+//AdmissionEncounter
+Route::resource('admissionencounter', 'AdmissionEncounterController');
+
+//Admission
+Route::resource('admission', 'AdmissionController');
+
+//Alcohol
+Route::resource('alcohol', 'AlcoholController');
+
+//Allergies
+Route::resource('allergies', 'AllergiesController');
+
+//AntenatalHistory
+Route::resource('antenatalhistory', 'AntenatalHistoryController');
+
+//AnthropometricMeasurements
+Route::resource('anthropometricmeasurements', 'AnthropometricMeasurementsController');
+
+//BodySystems
+Route::resource('bodysystems', 'BodySystemsController');
+
+//Code
+Route::resource('code', 'CodeController');
+
+//CodeSystem
+Route::resource('codesystem', 'CodeSystemController');
+
+//Conditions
+Route::resource('conditions', 'ConditionsController');
+
+//ConditionTypes
+Route::resource('conditiontype', 'ConditionTypeController');
+
+//CounterController
+Route::resource('counter', 'CounterController');
+
+//DiagnosticTests
+Route::resource('diagnostictests', 'DiagnosticTestsController');
+
+//Dosage
+Route::resource('dosage', 'DosageController');
+
+//DrugAbuse
+Route::resource('drugabuse', 'DrugAbuseController');
+
+//DrugCategory
+Route::resource('anthropometricmeasurements', 'AnthropometricMeasurementsController');
+
+//DrugCategories
+Route::resource('drugcategories', 'DrugCategoriesController');
+
+//Drugs
+Route::resource('drugs', 'DrugsController');
+
+//Encounter
+Route::resource('encounterclass', 'EncounterClassController');
+Route::resource('encounterstatus', 'EncounterStatusController');
+Route::resource('encounter', 'EncounterController');
+Route::post('encounter/addtests', 'EncounterController@addTests');
+Route::post('encounter/specimencollection', 'EncounterController@specimenCollection');
+
+//FamilyHistory
+Route::resource('familyhistory', 'FamilyHistoryController');
+
+//Gender
+Route::resource('gender', 'GenderController');
+
+//GynecologicHistories
+Route::resource('gynecologichistories', 'GynecologicHistoriesController');
+
+//Lab Test Types
+Route::resource('labtesttype', 'LabTestTypeController');
+Route::resource('labtesttypecategory', 'LabTestTypeCategoryController');
+
+//Location
+Route::resource('location', 'LocationController');
+
+//MedicalSurgicalHistories
+Route::resource('medicalsurgicalhistories', 'MedicalSurgicalHistoriesController');
+
+//Medications
+Route::resource('medications', 'MedicationsController');
+
+//Medication Sheets
+Route::resource('medicationsheets', 'MedicalSheetsController');
+
+//MedicationStauses
+Route::resource('medicationstatus', 'MedicationStatusesController');
+
+//Name
+Route::resource('name', 'NameController');
+
+//ObstericHistories
+Route::resource('obstetrichistories', 'ObstetricHistoriesController');
+
+//Organization
+Route::resource('organization', 'OrganizationController');
+
+//Patient
+Route::resource('patient/testrequest', 'PatientController');
+Route::resource('patient/get_patients', 'PatientController');
+Route::resource('patient', 'PatientController');
+Route::post('patient/testrequest', 'PatientController@testRequest');
+
+
+//Permission
+Route::resource('permission', 'PermissionController');
+Route::get('permissionrole/attach', 'PermissionRoleController@attach');
+Route::get('permissionrole/detach', 'PermissionRoleController@detach');
+Route::get('permissionrole', 'PermissionRoleController@index');
+
+//Presenting Complaints
+Route::resource('presentingcomplaints', 'PresentingComplaintsController');
+
+//Presenting Illness
+Route::resource('presentingillness', 'PresentingIllnessController');
+
+//Present Pregnancies
+Route::resource('presentpregnancies', 'PresentPregnanciesController');
+
+//Results
+Route::post('result', 'ResultController@store');
+Route::post('result/show/{id}', 'ResultController@show');
+Route::resource('resulttype', 'ResultTypeController');
+
+//Roles
+Route::resource('role', 'RoleController');
+Route::get('roleuser/attach', 'RoleUserController@attach');
+Route::get('roleuser/detach', 'RoleUserController@detach');
+Route::get('roleuser', 'RoleUserController@index');
+
+
+//Smoking
+Route::resource('smoking', 'SmokingController');
+
+//Social History
+Route::resource('socialhistory', 'SocialHistoryController');
+
+//Specimen
+Route::resource('specimen', 'SpecimenController');
+Route::resource('specimentype', 'SpecimenTypeController');
+Route::get('specimentype/specimencollection/{id}', 'SpecimenTypeController@specimencollection');
+
+//Surgeries
+Route::resource('surgeries', 'SurgeriesController');
+
+//SystemEnquiry
+Route::resource('systemenquiry', 'SystemEnquiryController');
+
+//Test
+Route::post('test/specimencollection', 'TestController@specimenCollection');
+Route::resource('test', 'TestController');
+
+//VitalSigns
+Route::resource('vitalsigns', 'VitalSignsController');
+
+//Xrays
+Route::resource('xrays', 'XraysController');
+
+
+
+
 
 
 

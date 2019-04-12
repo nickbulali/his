@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-/*
- * (c) @iLabAfrica
- */
+
 use Zizaco\Entrust\EntrustPermission;
 
 class Permission extends EntrustPermission

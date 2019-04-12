@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Models;
-/*
- * (c) @iLabAfrica
- */
+
+
+
 use Illuminate\Database\Eloquent\Model;
 
 class Gender extends Model
@@ -23,5 +23,10 @@ class Gender extends Model
     public function User()
     {
         return $this->belongsTo('App\User');
+    }
+
+    public function MeasureRange()
+    {
+        return $this->belongsTo('App\Models\MeasureRange');
     }
 }
