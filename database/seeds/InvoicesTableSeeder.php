@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Invoice;
-use App\InvoiceItem;
+use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use Faker\Factory;
 
 class InvoicesTableSeeder extends Seeder

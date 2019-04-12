@@ -21,8 +21,10 @@ Route::middleware('auth:api')->group( function () {
 	Route::post('/logout', 'Auth\APIController@logout');
     Route::get('/get-user', 'Auth\APIController@getUser');
     Route::get('/get-user-model', 'Auth\APIController@getUserModel');
+
+    //Billing|Invoices
+    Route::resource('/invoices', 'InvoiceController');
+    Route::resource('/product-category', 'ProductCategoryController');
+    Route::get('/customers', 'CustomerController@search');
+    Route::resource('/products', 'ProductController');
 });
-/*Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-*/

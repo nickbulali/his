@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Invoice;
-use App\Counter;
+use App\Models\Invoice;
+use App\Models\Counter;
 use DB;
 
 class InvoiceController extends Controller
@@ -15,8 +15,7 @@ class InvoiceController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        return response()
-            ->json(['results' => $results]);
+        return response()->json(['results' => $results]);
     }
 
     public function create()

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Product;
+use App\Models\Product;
 
 class ProductsTableSeeder extends Seeder
 {
@@ -18,6 +18,7 @@ class ProductsTableSeeder extends Seeder
             Product::create([
                 'item_code' => 'PDT-1000'.$i,
                 'description' => 'Name of Product '.$i,
+                'product_category_id' => 1,
                 'unit_price' => mt_rand(100, 1000)
             ]);
         }
