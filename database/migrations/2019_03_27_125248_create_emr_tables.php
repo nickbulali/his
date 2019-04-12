@@ -294,14 +294,12 @@ class CreateEmrTables extends Migration
             $table->string('identifier')->nullable();
             $table->string('accession_identifier')->nullable();
             $table->integer('specimen_type_id')->unsigned();
-            $table->integer('specimen_status_id')->unsigned()->default(\App\Models\SpecimenStatus::received);
             $table->integer('received_by')->unsigned();
             $table->string('collected_by')->nullable();
             $table->timestamp('time_collected')->nullable();
             $table->timestamp('time_received')->nullable();
 
             $table->foreign('specimen_type_id')->references('id')->on('specimen_types');
-            $table->foreign('specimen_status_id')->references('id')->on('specimen_statuses');
             $table->foreign('received_by')->references('id')->on('users');
             $table->timestamps();
         });
@@ -318,7 +316,8 @@ class CreateEmrTables extends Migration
             $table->string('identifier')->nullable();
             $table->integer('test_type_id')->unsigned();
             $table->integer('specimen_id')->unsigned()->nullable();
-            $table->integer('test_status_id')->unsigned()->default(\App\Models\TestStatus::pending);
+            // todo: study possiblity of depending on blis for this
+            // $table->integer('test_status_id')->unsigned()->default(\App\Models\TestStatus::pending);
             $table->uuid('created_by')->nullable();
             $table->string('tested_by')->nullable();
             $table->string('verified_by')->nullable();
@@ -335,9 +334,9 @@ class CreateEmrTables extends Migration
             $table->index('tested_by');
             $table->index('verified_by');
             $table->foreign('encounter_id')->references('id')->on('encounters');
-            $table->foreign('test_type_id')->references('id')->on('test_types');
+            $table->foreign('test_type_id')->references('id')->on('lab_test_types');
             $table->foreign('specimen_id')->references('id')->on('specimens');
-            $table->foreign('test_status_id')->references('id')->on('test_statuses');
+            // $table->foreign('test_status_id')->references('id')->on('test_statuses');
         });
 
         /*
@@ -352,7 +351,7 @@ class CreateEmrTables extends Migration
             $table->timestamps();
 
             $table->foreign('code_id')->references('id')->on('codes');
-            $table->foreign('test_type_id')->references('id')->on('test_types');
+            $table->foreign('test_type_id')->references('id')->on('lab_test_types');
             $table->foreign('specimen_type_id')->references('id')->on('specimen_types');
             $table->unique(['test_type_id', 'specimen_type_id']);
         });
@@ -360,19 +359,17 @@ class CreateEmrTables extends Migration
         /*
          * @system HISv1.0 defined
          * @description isolated organisms and gram results also listed
+         * todo: investigate the possibility of implementing LOINC
          */
         Schema::create('test_results', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('test_id')->unsigned();
             $table->string('parameter');
-            $table->integer('measure_id')->unsigned();
             $table->string('result')->nullable();
             $table->integer('lab_result_type_id')->unsigned()->nullable();
             $table->timestamp('time_entered')->default(DB::raw('CURRENT_TIMESTAMP'));
 
-            $table->foreign('test_id')->references('id')->on('tests');
-            $table->foreign('measure_id')->references('id')->on('measures');
-            $table->unique(['test_id', 'measure_id', 'measure_range_id']);
+            $table->unique(['test_id', 'parameter']);
         });
 
 
@@ -583,8 +580,8 @@ class CreateEmrTables extends Migration
         Schema::create('x_rays', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('encounter_id')->unsigned();
-            $table->string('image_url';
-            $table->string('comments';
+            $table->string('image_url');
+            $table->string('comments');
         });
 
         /*
@@ -682,14 +679,16 @@ class CreateEmrTables extends Migration
             $table->integer('encounter_id')->unsigned();
         });
 
+        \Illuminate\Support\Facades\Artisan::call('passport:install');
+        \Illuminate\Support\Facades\Artisan::call('storage:link');
+
         Eloquent::unguard();
 
         //Super Admin
         $superUser = \App\User::create([
             'name' => 'HIS Super Admin',
-            'username' => 'admin',
+            'username' => 'admin',//error: unknown column
             'email' => 'admin@his.local',
-            'gender_id' => 1,
             'password' =>  bcrypt('password'),
         ]);
 
@@ -708,7 +707,7 @@ class CreateEmrTables extends Migration
         ];
 
         foreach ($labResultTypes as $labResultType) {
-            \App\Models\LabResultType::create($labResultType);
+            // \App\Models\LabResultType::create($labResultType);
         }
 
         /* gender table */
@@ -719,7 +718,7 @@ class CreateEmrTables extends Migration
           ['id' => '4', 'active'=>'0', 'code' => 'unknown', 'display' => 'Unknown'],
         ];
         foreach ($genders as $gender) {
-            \App\Models\Gender::create($gender);
+            // \App\Models\Gender::create($gender);
         }
 
         /* encounter class table */
@@ -728,7 +727,7 @@ class CreateEmrTables extends Migration
           ['id' => '2', 'active'=>'1', 'code' => 'outpatient', 'display' => 'Out Patient'],
         ];
         foreach ($encounterClasses as $encounterClass) {
-            \App\Models\EncounterClass::create($encounterClass);
+            // \App\Models\EncounterClass::create($encounterClass);
         }
 
         /* Permissions table */
@@ -770,9 +769,6 @@ class CreateEmrTables extends Migration
         }
         //Assign role Superadmin to user_id=1
         $superUser->attachRole($superRole);
-
-        \Illuminate\Support\Facades\Artisan::call('passport:install');
-        \Illuminate\Support\Facades\Artisan::call('storage:link');
     }
 
     /**

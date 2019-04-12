@@ -6,15 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
-  //   
       protected $table = 'invoices';
       protected $fillable = [
-            'invoice_no',
-    		'opened_by',
-    		'encounter_id',
-            'total',
-            'status' 
-            
+        'invoice_no',
+        'opened_by',
+        'encounter_id',
+        'total',
+        'status' 
 
     ];
 
@@ -25,6 +23,6 @@ class Invoice extends Model
 
     public function encounter()
     {
-    	return $this->belongsTo('App\Models\Encounter');
+        return $this->belongsTo('App\Models\Encounter');
     }
 }
