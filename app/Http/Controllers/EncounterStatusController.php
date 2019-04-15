@@ -1,19 +1,14 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\EncounterStatus;
-
 class EncounterStatusController extends Controller
 {
     public function index()
     {
         $encounterStatus = EncounterStatus::orderBy('id', 'ASC')->paginate(10);
-
         return response()->json($encounterStatus);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -25,7 +20,6 @@ class EncounterStatusController extends Controller
         $rules = [
             'code' => 'required',
             'display'=> 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -34,17 +28,14 @@ class EncounterStatusController extends Controller
             $encounterStatus = new EncounterStatus;
             $encounterStatus->code = $request->input('code');
             $encounterStatus->display = $request->input('display');
-
             try {
                 $encounterStatus->save();
-
                 return response()->json($encounterStatus);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -54,10 +45,8 @@ class EncounterStatusController extends Controller
     public function show($id)
     {
         $encounterStatus = EncounterStatus::findOrFail($id);
-
         return response()->json($encounterStatus);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -70,7 +59,6 @@ class EncounterStatusController extends Controller
         $rules = [
             'code' => 'required',
             'display'=> 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -79,17 +67,14 @@ class EncounterStatusController extends Controller
             $encounterStatus = EncounterStatus::findOrFail($id);
             $encounterStatus->code = $request->input('code');
             $encounterStatus->display = $request->input('display');
-
             try {
                 $encounterStatus->save();
-
                 return response()->json($encounterStatus);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -101,7 +86,6 @@ class EncounterStatusController extends Controller
         try {
             $encounterStatus = EncounterStatus::findOrFail($id);
             $encounterStatus->delete();
-
             return response()->json($encounterStatus, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

@@ -1,21 +1,14 @@
 <?php
-
 namespace App\Http\Controllers;
-
-
-
 use App\Models\Counter;
 use Illuminate\Http\Request;
-
 class CounterController extends Controller
 {
     public function index()
     {
         $counter = Counter::orderBy('id', 'ASC')->paginate(10);
-
         return response()->json($counter);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -26,23 +19,19 @@ class CounterController extends Controller
     {
         $rules = [
         ];
-
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
             $counter = new Counter;
-
             try {
                 $counter->save();
-
                 return response()->json($counter);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -52,10 +41,8 @@ class CounterController extends Controller
     public function show($id)
     {
         $counter = Counter::findOrFail($id);
-
         return response()->json($counter);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -67,23 +54,19 @@ class CounterController extends Controller
     {
         $rules = [
         ];
-
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
             $counter = Counter::findOrFail($id);
-
             try {
                 $counter->save();
-
                 return response()->json($counter);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -95,7 +78,6 @@ class CounterController extends Controller
         try {
             $counter = Counter::findOrFail($id);
             $counter->delete();
-
             return response()->json($counter, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

@@ -1,11 +1,7 @@
-
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\LabTestTypeCategory;
-
 class LabLabTestTypeCategoryController extends Controller
 {
     public function index(Request $request)
@@ -17,10 +13,8 @@ class LabLabTestTypeCategoryController extends Controller
         } else {
             $LabTestTypeCategory = LabTestTypeCategory::orderBy('id', 'ASC')->paginate(10);
         }
-
         return response()->json($LabTestTypeCategory);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -31,7 +25,6 @@ class LabLabTestTypeCategoryController extends Controller
     {
         $rules = [
             'name' => 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -40,17 +33,14 @@ class LabLabTestTypeCategoryController extends Controller
             $LabTestTypeCategory = new LabTestTypeCategory;
             $LabTestTypeCategory->code = $request->input('code');
             $LabTestTypeCategory->name = $request->input('name');
-
             try {
                 $LabTestTypeCategory->save();
-
                 return response()->json($LabTestTypeCategory);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -60,10 +50,8 @@ class LabLabTestTypeCategoryController extends Controller
     public function show($id)
     {
         $LabTestTypeCategory = LabTestTypeCategory::findOrFail($id);
-
         return response()->json($LabTestTypeCategory);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -75,7 +63,6 @@ class LabLabTestTypeCategoryController extends Controller
     {
         $rules = [
             'name' => 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -84,17 +71,14 @@ class LabLabTestTypeCategoryController extends Controller
             $LabTestTypeCategory = LabTestTypeCategory::findOrFail($id);
             $LabTestTypeCategory->code = $request->input('code');
             $LabTestTypeCategory->name = $request->input('name');
-
             try {
                 $LabTestTypeCategory->save();
-
                 return response()->json($LabTestTypeCategory);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *

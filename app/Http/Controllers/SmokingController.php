@@ -1,19 +1,12 @@
-
-
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Smoking;
 use Illuminate\Http\Request;
-
 class SmokingController extends Controller
 {
     public function index(Request $request)
     {
-       
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -23,11 +16,9 @@ class SmokingController extends Controller
     public function store(Request $request)
     {
         $rules = [
-             'kind' => 'required',
-             'frequency' => 'required',
-             'quantity' => 'required',
-
-
+            'kind' => 'required',
+            'frequency' => 'required',
+            'quantity' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -37,17 +28,14 @@ class SmokingController extends Controller
             $Smoking->kind = $request->input('kind');
             $Smoking->frequency = $request->input('frequency');
             $Smoking->quantity = $request->input('quantity');
-
             try {
                 $Smoking->save();
-
                 return response()->json($Smoking);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -57,10 +45,8 @@ class SmokingController extends Controller
     public function show($id)
     {
         $Smoking = Smoking::findOrFail($id);
-
         return response()->json($Smoking);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -71,10 +57,9 @@ class SmokingController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-             'kind' => 'required',
-             'frequency' => 'required',
-             'quantity' => 'required',
-
+            'kind' => 'required',
+            'frequency' => 'required',
+            'quantity' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -84,17 +69,14 @@ class SmokingController extends Controller
             $Smoking->kind = $request->input('kind');
             $Smoking->frequency = $request->input('frequency');
             $Smoking->quantity = $request->input('quantity');
-
             try {
                 $Smoking->save();
-
                 return response()->json($Smoking);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -106,7 +88,6 @@ class SmokingController extends Controller
         try {
             $Smoking = Smoking::findOrFail($id);
             $Smoking->delete();
-
             return response()->json($Smoking, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

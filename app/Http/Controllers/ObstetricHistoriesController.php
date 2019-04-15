@@ -1,17 +1,12 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\ObstetricHistories;
 use Illuminate\Http\Request;
-
 class ObstetricHistoriesController extends Controller
 {
     public function index(Request $request)
     {
-       
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -21,17 +16,14 @@ class ObstetricHistoriesController extends Controller
     public function store(Request $request)
     {
         $rules = [
-             'year' => 'required',
-             'place' => 'required',
-             'maturity' => 'required',
-             'type_of_delivery' => 'required',
-             'bwt' => 'required',
-             'sex' => 'required',
-             'fate' => 'required',
-             'puerperium' => 'required',
-
-
-
+            'year' => 'required',
+            'place' => 'required',
+            'maturity' => 'required',
+            'type_of_delivery' => 'required',
+            'bwt' => 'required',
+            'sex' => 'required',
+            'fate' => 'required',
+            'puerperium' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -46,17 +38,14 @@ class ObstetricHistoriesController extends Controller
             $ObstetricHistories->sex = $request->input('sex');
             $ObstetricHistories->fate = $request->input('fate');
             $ObstetricHistories->puerperium = $request->input('puerperium');
-
             try {
                 $ObstetricHistories->save();
-
                 return response()->json($ObstetricHistories);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -66,10 +55,8 @@ class ObstetricHistoriesController extends Controller
     public function show($id)
     {
         $ObstetricHistories = ObstetricHistories::findOrFail($id);
-
         return response()->json($ObstetricHistories);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -81,14 +68,13 @@ class ObstetricHistoriesController extends Controller
     {
         $rules = [
               'year' => 'required',
-             'place' => 'required',
-             'maturity' => 'required',
-             'type_of_delivery' => 'required',
-             'bwt' => 'required',
-             'sex' => 'required',
-             'fate' => 'required',
-             'puerperium' => 'required',
-             
+            'place' => 'required',
+            'maturity' => 'required',
+            'type_of_delivery' => 'required',
+            'bwt' => 'required',
+            'sex' => 'required',
+            'fate' => 'required',
+            'puerperium' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -103,17 +89,14 @@ class ObstetricHistoriesController extends Controller
             $ObstetricHistories->sex = $request->input('sex');
             $ObstetricHistories->fate = $request->input('fate');
             $ObstetricHistories->puerperium = $request->input('puerperium');
-
             try {
                 $ObstetricHistories->save();
-
                 return response()->json($ObstetricHistories);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -125,7 +108,6 @@ class ObstetricHistoriesController extends Controller
         try {
             $ObstetricHistories = ObstetricHistories::findOrFail($id);
             $ObstetricHistories->delete();
-
             return response()->json($ObstetricHistories, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

@@ -1,20 +1,14 @@
 <?php
-
 namespace App\Http\Controllers;
-
-
 use App\Models\Role;
 use Illuminate\Http\Request;
-
 class RoleController extends Controller
 {
     public function index()
     {
         $role = Role::with('permissionRole')->get();
-
         return response()->json($role);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -25,7 +19,6 @@ class RoleController extends Controller
     {
         $rules = [
             'name' => 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -35,17 +28,14 @@ class RoleController extends Controller
             $role->name = $request->input('name');
             $role->display_name = $request->input('display_name');
             $role->description = $request->input('description');
-
             try {
                 $role->save();
-
                 return response()->json($role);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -55,10 +45,8 @@ class RoleController extends Controller
     public function show($id)
     {
         $role = Role::findOrFail($id);
-
         return response()->json($role);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -70,7 +58,6 @@ class RoleController extends Controller
     {
         $rules = [
             'name' => 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -80,17 +67,14 @@ class RoleController extends Controller
             $role->name = $request->input('name');
             $role->display_name = $request->input('display_name');
             $role->description = $request->input('description');
-
             try {
                 $role->save();
-
                 return response()->json($role);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *

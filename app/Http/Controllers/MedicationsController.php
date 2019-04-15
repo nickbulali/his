@@ -1,18 +1,12 @@
-
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Medications;
 use Illuminate\Http\Request;
-
 class MedicationsController extends Controller
 {
     public function index(Request $request)
     {
-       
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -22,23 +16,17 @@ class MedicationsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-             'patient_id' => 'required',
-             'medication_status_id' => 'required',
-             'drug_id' => 'required',
-             'prescribed_by' => 'required',
-             'test_type_id'=> 'required',
-             'dosage_id'=> 'required',
-         
-             'quantity' => 'required',
-             'start_time' => 'required',
-             'end_time'=> 'required',
-             'refill'=> 'required',
-             'comments'=> 'required',
-
-        
-
-
-
+            'patient_id' => 'required',
+            'medication_status_id' => 'required',
+            'drug_id' => 'required',
+            'prescribed_by' => 'required',
+            'test_type_id'=> 'required',
+            'dosage_id'=> 'required',
+            'quantity' => 'required',
+            'start_time' => 'required',
+            'end_time'=> 'required',
+            'refill'=> 'required',
+            'comments'=> 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -56,18 +44,14 @@ class MedicationsController extends Controller
             $Medications->end_time = $request->input('end_time');
             $Medications->refill = $request->input('refill');
             $Medications->comments = $request->input('comments');
-
-         
             try {
                 $Medications->save();
-
                 return response()->json($Medications);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -77,10 +61,8 @@ class MedicationsController extends Controller
     public function show($id)
     {
         $Medications = Medications::findOrFail($id);
-
         return response()->json($Medications);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -91,19 +73,17 @@ class MedicationsController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-             'patient_id' => 'required',
-             'medication_status_id' => 'required',
-             'drug_id' => 'required',
-             'prescribed_by' => 'required',
-             'test_type_id'=> 'required',
-             'dosage_id'=> 'required',
-             'quantity' => 'required',
-             'start_time' => 'required',
-             'end_time'=> 'required',
-             'refill'=> 'required',
-             'comments'=> 'required',
-
-            
+            'patient_id' => 'required',
+            'medication_status_id' => 'required',
+            'drug_id' => 'required',
+            'prescribed_by' => 'required',
+            'test_type_id'=> 'required',
+            'dosage_id'=> 'required',
+            'quantity' => 'required',
+            'start_time' => 'required',
+            'end_time'=> 'required',
+            'refill'=> 'required',
+            'comments'=> 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -121,17 +101,14 @@ class MedicationsController extends Controller
             $Medications->end_time = $request->input('end_time');
             $Medications->refill = $request->input('refill');
             $Medications->comments = $request->input('comments');
-         
             try {
                 $Medications->save();
-
                 return response()->json($Medications);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -143,7 +120,6 @@ class MedicationsController extends Controller
         try {
             $Medications = Medications::findOrFail($id);
             $Medications->delete();
-
             return response()->json($Medications, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

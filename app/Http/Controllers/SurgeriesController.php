@@ -1,18 +1,12 @@
-
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Surgeries;
 use Illuminate\Http\Request;
-
 class SurgeriesController extends Controller
 {
     public function index(Request $request)
     {
-       
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -22,10 +16,7 @@ class SurgeriesController extends Controller
     public function store(Request $request)
     {
         $rules = [
-             'encounter_id' => 'required',
-     
-
-
+            'encounter_id' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -33,18 +24,14 @@ class SurgeriesController extends Controller
         } else {
             $Surgeries = new Surgeries;
             $Surgeries->encounter_id = $request->input('encounter_id');
-           
-
             try {
                 $Surgeries->save();
-
                 return response()->json($Surgeries);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * encounter_id the specified resource.
      *
@@ -54,10 +41,8 @@ class SurgeriesController extends Controller
     public function show($id)
     {
         $Surgeries = Surgeries::findOrFail($id);
-
         return response()->json($Surgeries);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -68,9 +53,7 @@ class SurgeriesController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-             'encounter_id' => 'required',
-     
-
+            'encounter_id' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -78,18 +61,14 @@ class SurgeriesController extends Controller
         } else {
             $Surgeries = Surgeries::findOrFail($id);
             $Surgeries->encounter_id = $request->input('encounter_id');
-           
-
             try {
                 $Surgeries->save();
-
                 return response()->json($Surgeries);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -101,7 +80,6 @@ class SurgeriesController extends Controller
         try {
             $Surgeries = Surgeries::findOrFail($id);
             $Surgeries->delete();
-
             return response()->json($Surgeries, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

@@ -1,18 +1,12 @@
-
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Allergies;
 use Illuminate\Http\Request;
-
 class AllergiesController extends Controller
 {
     public function index(Request $request)
     {
-       
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -22,11 +16,9 @@ class AllergiesController extends Controller
     public function store(Request $request)
     {
         $rules = [
-             'code_id' => 'required',
-             'substance' => 'required',
-             'fundal_height' => 'required',
-
-
+            'code_id' => 'required',
+            'substance' => 'required',
+            'fundal_height' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -36,17 +28,14 @@ class AllergiesController extends Controller
             $Allergies->code_id = $request->input('code_id');
             $Allergies->substance = $request->input('substance');
             $Allergies->fundal_height = $request->input('fundal_height');
-
             try {
                 $Allergies->save();
-
                 return response()->json($Allergies);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -56,10 +45,8 @@ class AllergiesController extends Controller
     public function show($id)
     {
         $Allergies = Allergies::findOrFail($id);
-
         return response()->json($Allergies);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -70,10 +57,9 @@ class AllergiesController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-             'code_id' => 'required',
-             'substance' => 'required',
-             'fundal_height' => 'required',
-
+            'code_id' => 'required',
+            'substance' => 'required',
+            'fundal_height' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -83,17 +69,14 @@ class AllergiesController extends Controller
             $Allergies->code_id = $request->input('code_id');
             $Allergies->substance = $request->input('substance');
             $Allergies->fundal_height = $request->input('fundal_height');
-
             try {
                 $Allergies->save();
-
                 return response()->json($Allergies);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -105,7 +88,6 @@ class AllergiesController extends Controller
         try {
             $Allergies = Allergies::findOrFail($id);
             $Allergies->delete();
-
             return response()->json($Allergies, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

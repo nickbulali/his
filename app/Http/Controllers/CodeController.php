@@ -1,20 +1,14 @@
 <?php
-
 namespace App\Http\Controllers;
-
-
 use App\Models\Code;
 use Illuminate\Http\Request;
-
 class CodeController extends Controller
 {
     public function index()
     {
         $code = Code::orderBy('id', 'ASC')->paginate(10);
-
         return response()->json($code);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -29,7 +23,6 @@ class CodeController extends Controller
             'display' => 'required',
             'description' => 'required',
         ];
-
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
@@ -39,17 +32,14 @@ class CodeController extends Controller
             $code->code = $request->input('code');
             $code->display = $request->input('display');
             $code->description = $request->input('description');
-
             try {
                 $code->save();
-
                 return response()->json($code);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -59,10 +49,8 @@ class CodeController extends Controller
     public function show($id)
     {
         $code = Code::findOrFail($id);
-
         return response()->json($code);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -78,7 +66,6 @@ class CodeController extends Controller
             'display' => 'required',
             'description' => 'required',
         ];
-
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
@@ -88,17 +75,14 @@ class CodeController extends Controller
             $code->code = $request->input('code');
             $code->display = $request->input('display');
             $code->description = $request->input('description');
-
             try {
                 $code->save();
-
                 return response()->json($code);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -110,7 +94,6 @@ class CodeController extends Controller
         try {
             $code = Code::findOrFail($id);
             $code->delete();
-
             return response()->json($code, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

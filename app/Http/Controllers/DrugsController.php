@@ -1,18 +1,12 @@
-
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Drugs;
 use Illuminate\Http\Request;
-
 class DrugsController extends Controller
 {
     public function index(Request $request)
     {
-       
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -22,17 +16,12 @@ class DrugsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-             'generic_name' => 'required',
-             'trade_name' => 'required',
-             'strength_value' => 'required',
-             'strength_unit' => 'required',
-             'dosage_form'=> 'required',
-             'administration_route'=> 'required',
-
-        
-
-
-
+            'generic_name' => 'required',
+            'trade_name' => 'required',
+            'strength_value' => 'required',
+            'strength_unit' => 'required',
+            'dosage_form'=> 'required',
+            'administration_route'=> 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -45,17 +34,14 @@ class DrugsController extends Controller
             $Drugs->strength_unit = $request->input('strength_unit');
             $Drugs->dosage_form = $request->input('dosage_form');
             $Drugs->administration_route = $request->input('administration_route');
-         
             try {
                 $Drugs->save();
-
                 return response()->json($Drugs);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -65,10 +51,8 @@ class DrugsController extends Controller
     public function show($id)
     {
         $Drugs = Drugs::findOrFail($id);
-
         return response()->json($Drugs);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -80,12 +64,11 @@ class DrugsController extends Controller
     {
         $rules = [
               'generic_name' => 'required',
-             'trade_name' => 'required',
-             'strength_value' => 'required',
-             'strength_unit' => 'required',
-             'dosage_form'=> 'required',
-             'administration_route'=> 'required',
-            
+            'trade_name' => 'required',
+            'strength_value' => 'required',
+            'strength_unit' => 'required',
+            'dosage_form'=> 'required',
+            'administration_route'=> 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -98,17 +81,14 @@ class DrugsController extends Controller
             $Drugs->strength_unit = $request->input('strength_unit');
             $Drugs->dosage_form = $request->input('dosage_form');
             $Drugs->administration_route = $request->input('administration_route');
-         
             try {
                 $Drugs->save();
-
                 return response()->json($Drugs);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -120,7 +100,6 @@ class DrugsController extends Controller
         try {
             $Drugs = Drugs::findOrFail($id);
             $Drugs->delete();
-
             return response()->json($Drugs, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

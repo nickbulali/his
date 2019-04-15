@@ -1,18 +1,12 @@
-
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\PresentingComplaints;
 use Illuminate\Http\Request;
-
 class PresentingComplaintsController extends Controller
 {
     public function index(Request $request)
     {
-       
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -22,10 +16,7 @@ class PresentingComplaintsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-             'comment' => 'required',
-     
-
-
+            'comment' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -33,18 +24,14 @@ class PresentingComplaintsController extends Controller
         } else {
             $PresentingComplaints = new PresentingComplaints;
             $PresentingComplaints->comment = $request->input('comment');
-           
-
             try {
                 $PresentingComplaints->save();
-
                 return response()->json($PresentingComplaints);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * comment the specified resource.
      *
@@ -54,10 +41,8 @@ class PresentingComplaintsController extends Controller
     public function show($id)
     {
         $PresentingComplaints = PresentingComplaints::findOrFail($id);
-
         return response()->json($PresentingComplaints);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -68,9 +53,7 @@ class PresentingComplaintsController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-             'comment' => 'required',
-     
-
+            'comment' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -78,18 +61,14 @@ class PresentingComplaintsController extends Controller
         } else {
             $PresentingComplaints = PresentingComplaints::findOrFail($id);
             $PresentingComplaints->comment = $request->input('comment');
-           
-
             try {
                 $PresentingComplaints->save();
-
                 return response()->json($PresentingComplaints);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -101,7 +80,6 @@ class PresentingComplaintsController extends Controller
         try {
             $PresentingComplaints = PresentingComplaints::findOrFail($id);
             $PresentingComplaints->delete();
-
             return response()->json($PresentingComplaints, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

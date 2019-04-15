@@ -1,18 +1,12 @@
-
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\PresentingIllness;
 use Illuminate\Http\Request;
-
 class PresentingIllnessController extends Controller
 {
     public function index(Request $request)
     {
-       
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -22,10 +16,7 @@ class PresentingIllnessController extends Controller
     public function store(Request $request)
     {
         $rules = [
-             'comment' => 'required',
-     
-
-
+            'comment' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -33,18 +24,14 @@ class PresentingIllnessController extends Controller
         } else {
             $PresentingIllness = new PresentingIllness;
             $PresentingIllness->comment = $request->input('comment');
-           
-
             try {
                 $PresentingIllness->save();
-
                 return response()->json($PresentingIllness);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * comment the specified resource.
      *
@@ -54,10 +41,8 @@ class PresentingIllnessController extends Controller
     public function show($id)
     {
         $PresentingIllness = PresentingIllness::findOrFail($id);
-
         return response()->json($PresentingIllness);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -68,9 +53,7 @@ class PresentingIllnessController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-             'comment' => 'required',
-     
-
+            'comment' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -78,18 +61,14 @@ class PresentingIllnessController extends Controller
         } else {
             $PresentingIllness = PresentingIllness::findOrFail($id);
             $PresentingIllness->comment = $request->input('comment');
-           
-
             try {
                 $PresentingIllness->save();
-
                 return response()->json($PresentingIllness);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -101,7 +80,6 @@ class PresentingIllnessController extends Controller
         try {
             $PresentingIllness = PresentingIllness::findOrFail($id);
             $PresentingIllness->delete();
-
             return response()->json($PresentingIllness, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

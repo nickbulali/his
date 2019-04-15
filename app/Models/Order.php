@@ -1,12 +1,9 @@
 <?php
-
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
 class Order extends Model
 {
-    //
     protected $table='orders';
     
     protected $fillable = ['requested_by', 'status','charge_sheet_id','invoice_id'];
@@ -20,5 +17,4 @@ class Order extends Model
     {
     	return $this->hasOne('App\Models\ChargeSheet');
     }
-      
 }

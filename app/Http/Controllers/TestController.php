@@ -1,13 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
-
-
 use Auth;
 use App\Models\Test;
 use App\Models\Specimen;
 use Illuminate\Http\Request;
-
 class TestController extends Controller
 {
     public function index(Request $request)
@@ -39,10 +35,8 @@ class TestController extends Controller
                 'testType.specimenTypes'
             )->orderBy('created_at', 'DESC')->paginate(10);
         }
-
         return response()->json($tests);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -60,7 +54,6 @@ class TestController extends Controller
             'tested_by' => 'required',
             'verified_by' => 'required',
             'requested_by' => 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -80,17 +73,14 @@ class TestController extends Controller
             $test->time_completed = $request->input('time_completed');
             $test->time_verified = $request->input('time_verified');
             $test->time_sent = $request->input('time_sent');
-
             try {
                 $test->save();
-
                 return response()->json($test->loader());
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -101,7 +91,6 @@ class TestController extends Controller
     {
         return response()->json(Test::find($id)->loader());
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -120,7 +109,6 @@ class TestController extends Controller
             'tested_by' => 'required',
             'verified_by' => 'required',
             'requested_by' => 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -140,17 +128,14 @@ class TestController extends Controller
             $test->time_completed = $request->input('time_completed');
             $test->time_verified = $request->input('time_verified');
             $test->time_sent = $request->input('time_sent');
-
             try {
                 $test->save();
-
                 return response()->json($test->loader());
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     public function specimenCollection(Request $request)
     {
         $rules = [
@@ -160,7 +145,6 @@ class TestController extends Controller
             'time_collected' => 'required',
             'time_received' => 'required',
         ];
-
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
@@ -175,20 +159,15 @@ class TestController extends Controller
             $specimen->time_collected = $request->input('time_collected');
             $specimen->time_received = $request->input('time_received');
             $specimen->save();
-
             $test = Test::find($request->input('test_id'));
             $test->specimen_id = $specimen->id;
             $test->save();
-
             try {
                 $specimen->save();
-
                 return response()->json($test->loader());
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
-   
 }

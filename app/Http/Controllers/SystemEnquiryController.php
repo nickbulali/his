@@ -1,18 +1,12 @@
-
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\SystemEnquiry;
 use Illuminate\Http\Request;
-
 class SystemEnquiryController extends Controller
 {
     public function index(Request $request)
     {
-       
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -22,11 +16,8 @@ class SystemEnquiryController extends Controller
     public function store(Request $request)
     {
         $rules = [
-             'occupation' => 'required',
-             'residence' => 'required',
-     
-
-
+            'occupation' => 'required',
+            'residence' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -35,18 +26,15 @@ class SystemEnquiryController extends Controller
             $SystemEnquiry = new SystemEnquiry;
             $SystemEnquiry->occupation = $request->input('occupation');
             $SystemEnquiry->residence = $request->input('residence');
-           
-
+ 
             try {
                 $SystemEnquiry->save();
-
                 return response()->json($SystemEnquiry);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -56,10 +44,8 @@ class SystemEnquiryController extends Controller
     public function show($id)
     {
         $SystemEnquiry = SystemEnquiry::findOrFail($id);
-
         return response()->json($SystemEnquiry);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -70,10 +56,8 @@ class SystemEnquiryController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-             'occupation' => 'required',
-             'residence' => 'required',
-     
-
+            'occupation' => 'required',
+            'residence' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -82,18 +66,15 @@ class SystemEnquiryController extends Controller
             $SystemEnquiry = SystemEnquiry::findOrFail($id);
             $SystemEnquiry->occupation = $request->input('occupation');
             $SystemEnquiry->residence = $request->input('residence');
-           
-
+ 
             try {
                 $SystemEnquiry->save();
-
                 return response()->json($SystemEnquiry);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -105,7 +86,6 @@ class SystemEnquiryController extends Controller
         try {
             $SystemEnquiry = SystemEnquiry::findOrFail($id);
             $SystemEnquiry->delete();
-
             return response()->json($SystemEnquiry, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

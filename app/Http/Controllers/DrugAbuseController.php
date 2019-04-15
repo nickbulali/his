@@ -1,19 +1,12 @@
-
-
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\DrugAbuse;
 use Illuminate\Http\Request;
-
 class DrugAbuseController extends Controller
 {
     public function index(Request $request)
     {
-       
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -23,12 +16,9 @@ class DrugAbuseController extends Controller
     public function store(Request $request)
     {
         $rules = [
-             'kind' => 'required',
-             'frequency' => 'required',
-             'quantity' => 'required',
-     
-
-
+            'kind' => 'required',
+            'frequency' => 'required',
+            'quantity' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -38,18 +28,14 @@ class DrugAbuseController extends Controller
             $DrugAbuse->kind = $request->input('kind');
             $DrugAbuse->frequency = $request->input('frequency');
             $DrugAbuse->quantity = $request->input('quantity');
-           
-
             try {
                 $DrugAbuse->save();
-
                 return response()->json($DrugAbuse);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -59,10 +45,8 @@ class DrugAbuseController extends Controller
     public function show($id)
     {
         $DrugAbuse = DrugAbuse::findOrFail($id);
-
         return response()->json($DrugAbuse);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -73,11 +57,9 @@ class DrugAbuseController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-             'kind' => 'required',
-             'frequency' => 'required',
-             'quantity' => 'required',
-     
-
+            'kind' => 'required',
+            'frequency' => 'required',
+            'quantity' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -87,19 +69,14 @@ class DrugAbuseController extends Controller
             $DrugAbuse->kind = $request->input('kind');
             $DrugAbuse->frequency = $request->input('frequency');
             $DrugAbuse->quantity = $request->input('quantity');
-           
-           
-
             try {
                 $DrugAbuse->save();
-
                 return response()->json($DrugAbuse);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -111,7 +88,6 @@ class DrugAbuseController extends Controller
         try {
             $DrugAbuse = DrugAbuse::findOrFail($id);
             $DrugAbuse->delete();
-
             return response()->json($DrugAbuse, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

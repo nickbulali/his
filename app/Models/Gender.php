@@ -1,11 +1,7 @@
 <?php
-
 namespace App\Models;
 
-
-
 use Illuminate\Database\Eloquent\Model;
-
 class Gender extends Model
 {
     const male = 1;

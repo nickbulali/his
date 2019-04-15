@@ -1,17 +1,12 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\AdmissionEncounter;
 use Illuminate\Http\Request;
-
 class AdmissionEncounterController extends Controller
 {
     public function index(Request $request)
     {
-       
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -21,10 +16,8 @@ class AdmissionEncounterController extends Controller
     public function store(Request $request)
     {
         $rules = [
-             'admission_id' => 'required',
-             'encounter_id' => 'required',
-
-
+            'admission_id' => 'required',
+            'encounter_id' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -33,17 +26,14 @@ class AdmissionEncounterController extends Controller
             $AdmissionEncounter = new AdmissionEncounter;
             $AdmissionEncounter->admission_id = $request->input('admission_id');
             $AdmissionEncounter->encounter_id = $request->input('encounter_id');
-
             try {
                 $AdmissionEncounter->save();
-
                 return response()->json($AdmissionEncounter);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -53,10 +43,8 @@ class AdmissionEncounterController extends Controller
     public function show($id)
     {
         $AdmissionEncounter = AdmissionEncounter::findOrFail($id);
-
         return response()->json($AdmissionEncounter);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -67,9 +55,8 @@ class AdmissionEncounterController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-             'admission_id' => 'required',
-             'encounter_id' => 'required',
-
+            'admission_id' => 'required',
+            'encounter_id' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -78,17 +65,14 @@ class AdmissionEncounterController extends Controller
             $AdmissionEncounter = AdmissionEncounter::findOrFail($id);
             $AdmissionEncounter->admission_id = $request->input('admission_id');
             $AdmissionEncounter->encounter_id = $request->input('encounter_id');
-
             try {
                 $AdmissionEncounter->save();
-
                 return response()->json($AdmissionEncounter);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -100,7 +84,6 @@ class AdmissionEncounterController extends Controller
         try {
             $AdmissionEncounter = AdmissionEncounter::findOrFail($id);
             $AdmissionEncounter->delete();
-
             return response()->json($AdmissionEncounter, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

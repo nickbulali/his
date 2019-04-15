@@ -1,19 +1,12 @@
-
-
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\AntenatalHistory;
 use Illuminate\Http\Request;
-
 class AntenatalHistoryController extends Controller
 {
     public function index(Request $request)
     {
-       
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -23,16 +16,13 @@ class AntenatalHistoryController extends Controller
     public function store(Request $request)
     {
         $rules = [
-             'encounter_id' => 'required',
-             'test_id' => 'required',
-             'is_drug' => 'required',
-             'presentation' => 'required',
-             'fhr' => 'required',
-             'comments' => 'required',
-             'date_of_next_visit' => 'required',
-
-
-
+            'encounter_id' => 'required',
+            'test_id' => 'required',
+            'is_drug' => 'required',
+            'presentation' => 'required',
+            'fhr' => 'required',
+            'comments' => 'required',
+            'date_of_next_visit' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -46,17 +36,14 @@ class AntenatalHistoryController extends Controller
             $AntenatalHistory->fhr = $request->input('fhr');
             $AntenatalHistory->comments = $request->input('comments');
             $AntenatalHistory->date_of_next_visit = $request->input('date_of_next_visit');
-
             try {
                 $AntenatalHistory->save();
-
                 return response()->json($AntenatalHistory);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -66,10 +53,8 @@ class AntenatalHistoryController extends Controller
     public function show($id)
     {
         $AntenatalHistory = AntenatalHistory::findOrFail($id);
-
         return response()->json($AntenatalHistory);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -81,12 +66,12 @@ class AntenatalHistoryController extends Controller
     {
         $rules = [
               'encounter_id' => 'required',
-             'test_id' => 'required',
-             'is_drug' => 'required',
-             'presentation' => 'required',
-             'fhr' => 'required',
-             'comments' => 'required',
-             'date_of_next_visit' => 'required',
+            'test_id' => 'required',
+            'is_drug' => 'required',
+            'presentation' => 'required',
+            'fhr' => 'required',
+            'comments' => 'required',
+            'date_of_next_visit' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -100,17 +85,14 @@ class AntenatalHistoryController extends Controller
             $AntenatalHistory->fhr = $request->input('fhr');
             $AntenatalHistory->comments = $request->input('comments');
             $AntenatalHistory->date_of_next_visit = $request->input('date_of_next_visit');
-
             try {
                 $AntenatalHistory->save();
-
                 return response()->json($AntenatalHistory);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -122,7 +104,6 @@ class AntenatalHistoryController extends Controller
         try {
             $AntenatalHistory = AntenatalHistory::findOrFail($id);
             $AntenatalHistory->delete();
-
             return response()->json($AntenatalHistory, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

@@ -1,18 +1,12 @@
-
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\AnthropometricMeasurements;
 use Illuminate\Http\Request;
-
 class AnthropometricMeasurementsController extends Controller
 {
     public function index(Request $request)
     {
-       
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -22,14 +16,10 @@ class AnthropometricMeasurementsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-             'height' => 'required',
-             'weight' => 'required',
-             'body_mass_index' => 'required',
-             'body_surface_area' => 'required',
-        
-
-
-
+            'height' => 'required',
+            'weight' => 'required',
+            'body_mass_index' => 'required',
+            'body_surface_area' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -40,17 +30,14 @@ class AnthropometricMeasurementsController extends Controller
             $AnthropometricMeasurements->weight = $request->input('weight');
             $AnthropometricMeasurements->body_mass_index = $request->input('body_mass_index');
             $AnthropometricMeasurements->body_surface_area = $request->input('body_surface_area');
-         
             try {
                 $AnthropometricMeasurements->save();
-
                 return response()->json($AnthropometricMeasurements);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -60,10 +47,8 @@ class AnthropometricMeasurementsController extends Controller
     public function show($id)
     {
         $AnthropometricMeasurements = AnthropometricMeasurements::findOrFail($id);
-
         return response()->json($AnthropometricMeasurements);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -75,10 +60,9 @@ class AnthropometricMeasurementsController extends Controller
     {
         $rules = [
               'height' => 'required',
-             'weight' => 'required',
-             'body_mass_index' => 'required',
-             'body_surface_area' => 'required',
-            
+            'weight' => 'required',
+            'body_mass_index' => 'required',
+            'body_surface_area' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -89,17 +73,14 @@ class AnthropometricMeasurementsController extends Controller
             $AnthropometricMeasurements->weight = $request->input('weight');
             $AnthropometricMeasurements->body_mass_index = $request->input('body_mass_index');
             $AnthropometricMeasurements->body_surface_area = $request->input('body_surface_area');
-         
             try {
                 $AnthropometricMeasurements->save();
-
                 return response()->json($AnthropometricMeasurements);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -111,7 +92,6 @@ class AnthropometricMeasurementsController extends Controller
         try {
             $AnthropometricMeasurements = AnthropometricMeasurements::findOrFail($id);
             $AnthropometricMeasurements->delete();
-
             return response()->json($AnthropometricMeasurements, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

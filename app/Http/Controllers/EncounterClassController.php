@@ -1,20 +1,14 @@
 <?php
-
 namespace App\Http\Controllers;
-
-
 use Illuminate\Http\Request;
 use App\Models\EncounterClass;
-
 class EncounterClassController extends Controller
 {
     public function index()
     {
         $encounterClass = EncounterClass::all();
-
         return response()->json($encounterClass);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -25,7 +19,6 @@ class EncounterClassController extends Controller
     {
         $rules = [
             'display' => 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -35,17 +28,14 @@ class EncounterClassController extends Controller
             $encounterClass->active = $request->input('active');
             $encounterClass->code = $request->input('code');
             $encounterClass->display = $request->input('display');
-
             try {
                 $encounterClass->save();
-
                 return response()->json($encounterClass);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -55,10 +45,8 @@ class EncounterClassController extends Controller
     public function show($id)
     {
         $encounterClass = EncounterClass::findOrFail($id);
-
         return response()->json($encounterClass);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -70,7 +58,6 @@ class EncounterClassController extends Controller
     {
         $rules = [
             'display' => 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -80,17 +67,14 @@ class EncounterClassController extends Controller
             $encounterClass->active = $request->input('active');
             $encounterClass->code = $request->input('code');
             $encounterClass->display = $request->input('display');
-
             try {
                 $encounterClass->save();
-
                 return response()->json($encounterClass);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -102,7 +86,6 @@ class EncounterClassController extends Controller
         try {
             $encounterClass = EncounterClass::findOrFail($id);
             $encounterClass->delete();
-
             return response()->json($encounterClass, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

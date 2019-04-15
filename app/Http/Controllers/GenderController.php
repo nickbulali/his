@@ -1,19 +1,14 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Gender;
 use Illuminate\Http\Request;
-
 class GenderController extends Controller
 {
     public function index()
     {
         $gender = Gender::orderBy('id', 'ASC')->get();
-
         return response()->json($gender);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -25,7 +20,6 @@ class GenderController extends Controller
         $rules = [
             'code' => 'required',
             'display' => 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -34,17 +28,14 @@ class GenderController extends Controller
             $gender = new Gender;
             $gender->code = $request->input('code');
             $gender->display = $request->input('display');
-
             try {
                 $gender->save();
-
                 return response()->json($gender);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -54,10 +45,8 @@ class GenderController extends Controller
     public function show($id)
     {
         $gender = Gender::findOrFail($id);
-
         return response()->json($gender);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -70,7 +59,6 @@ class GenderController extends Controller
         $rules = [
             'code' => 'required',
             'display' => 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -79,17 +67,14 @@ class GenderController extends Controller
             $gender = Gender::findOrFail($id);
             $gender->code = $request->input('code');
             $gender->display = $request->input('display');
-
             try {
                 $gender->save();
-
                 return response()->json($gender);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -101,7 +86,6 @@ class GenderController extends Controller
         try {
             $gender = Gender::findOrFail($id);
             $gender->delete();
-
             return response()->json($gender, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

@@ -1,21 +1,14 @@
-
 <?php
-
 namespace App\Http\Controllers;
-
-
 use App\Models\Organization;
 use Illuminate\Http\Request;
-
 class OrganizationController extends Controller
 {
     public function index()
     {
         $organization = Organization::orderBy('id', 'ASC')->paginate(10);
-
         return response()->json($organization);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -26,7 +19,6 @@ class OrganizationController extends Controller
     {
         $rules = [
             'name' => 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -40,17 +32,14 @@ class OrganizationController extends Controller
             $organization->alias = $request->input('alias');
             $organization->telecom = $request->input('telecom');
             $organization->address = $request->input('address');
-
             try {
                 $organization->save();
-
                 return response()->json($organization);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -60,10 +49,8 @@ class OrganizationController extends Controller
     public function show($id)
     {
         $organization = Organization::findOrFail($id);
-
         return response()->json($organization);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -75,7 +62,6 @@ class OrganizationController extends Controller
     {
         $rules = [
             'name' => 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -89,17 +75,14 @@ class OrganizationController extends Controller
             $organization->alias = $request->input('alias');
             $organization->telecom = $request->input('telecom');
             $organization->address = $request->input('address');
-
             try {
                 $organization->save();
-
                 return response()->json($organization);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -111,7 +94,6 @@ class OrganizationController extends Controller
         try {
             $organization = Organization::findOrFail($id);
             $organization->delete();
-
             return response()->json($organization, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

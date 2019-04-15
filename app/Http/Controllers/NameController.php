@@ -1,21 +1,14 @@
 <?php
-
 namespace App\Http\Controllers;
-
-
-
 use App\Models\Name;
 use Illuminate\Http\Request;
-
 class NameController extends Controller
 {
     public function index()
     {
         $name = Name::orderBy('id', 'ASC')->paginate(10);
-
         return response()->json($name);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -27,7 +20,6 @@ class NameController extends Controller
         $rules = [
             'use' => 'required',
             'text' => 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -40,17 +32,14 @@ class NameController extends Controller
             $name->given = $request->input('given');
             $name->prefix = $request->input('prefix');
             $name->suffix = $request->input('suffix');
-
             try {
                 $name->save();
-
                 return response()->json($name);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -60,10 +49,8 @@ class NameController extends Controller
     public function show($id)
     {
         $name = Name::findOrFail($id);
-
         return response()->json($name);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -76,7 +63,6 @@ class NameController extends Controller
         $rules = [
             'use' => 'required',
             'text' => 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -89,17 +75,14 @@ class NameController extends Controller
             $name->given = $request->input('given');
             $name->prefix = $request->input('prefix');
             $name->suffix = $request->input('suffix');
-
             try {
                 $name->save();
-
                 return response()->json($name);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -111,7 +94,6 @@ class NameController extends Controller
         try {
             $name = Name::findOrFail($id);
             $name->delete();
-
             return response()->json($name, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

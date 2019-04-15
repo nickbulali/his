@@ -1,27 +1,21 @@
 <?php
-
 namespace App\Http\Controllers;
-
 /*
  * (c) @iLabAfrica
  * BLIS			 - a port of the Basic Laboratory Information System (BLIS) to Laravel.
  * Team Lead	 - Emmanuel Kweyu.
  * Devs			 - Ann Chemutai|Winnie Mbaka|Ken Mutuma|Anthony Ereng
  */
-
 use Auth;
 use App\Models\Specimen;
 use Illuminate\Http\Request;
-
 class SpecimenController extends Controller
 {
     public function index()
     {
         $specimen = Specimen::orderBy('id', 'ASC')->paginate(10);
-
         return response()->json($specimen);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -35,7 +29,6 @@ class SpecimenController extends Controller
             'received_by' => 'required',
             'collected_by' => 'required',
         ];
-
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
@@ -50,17 +43,14 @@ class SpecimenController extends Controller
             $specimen->collected_by = $request->input('collected_by');
             $specimen->time_collected = $request->input('time_collected');
             $specimen->time_received = $request->input('time_received');
-
             try {
                 $specimen->save();
-
                 return response()->json($specimen);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -70,10 +60,8 @@ class SpecimenController extends Controller
     public function show($id)
     {
         $specimen = Specimen::findOrFail($id);
-
         return response()->json($specimen);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -91,7 +79,6 @@ class SpecimenController extends Controller
             'received_by' => 'required',
             'collected_by' => 'required',
         ];
-
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
@@ -106,17 +93,14 @@ class SpecimenController extends Controller
             $specimen->collected_by = $request->input('collected_by');
             $specimen->time_collected = $request->input('time_collected');
             $specimen->time_received = $request->input('time_received');
-
             try {
                 $specimen->save();
-
                 return response()->json($specimen);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -128,13 +112,9 @@ class SpecimenController extends Controller
         try {
             $specimen = Specimen::findOrFail($id);
             $specimen->delete();
-
             return response()->json($specimen, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
-
-  
-
 }

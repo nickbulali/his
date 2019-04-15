@@ -1,18 +1,12 @@
-
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\VitalSigns;
 use Illuminate\Http\Request;
-
 class VitalSignsController extends Controller
 {
     public function index(Request $request)
     {
-       
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -22,14 +16,10 @@ class VitalSignsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-             'body_temperature' => 'required',
-             'respiratory_rate' => 'required',
-             'heart_rate' => 'required',
-             'blood_pressure' => 'required',
-        
-
-
-
+            'body_temperature' => 'required',
+            'respiratory_rate' => 'required',
+            'heart_rate' => 'required',
+            'blood_pressure' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -40,17 +30,14 @@ class VitalSignsController extends Controller
             $VitalSigns->respiratory_rate = $request->input('respiratory_rate');
             $VitalSigns->heart_rate = $request->input('heart_rate');
             $VitalSigns->blood_pressure = $request->input('blood_pressure');
-         
             try {
                 $VitalSigns->save();
-
                 return response()->json($VitalSigns);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -60,10 +47,8 @@ class VitalSignsController extends Controller
     public function show($id)
     {
         $VitalSigns = VitalSigns::findOrFail($id);
-
         return response()->json($VitalSigns);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -75,10 +60,9 @@ class VitalSignsController extends Controller
     {
         $rules = [
               'body_temperature' => 'required',
-             'respiratory_rate' => 'required',
-             'heart_rate' => 'required',
-             'blood_pressure' => 'required',
-            
+            'respiratory_rate' => 'required',
+            'heart_rate' => 'required',
+            'blood_pressure' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -89,17 +73,14 @@ class VitalSignsController extends Controller
             $VitalSigns->respiratory_rate = $request->input('respiratory_rate');
             $VitalSigns->heart_rate = $request->input('heart_rate');
             $VitalSigns->blood_pressure = $request->input('blood_pressure');
-         
             try {
                 $VitalSigns->save();
-
                 return response()->json($VitalSigns);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -111,7 +92,6 @@ class VitalSignsController extends Controller
         try {
             $VitalSigns = VitalSigns::findOrFail($id);
             $VitalSigns->delete();
-
             return response()->json($VitalSigns, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

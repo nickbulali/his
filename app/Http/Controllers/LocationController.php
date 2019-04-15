@@ -1,11 +1,7 @@
-
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Location;
 use Illuminate\Http\Request;
-
 class LocationController extends Controller
 {
     public function index(Request $request)
@@ -17,10 +13,8 @@ class LocationController extends Controller
         } else {
             $locations = Location::paginate(10);
         }
-
         return response()->json($locations);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -39,17 +33,14 @@ class LocationController extends Controller
             $location = new Location;
             $location->identifier = $request->input('identifier');
             $location->name = $request->input('name');
-
             try {
                 $location->save();
-
                 return response()->json($location);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -59,10 +50,8 @@ class LocationController extends Controller
     public function show($id)
     {
         $location = Location::findOrFail($id);
-
         return response()->json($location);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -74,7 +63,6 @@ class LocationController extends Controller
     {
         $rules = [
             'name' => 'required',
-
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -83,17 +71,14 @@ class LocationController extends Controller
             $location = Location::findOrFail($id);
             $location->identifier = $request->input('identifier');
             $location->name = $request->input('name');
-
             try {
                 $location->save();
-
                 return response()->json($location);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *

@@ -1,12 +1,7 @@
-
 <?php
-
 namespace App\Http\Controllers;
-
-
 use App\Models\LabTestType;
 use Illuminate\Http\Request;
-
 class LabLabTestTypeController extends Controller
 {
     public function index(Request $request)
@@ -34,10 +29,8 @@ class LabLabTestTypeController extends Controller
                 'specimenTypes'
             )->orderBy('id', 'ASC')->paginate(10);
         }
-
         return response()->json($LabTestType);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -49,9 +42,7 @@ class LabLabTestTypeController extends Controller
         $rules = [
             'name' => 'required',
             'test_type_category_id' => 'required',
-
         ];
-
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
@@ -62,17 +53,14 @@ class LabLabTestTypeController extends Controller
             $LabTestType->culture = $request->input('culture');
             $LabTestType->test_type_category_id = $request->input('test_type_category_id');
             $LabTestType->targetTAT = $request->input('targetTAT');
-
             try {
                 $LabTestType->save();
-
                 return response()->json($LabTestType->loader());
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Display the specified resource.
      *
@@ -83,7 +71,6 @@ class LabLabTestTypeController extends Controller
     {
         return response()->json(LabTestType::find($id)->loader());
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -97,7 +84,6 @@ class LabLabTestTypeController extends Controller
             'name' => 'required',
             'test_type_category_id' => 'required',
         ];
-
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
@@ -108,17 +94,14 @@ class LabLabTestTypeController extends Controller
             $LabTestType->culture = $request->input('culture');
             $LabTestType->test_type_category_id = $request->input('test_type_category_id');
             $LabTestType->targetTAT = $request->input('targetTAT');
-
             try {
                 $LabTestType->save();
-
                 return response()->json($LabTestType->loader());
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -130,7 +113,6 @@ class LabLabTestTypeController extends Controller
         try {
             $LabTestType = LabTestType::findOrFail($id);
             $LabTestType->delete();
-
             return response()->json($LabTestType, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
