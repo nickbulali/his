@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Customer;
+use App\Models\Customer;
 use Faker\Factory;
 
 class CustomersTableSeeder extends Seeder

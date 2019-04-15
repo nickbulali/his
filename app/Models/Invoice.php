@@ -1,25 +1,37 @@
 <?php
-namespace App;
+
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Helper\HasManyRelation;
+
 class Invoice extends Model
 {
-    protected $table = 'invoices';
+    use HasManyRelation;
+
     protected $fillable = [
-        'invoice_no',
-        'opened_by',
-        'encounter_id',
-        'total',
-        'status' 
+        'customer_id', 'date', 'due_date', 'discount',
+        'terms_and_conditions', 'reference'
     ];
 
-    public function order()
+    protected $guarded = [
+        'number', 'sub_total', 'total'
+    ];
+
+    public function customer()
     {
-        return $this->hasMany('App\Models\Order');
+        return $this->belongsTo(Customer::class);
     }
 
-    public function encounter()
+    public function items()
     {
-    	return $this->belongsTo('App\Models\Encounter');
+        return $this->hasMany(InvoiceItem::class);
+    }
+
+    public function setSubTotalAttribute($value)
+    {
+        $this->attributes['sub_total'] = $value;
+        $discount = $this->attributes['discount'];
+        $this->attributes['total'] = $value - $discount;
     }
 }

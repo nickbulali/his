@@ -1892,162 +1892,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/typeahead/Typeahead.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/typeahead/Typeahead.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-!(function webpackMissingModule() { var e = new Error("Cannot find module '../../lib/api'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    initialize: {
-      "default": null
-    },
-    url: {
-      required: true
-    },
-    tabindex: {
-      "default": 0
-    }
-  },
-  data: function data() {
-    return {
-      selectIndex: -1,
-      isOpen: false,
-      search: '',
-      results: []
-    };
-  },
-  computed: {
-    selectedText: function selectedText() {
-      return this.initialize && this.initialize.text ? this.initialize.text : 'Type or click to select';
-    }
-  },
-  methods: {
-    onToggle: function onToggle() {
-      if (this.isOpen) {
-        this.isOpen = false;
-      } else {
-        this.open();
-      }
-    },
-    onKey: function onKey(e) {
-      var KeyCode = e.KeyCode || e.which;
-
-      if (!e.shiftKey && KeyCode !== 9 && !this.isOpen) {
-        this.open();
-      }
-    },
-    open: function open() {
-      var _this = this;
-
-      this.fetchData('');
-      this.isOpen = true;
-      this.$nextTick(function () {
-        _this.$refs.search.focus();
-      });
-    },
-    fetchData: function fetchData(q) {
-      var _this2 = this;
-
-      !(function webpackMissingModule() { var e = new Error("Cannot find module '../../lib/api'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())(this.url, {
-        q: q
-      }).then(function (res) {
-        vue__WEBPACK_IMPORTED_MODULE_0___default.a.set(_this2.$data, 'results', res.data.results);
-      });
-    },
-    onBlur: function onBlur() {
-      this.close();
-    },
-    onEsc: function onEsc() {
-      this.close();
-    },
-    close: function close() {
-      this.results = [];
-      this.isOpen = false;
-      this.search = '';
-      this.selectIndex = -1;
-    },
-    onSearch: function onSearch(e) {
-      var q = e.target.value;
-      this.selectIndex = 0;
-      this.fetchData(q);
-    },
-    onUpKey: function onUpKey(e) {
-      if (this.selectIndex > 0) {
-        this.selectIndex--;
-      }
-    },
-    onDownKey: function onDownKey(e) {
-      if (this.results.length - 1 > this.selectIndex) {
-        this.selectIndex++;
-      }
-    },
-    onEnterKey: function onEnterKey() {
-      var found = this.results[this.selectIndex];
-
-      if (found) {
-        this.select(found);
-      }
-    },
-    select: function select(result) {
-      this.$emit('input', {
-        target: {
-          value: result
-        }
-      });
-      this.close();
-    },
-    onMouse: function onMouse(index) {
-      this.selectIndex = index;
-    }
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/invoices/form.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/invoices/form.vue?vue&type=script&lang=js& ***!
@@ -2060,7 +1904,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 !(function webpackMissingModule() { var e = new Error("Cannot find module '../../lib/api'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
-/* harmony import */ var _components_typeahead__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/typeahead */ "./resources/js/components/typeahead/index.js");
+!(function webpackMissingModule() { var e = new Error("Cannot find module '../../components/Typeahead'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
 //
 //
 //
@@ -2220,7 +2064,7 @@ function initialize(to) {
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    Typeahead: _components_typeahead__WEBPACK_IMPORTED_MODULE_2__["Typeahead"]
+    Typeahead: !(function webpackMissingModule() { var e = new Error("Cannot find module '../../components/Typeahead'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())
   },
   data: function data() {
     return {
@@ -40525,171 +40369,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/typeahead/Typeahead.vue?vue&type=template&id=9bf96838&":
-/*!**********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/typeahead/Typeahead.vue?vue&type=template&id=9bf96838& ***!
-  \**********************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { class: [_vm.isOpen ? "typeahead typeahead-open" : "typeahead"] },
-    [
-      _c(
-        "div",
-        { staticClass: "typeahead-inner" },
-        [
-          _c(
-            "div",
-            {
-              ref: "toggle",
-              staticClass: "form-control typeahead-selected",
-              attrs: { tabindex: _vm.tabindex },
-              on: { click: _vm.onToggle, keydown: _vm.onKey }
-            },
-            [_c("span", [_vm._v(_vm._s(_vm.selectedText))])]
-          ),
-          _vm._v(" "),
-          _c("transition", { attrs: { name: "fade", mode: "out-in" } }, [
-            _vm.isOpen
-              ? _c("div", { staticClass: "typeahead-dropdown" }, [
-                  _c("div", { staticClass: "typeahead-input_wrap" }, [
-                    _c("input", {
-                      ref: "search",
-                      staticClass: "typeahead-input",
-                      attrs: {
-                        type: "text",
-                        autocomplete: "off",
-                        placeholder: "Search..."
-                      },
-                      on: {
-                        blur: _vm.onBlur,
-                        input: _vm.onSearch,
-                        keydown: [
-                          function($event) {
-                            if (
-                              !$event.type.indexOf("key") &&
-                              _vm._k($event.keyCode, "esc", 27, $event.key, [
-                                "Esc",
-                                "Escape"
-                              ])
-                            ) {
-                              return null
-                            }
-                            return _vm.onEsc($event)
-                          },
-                          function($event) {
-                            if (
-                              !$event.type.indexOf("key") &&
-                              _vm._k($event.keyCode, "up", 38, $event.key, [
-                                "Up",
-                                "ArrowUp"
-                              ])
-                            ) {
-                              return null
-                            }
-                            return _vm.onUpKey($event)
-                          },
-                          function($event) {
-                            if (
-                              !$event.type.indexOf("key") &&
-                              _vm._k($event.keyCode, "down", 40, $event.key, [
-                                "Down",
-                                "ArrowDown"
-                              ])
-                            ) {
-                              return null
-                            }
-                            return _vm.onDownKey($event)
-                          },
-                          function($event) {
-                            if (
-                              !$event.type.indexOf("key") &&
-                              _vm._k(
-                                $event.keyCode,
-                                "enter",
-                                13,
-                                $event.key,
-                                "Enter"
-                              )
-                            ) {
-                              return null
-                            }
-                            return _vm.onEnterKey($event)
-                          }
-                        ]
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _vm.results.length
-                    ? _c(
-                        "ul",
-                        { staticClass: "typeahead-list" },
-                        _vm._l(_vm.results, function(result, index) {
-                          return _c(
-                            "li",
-                            { key: result.id, staticClass: "typeahead-item" },
-                            [
-                              _c(
-                                "a",
-                                {
-                                  class: [
-                                    "typeahead-link",
-                                    _vm.selectIndex === index
-                                      ? "typeahead-active"
-                                      : ""
-                                  ],
-                                  on: {
-                                    mousedown: function($event) {
-                                      $event.preventDefault()
-                                      return _vm.select(result)
-                                    },
-                                    mouseover: function($event) {
-                                      $event.preventDefault()
-                                      return _vm.onMouse(index)
-                                    }
-                                  }
-                                },
-                                [
-                                  _vm._v(
-                                    "\n                            " +
-                                      _vm._s(result.text) +
-                                      "\n                        "
-                                  )
-                                ]
-                              )
-                            ]
-                          )
-                        }),
-                        0
-                      )
-                    : _vm._e()
-                ])
-              : _vm._e()
-          ])
-        ],
-        1
-      )
-    ]
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/invoices/form.vue?vue&type=template&id=74a6295e&":
 /*!***********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/invoices/form.vue?vue&type=template&id=74a6295e& ***!
@@ -56700,92 +56379,6 @@ document.body.appendChild(bar.$el);
 
 /***/ }),
 
-/***/ "./resources/js/components/typeahead/Typeahead.vue":
-/*!*********************************************************!*\
-  !*** ./resources/js/components/typeahead/Typeahead.vue ***!
-  \*********************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Typeahead_vue_vue_type_template_id_9bf96838___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Typeahead.vue?vue&type=template&id=9bf96838& */ "./resources/js/components/typeahead/Typeahead.vue?vue&type=template&id=9bf96838&");
-/* harmony import */ var _Typeahead_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Typeahead.vue?vue&type=script&lang=js& */ "./resources/js/components/typeahead/Typeahead.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Typeahead_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Typeahead_vue_vue_type_template_id_9bf96838___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Typeahead_vue_vue_type_template_id_9bf96838___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/typeahead/Typeahead.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/typeahead/Typeahead.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************!*\
-  !*** ./resources/js/components/typeahead/Typeahead.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Typeahead_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Typeahead.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/typeahead/Typeahead.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Typeahead_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/typeahead/Typeahead.vue?vue&type=template&id=9bf96838&":
-/*!****************************************************************************************!*\
-  !*** ./resources/js/components/typeahead/Typeahead.vue?vue&type=template&id=9bf96838& ***!
-  \****************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Typeahead_vue_vue_type_template_id_9bf96838___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Typeahead.vue?vue&type=template&id=9bf96838& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/typeahead/Typeahead.vue?vue&type=template&id=9bf96838&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Typeahead_vue_vue_type_template_id_9bf96838___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Typeahead_vue_vue_type_template_id_9bf96838___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/js/components/typeahead/index.js":
-/*!****************************************************!*\
-  !*** ./resources/js/components/typeahead/index.js ***!
-  \****************************************************/
-/*! exports provided: Typeahead */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Typeahead_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Typeahead.vue */ "./resources/js/components/typeahead/Typeahead.vue");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Typeahead", function() { return _Typeahead_vue__WEBPACK_IMPORTED_MODULE_0__["default"]; });
-
-
-
-
-/***/ }),
-
 /***/ "./resources/js/router/index.js":
 /*!**************************************!*\
   !*** ./resources/js/router/index.js ***!
@@ -57051,8 +56644,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\Billing\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\Billing\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/html/billing/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/html/billing/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

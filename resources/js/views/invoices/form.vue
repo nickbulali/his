@@ -146,7 +146,7 @@
 <script type="text/javascript">
     import Vue from 'vue'
     import {get, byMethod } from '../../lib/api'
-    import {Typeahead } from '../../components/typeahead'
+    import {Typeahead } from '../../components/Typeahead'
 
     function initialize(to) {
         let urls = {
