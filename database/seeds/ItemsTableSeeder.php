@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\Product;
+use App\Models\Item;
 
-class ProductsTableSeeder extends Seeder
+class ItemsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,13 +12,13 @@ class ProductsTableSeeder extends Seeder
      */
     public function run()
     {
-        Product::truncate();
+        Item::truncate();
 
         foreach(range(10, 60) as $i) {
-            Product::create([
+            Item::create([
                 'item_code' => 'PDT-1000'.$i,
-                'description' => 'Name of Product '.$i,
-                'product_category_id' => 1,
+                'description' => 'Name of Item '.$i,
+                'item_category_id' => 1,
                 'unit_price' => mt_rand(100, 1000)
             ]);
         }

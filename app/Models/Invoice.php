@@ -18,9 +18,9 @@ class Invoice extends Model
         'number', 'sub_total', 'total'
     ];
 
-    public function customer()
+    public function patient()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Patient::class);
     }
 
     public function items()

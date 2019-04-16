@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ProductCategory;
+use App\Models\ItemCategory;
 
-class ProductCategoryController extends Controller
+class ItemCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,13 +16,13 @@ class ProductCategoryController extends Controller
     {
         if ($request->query('search')) {
             $search = $request->query('search');
-            $productCategory = ProductCategory::with('product')->where('description', 'LIKE', "%{$search}%")
+            $itemCategory = ItemCategory::with('item')->where('description', 'LIKE', "%{$search}%")
                 ->paginate(10);
         } else {
-            $productCategory = ProductCategory::with('product')->orderBy('id', 'ASC')->paginate(10);
+            $itemCategory = ItemCategory::with('item')->orderBy('id', 'ASC')->paginate(10);
         }
 
-        return response()->json($productCategory);
+        return response()->json($itemCategory);
     }
 
     /**
@@ -52,13 +52,13 @@ class ProductCategoryController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $productCategory = new ProductCategory;
-            $productCategory->name = $request->name;
-            $productCategory->description = $request->description;
+            $itemCategory = new ItemCategory;
+            $itemCategory->name = $request->name;
+            $itemCategory->description = $request->description;
             try {
-                $productCategory->save();
+                $itemCategory->save();
 
-                return response()->json($productCategory);
+                return response()->json($itemCategory);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }

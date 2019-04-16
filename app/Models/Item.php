@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Item extends Model
 {
     protected $fillable = [
         'description', 'unit_price'
@@ -17,8 +17,8 @@ class Product extends Model
         return $this->attributes['item_code'].' - '.$this->attributes['description'];
     }
 
-    public function productCategory()
+    public function itemCategory()
     {
-        return $this->belongsTo('App\Models\ProductCategory', 'product_category_id', 'id');
+        return $this->belongsTo('App\Models\ItemCategory', 'item_category_id', 'id');
     }
 }

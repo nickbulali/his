@@ -9,13 +9,19 @@ use DB;
 
 class InvoiceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $results = Invoice::with(['customer'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(15);
+        if ($request->query('search')) {
+            $search = $request->query('search');
+            $invoice = Invoice::with('patient.name')->where('description', 'LIKE', "%{$search}%")
+                ->paginate(15);
+        } else {
+            $invoice = Invoice::with(['patient.name'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(15);
+        }
 
-        return response()->json(['results' => $results]);
+        return response()->json($invoice);
     }
 
     public function create()
@@ -24,8 +30,8 @@ class InvoiceController extends Controller
 
         $form = [
             'number' => $counter->prefix . $counter->value,
-            'customer_id' => null,
-            'customer' => null,
+            'patient_id' => null,
+            'patient' => null,
             'date' => date('Y-m-d'),
             'due_date' => null,
             'reference' => null,
@@ -33,8 +39,8 @@ class InvoiceController extends Controller
             'terms_and_conditions' => 'Default Terms',
             'items' => [
                 [
-                    'product_id' => null,
-                    'product' => null,
+                    'item_id' => null,
+                    'item' => null,
                     'unit_price' => 0,
                     'qty' => 1
                 ]
@@ -48,7 +54,7 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'customer_id' => 'required|integer|exists:customers,id',
+            'patient_id' => 'required|integer|exists:patients,id',
             'date' => 'required|date_format:Y-m-d',
             'due_date' => 'required|date_format:Y-m-d',
             'reference' => 'nullable|max:100',
@@ -87,7 +93,7 @@ class InvoiceController extends Controller
 
     public function show($id)
     {
-        $model = Invoice::with(['customer', 'items.product'])
+        $model = Invoice::with(['patient', 'items.product'])
             ->findOrFail($id);
 
         return response()
@@ -96,7 +102,7 @@ class InvoiceController extends Controller
 
     public function edit($id)
     {
-        $form = Invoice::with(['customer', 'items.product'])
+        $form = Invoice::with(['patient', 'items.product'])
             ->findOrFail($id);
 
         return response()
@@ -108,7 +114,7 @@ class InvoiceController extends Controller
         $invoice = Invoice::findOrFail($id);
 
         $request->validate([
-            'customer_id' => 'required|integer|exists:customers,id',
+            'patient_id' => 'required|integer|exists:patients,id',
             'date' => 'required|date_format:Y-m-d',
             'due_date' => 'required|date_format:Y-m-d',
             'reference' => 'nullable|max:100',
