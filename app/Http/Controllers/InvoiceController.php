@@ -13,7 +13,7 @@ class InvoiceController extends Controller
     {
         if ($request->query('search')) {
             $search = $request->query('search');
-            $invoice = Invoice::with('patient.name')->where('description', 'LIKE', "%{$search}%")
+            $invoice = Invoice::with('patient.name')->where('number', 'LIKE', "%{$search}%")
                 ->paginate(15);
         } else {
             $invoice = Invoice::with(['patient.name'])
