@@ -224,8 +224,7 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('xrays', 'XraysController');
 
     //Billing|Invoices
-    Route::resource('/invoices', 'InvoiceController');
-    Route::resource('/product-category', 'ProductCategoryController');
-    Route::get('/customers', 'CustomerController@search');
-    Route::resource('/products', 'ProductController');
+    Route::resource('/invoice', 'InvoiceController');
+    Route::resource('/item-category', 'ItemCategoryController');
+    Route::resource('/item', 'ItemController');
 });

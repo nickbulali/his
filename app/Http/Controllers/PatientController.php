@@ -156,7 +156,7 @@ class PatientController extends Controller
             $encounter->bed_no = $request->input('bed_no');
             $encounter->save();
             foreach ($request->input('testTypeIds') as $testTypeId) {
-         save order items in tests
+         //save order items in tests
                 $test = new Test;
                 $test->encounter_id = $encounter->id;
                 $test->test_type_id = $testTypeId;

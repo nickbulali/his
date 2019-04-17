@@ -22,7 +22,7 @@ class InvoicesTableSeeder extends Seeder
         foreach(range(1, 25) as $i) {
             $invoice = Invoice::create([
                 'number' => 'INV-2000'.$i,
-                'customer_id' => $i,
+                'patient_id' => $i,
                 'date' => '2017-12-'.$i,
                 'due_date' => '2018-01-'.$i,
                 'reference' => 'LPO #'.$i,
@@ -34,7 +34,7 @@ class InvoicesTableSeeder extends Seeder
             foreach(range(1, mt_rand(2, 4)) as $j) {
                 InvoiceItem::create([
                     'invoice_id' => $invoice->id,
-                    'product_id' => mt_rand(1, 40),
+                    'item_id' => mt_rand(1, 40),
                     'unit_price' => mt_rand(100, 500),
                     'qty' => mt_rand(1, 6)
                 ]);

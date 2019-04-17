@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Product;
+use App\Models\Item;
 
-class ProductController extends Controller
+class ItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,13 +16,13 @@ class ProductController extends Controller
     {
         if ($request->query('search')) {
             $search = $request->query('search');
-            $product = Product::with('productCategory')->where('description', 'LIKE', "%{$search}%")
+            $item = Item::with('itemCategory')->where('description', 'LIKE', "%{$search}%")
                 ->paginate(10);
         } else {
-            $product = Product::with('productCategory')->orderBy('id', 'ASC')->paginate(10);
+            $item = Item::with('itemCategory')->orderBy('id', 'ASC')->paginate(10);
         }
 
-        return response()->json($product);
+        return response()->json($item);
     }
 
     /**
@@ -44,16 +44,16 @@ class ProductController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $product = new Product;
-            $product->product_category_id = $request->category;
-            $product->item_code = $request->item_code;
-            $product->description = $request->description;
-            $product->unit_price = $request->unit_price;
+            $item = new Item;
+            $item->item_category_id = $request->category;
+            $item->item_code = $request->item_code;
+            $item->description = $request->description;
+            $item->unit_price = $request->unit_price;
 
             try {
-                $product->save();
+                $item->save();
 
-                return response()->json($product);
+                return response()->json($item);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -68,9 +68,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::findOrFail($id);
+        $item = Item::findOrFail($id);
 
-        return response()->json($product);
+        return response()->json($item);
     }
 
     /**
@@ -93,16 +93,16 @@ class ProductController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $product = Product::findOrFail($id);
-            $product->product_category_id = $request->category;
-            $product->item_code = $request->item_code;
-            $product->description = $request->description;
-            $product->unit_price = $request->unit_price;
+            $item = Item::findOrFail($id);
+            $item->product_category_id = $request->category;
+            $item->item_code = $request->item_code;
+            $item->description = $request->description;
+            $item->unit_price = $request->unit_price;
 
             try {
-                $product->save();
+                $item->save();
 
-                return response()->json($product);
+                return response()->json($item);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -118,10 +118,10 @@ class ProductController extends Controller
     public function destroy($id)
     {
         try {
-            $product = Product::findOrFail($id);
-            $product->delete();
+            $item = Item::findOrFail($id);
+            $item->delete();
 
-            return response()->json($product, 200);
+            return response()->json($item, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

@@ -28,11 +28,11 @@ class CreateCountersTable extends Migration
             $table->timestamps();
         });
 
-        Counter::create([
+        /*Counter::create([
             'key' => 'invoice',
             'prefix' => 'INV-',
             'value' => 10000
-        ]);
+        ]);*/
     }
 
     /**
