@@ -156,6 +156,19 @@ class CreateEmrTables extends Migration
         });
 
         /*
+         * @system 
+
+         * @code married|single|divorced|widowed
+         * @display Married|Single|Divorced|Widowed
+         */
+        Schema::create('marital_status', function (Blueprint $table) {
+            $table->increments('id');
+            $table->boolean('active')->default(0);
+            $table->string('code', 10);
+            $table->string('display', 10);
+        });
+
+        /*
          * @system https://www.hl7.org/fhir/patient.html
          * @animal if patient is animal
          */
@@ -180,6 +193,22 @@ class CreateEmrTables extends Migration
             $table->foreign('name_id')->references('id')->on('names');
             $table->foreign('gender_id')->references('id')->on('genders');
             $table->foreign('organization_id')->references('id')->on('organizations');
+        });
+
+        Schema::create('queue_status', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('code');
+            $table->string('display');
+        });
+
+        Schema::create('queues', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('patient_id')->unsigned();
+            $table->integer('queue_status_id')->unsigned()->default(1);
+
+            $table->foreign('patient_id')->references('id')->on('patients');
+            $table->foreign('queue_status_id')->references('id')->on('queue_status');
+            $table->timestamps();
         });
 
         /*

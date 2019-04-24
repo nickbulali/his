@@ -133,6 +133,9 @@ Route::middleware('auth:api')->group( function () {
     //Gender
     Route::resource('gender', 'GenderController');
 
+    //Gender
+    Route::resource('maritalstatus', 'MaritalStatusController');
+
     //GynecologicHistories
     Route::resource('gynecologichistories', 'GynecologicHistoriesController');
 
@@ -169,6 +172,9 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('patient/get_patients', 'PatientController');
     Route::resource('patient', 'PatientController');
     Route::post('patient/testrequest', 'PatientController@testRequest');
+
+    //Patient
+    Route::resource('queue', 'QueueController');
 
     //Permission
     Route::resource('permission', 'PermissionController');

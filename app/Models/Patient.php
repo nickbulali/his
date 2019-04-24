@@ -20,7 +20,7 @@ class Patient extends Model
 
     public function maritalStatus()
     {
-        return $this->hasOne('App\Models\CodeableConcept', 'code');
+        return $this->hasOne('App\Models\MaritalStatus', 'id', 'marital_status');
     }
 
     public function user()
@@ -62,7 +62,8 @@ class Patient extends Model
     {
         return Patient::find($this->id)->load(
             'name',
-            'gender'
+            'gender',
+            'maritalStatus'
         );
     }
 }

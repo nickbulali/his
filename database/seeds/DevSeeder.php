@@ -3,10 +3,13 @@
 use Illuminate\Database\Seeder;
 use Faker\Factory;
 
+use App\Models\MaritalStatus;
 use App\Models\ItemCategory;
 use App\Models\InvoiceItem;
+use App\Models\QueueStatus;
 use App\Models\Patient;
 use App\Models\Invoice;
+use App\Models\Gender;
 use App\Models\Name;
 use App\Models\Item;
 
@@ -45,9 +48,38 @@ class DevSeeder extends Seeder
                 'ulin' => $faker->uuid,
                 'name_id'=>$name->id,
                 'gender_id'=>$faker->numberBetween($min = 1, $max = 2),
+                'marital_status'=>$faker->numberBetween($min = 1, $max = 4),
                 'birth_date'=>$faker->date($format = 'Y-m-d', $max = 'now'),
             ]);
         }
+
+        QueueStatus::truncate();
+
+        //Queue Status table
+        QueueStatus::create([
+            'code' => 'pending',
+            'display' => 'Pending'
+        ]);
+        QueueStatus::create([
+            'code' => 'triage',
+            'display' => 'Triage'
+        ]);
+        QueueStatus::create([
+            'code' => 'consultation',
+            'display' => 'Consultation'
+        ]);
+        QueueStatus::create([
+            'code' => 'labs',
+            'display' => 'Labs'
+        ]);
+        QueueStatus::create([
+            'code' => 'pharmacy',
+            'display' => 'Pharmacy'
+        ]);
+        QueueStatus::create([
+            'code' => 'complete',
+            'display' => 'Complete'
+        ]);
 
         //ItemCategory table
         ItemCategory::truncate();
@@ -99,5 +131,50 @@ class DevSeeder extends Seeder
                 ]);
             }
         }
+
+        //Gender table
+        Gender::truncate();
+        Gender::create([
+        	'active' => 1,
+        	'code' => 'male',
+        	'display' => 'Male'
+        ]);
+        Gender::create([
+        	'active' => 1,
+        	'code' => 'female',
+        	'display' => 'Female'
+        ]);
+        Gender::create([
+        	'active' => 1,
+        	'code' => 'both',
+        	'display' => 'Both'
+        ]);
+        Gender::create([
+        	'active' => 1,
+        	'code' => 'unknown',
+        	'display' => 'Unknown'
+        ]);
+
+        //Marital Status Table
+        MaritalStatus::create([
+        	'active' => 1,
+        	'code' => 'married',
+        	'display' => 'Married'
+        ]);
+        MaritalStatus::create([
+        	'active' => 1,
+        	'code' => 'single',
+        	'display' => 'Single'
+        ]);
+        MaritalStatus::create([
+        	'active' => 1,
+        	'code' => 'divorced',
+        	'display' => 'Divorced'
+        ]);
+        MaritalStatus::create([
+        	'active' => 1,
+        	'code' => 'widowed',
+        	'display' => 'Widowed'
+        ]);
    	}
 }
