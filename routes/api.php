@@ -30,6 +30,9 @@ Route::middleware('auth:api')->group( function () {
     Route::post('/invoice', 'API\InvoiceController@store');
 
     Route::put('/invoice/{id}', 'API\InvoiceController@update');
+    
+
+    Route::get('/payments/create', 'PaymentController@create');
 
     Route::delete('/invoice/{id}', 'API\InvoiceController@delete');
 
@@ -47,9 +50,9 @@ Route::middleware('auth:api')->group( function () {
     //payment
     Route::get('/payment/{id}', 'API\PaymentController@show');
 
-    Route::get('/payments', 'API\PaymentController@index');
+    Route::get('/payments', 'PaymentController@index');
 
-    Route::post('/payment', 'API\PaymentController@store');
+    Route::post('/payment', 'PaymentController@store');
 
     Route::put('/payment/{id}', 'API\PaymentController@update');
 

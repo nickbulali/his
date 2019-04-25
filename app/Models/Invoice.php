@@ -27,7 +27,7 @@ class Invoice extends Model
     {
         return $this->hasMany(InvoiceItem::class);
     }
-
+  
     public function setSubTotalAttribute($value)
     {
         $this->attributes['sub_total'] = $value;
