@@ -15,10 +15,10 @@ class PatientController extends Controller
             $search = $request->query('search');
             $patient = Patient::whereHas('name', function ($query) use ($search) {
                 $query->where('given', 'LIKE', "%{$search}%")->orWhere('family', 'LIKE', "%{$search}%");
-            })->with('gender', 'name', 'maritalStatus')
+            })->with('gender', 'name', 'maritalStatus', 'bloodGroup')
                 ->paginate(11);
         } else {
-            $patient = Patient::with('name', 'gender', 'maritalStatus')->orderBy('created_at', 'DESC')->paginate(11);
+            $patient = Patient::with('name', 'gender', 'maritalStatus', 'bloodGroup')->orderBy('created_at', 'DESC')->paginate(11);
         }
         return response()->json($patient);
     }
@@ -70,7 +70,7 @@ class PatientController extends Controller
      */
     public function show($id)
     {
-        $patient = Patient::findOrFail($id);
+        $patient = Patient::with('name', 'gender', 'maritalStatus', 'encounter.encounterClass', 'encounter.location', 'bloodGroup')->findOrFail($id);
         return response()->json($patient);
     }
     /**

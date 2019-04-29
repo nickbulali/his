@@ -21,6 +21,11 @@ class Encounter extends Model
         return $this->hasMany('App\Models\Specimen');
     }
 
+    public function encounterClass()
+    {
+        return $this->hasOne('App\Models\EncounterClass', 'id', 'encounter_class_id');
+    }
+
     public function location()
     {
         return $this->belongsTo('App\Models\Location');

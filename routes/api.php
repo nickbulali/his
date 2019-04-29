@@ -124,6 +124,7 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('encounterclass', 'EncounterClassController');
     Route::resource('encounterstatus', 'EncounterStatusController');
     Route::resource('encounter', 'EncounterController');
+    Route::get('encounter/patient/{id}', 'EncounterController@patientVisits');
     Route::post('encounter/addtests', 'EncounterController@addTests');
     Route::post('encounter/specimencollection', 'EncounterController@specimenCollection');
 

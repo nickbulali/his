@@ -3,10 +3,14 @@
 use Illuminate\Database\Seeder;
 use Faker\Factory;
 
+use App\Models\EncounterClass;
 use App\Models\MaritalStatus;
 use App\Models\ItemCategory;
 use App\Models\InvoiceItem;
 use App\Models\QueueStatus;
+use App\Models\BloodGroup;
+use App\Models\Encounter;
+use App\Models\Location;
 use App\Models\Patient;
 use App\Models\Invoice;
 use App\Models\Gender;
@@ -24,6 +28,42 @@ class DevSeeder extends Seeder
     {
     	$faker = Factory::create();
 
+    	//BloodGroup table
+    	BloodGroup::truncate();
+
+        BloodGroup::create([
+            'code' => 'A+',
+            'display' => 'A+'
+        ]);
+        BloodGroup::create([
+            'code' => 'A-',
+            'display' => 'A-'
+        ]);
+        BloodGroup::create([
+            'code' => 'B+',
+            'display' => 'B+'
+        ]);
+        BloodGroup::create([
+            'code' => 'B-',
+            'display' => 'B-'
+        ]);
+        BloodGroup::create([
+            'code' => 'O+',
+            'display' => 'O+'
+        ]);
+        BloodGroup::create([
+            'code' => 'O-',
+            'display' => 'O-'
+        ]);
+        BloodGroup::create([
+            'code' => 'AB+',
+            'display' => 'AB+'
+        ]);
+        BloodGroup::create([
+            'code' => 'AB-',
+            'display' => 'AB-'
+        ]);
+
     	//Name Table
     	Name::truncate();
 
@@ -39,6 +79,7 @@ class DevSeeder extends Seeder
         }
 
         $names = Name::all();
+        $bloodGroup = BloodGroup::pluck('id');
 
     	//Patients table
     	Patient::truncate();
@@ -48,6 +89,7 @@ class DevSeeder extends Seeder
                 'ulin' => $faker->uuid,
                 'name_id'=>$name->id,
                 'gender_id'=>$faker->numberBetween($min = 1, $max = 2),
+                'blood_group_id'=>$faker->randomElement($bloodGroup),
                 'marital_status'=>$faker->numberBetween($min = 1, $max = 4),
                 'birth_date'=>$faker->date($format = 'Y-m-d', $max = 'now'),
             ]);
@@ -58,28 +100,180 @@ class DevSeeder extends Seeder
         //Queue Status table
         QueueStatus::create([
             'code' => 'pending',
-            'display' => 'Pending'
+            'display' => 'Pending',
+            'color' => 'red'
         ]);
         QueueStatus::create([
             'code' => 'triage',
-            'display' => 'Triage'
+            'display' => 'Triage',
+            'color' => 'brown'
         ]);
         QueueStatus::create([
             'code' => 'consultation',
             'display' => 'Consultation'
+            ,
+            'color' => 'blue'
         ]);
         QueueStatus::create([
             'code' => 'labs',
-            'display' => 'Labs'
+            'display' => 'Labs',
+            'color' => 'teal'
         ]);
         QueueStatus::create([
             'code' => 'pharmacy',
             'display' => 'Pharmacy'
+            ,
+            'color' => 'purple'
         ]);
         QueueStatus::create([
             'code' => 'complete',
             'display' => 'Complete'
+            ,
+            'color' => 'green'
         ]);
+
+        EncounterClass::truncate();
+
+        //EncounterClass table
+        EncounterClass::create([
+        	'code' => 'in-patient',
+            'display' => 'In-Patient'
+        ]);
+        EncounterClass::create([
+        	'code' => 'out-patient',
+            'display' => 'Out-Patient'
+        ]);
+
+        //Location table
+        Location::create([
+        	'identifier'=> 'accident and emergency',
+        	'name'		=> 'Accident and Emergency (A&E)'
+        ]);
+        Location::create([
+        	'identifier'=> 'anaesthetics',
+        	'name'		=> 'Anaesthetics'
+        ]);
+        Location::create([
+        	'identifier'=> 'breast screening',
+        	'name'		=> 'Breast Screening'
+        ]);
+        Location::create([
+        	'identifier'=> 'cardiology',
+        	'name'		=> 'Cardiology'
+        ]);
+        Location::create([
+        	'identifier'=> 'critical care',
+        	'name'		=> 'Critical Care'
+        ]);
+        Location::create([
+        	'identifier'=> 'diagnostic Imaging',
+        	'name'		=> 'Diagnostic imaging'
+        ]);
+        Location::create([
+        	'identifier'=> 'ENT',
+        	'name'		=> 'Ear nose and throat (ENT)'
+        ]);
+        Location::create([
+        	'identifier'=> 'ESD',
+        	'name'		=> 'Elderly Services Department'
+        ]);
+        Location::create([
+        	'identifier'=> 'gastro',
+        	'name'		=> 'Gastroenterology'
+        ]);
+        Location::create([
+        	'identifier'=> 'GS',
+        	'name'		=> 'General Surgery'
+        ]);
+        Location::create([
+        	'identifier'=> 'gynaecology',
+        	'name'		=> 'Gynaecology'
+        ]);
+        Location::create([
+        	'identifier'=> 'haematology',
+        	'name'		=> 'Haematology'
+        ]);
+        Location::create([
+        	'identifier'=> 'MD',
+        	'name'		=> 'Maternity departments'
+        ]);
+        Location::create([
+        	'identifier'=> 'microbiology',
+        	'name'		=> 'Microbiology'
+        ]);
+        Location::create([
+        	'identifier'=> 'NU',
+        	'name'		=> 'Neonatal Unit'
+        ]);
+        Location::create([
+        	'identifier'=> 'nephrology',
+        	'name'		=> 'Nephrology'
+        ]);
+        Location::create([
+        	'identifier'=> 'ND',
+        	'name'		=> 'Nutrition and Dietetics'
+        ]);
+        Location::create([
+        	'identifier'=> 'OGU',
+        	'name'		=> 'Obstetrics and Gynaecology Units'
+        ]);
+        Location::create([
+        	'identifier'=> 'oncology',
+        	'name'		=> 'Oncology'
+        ]);
+        Location::create([
+        	'identifier'=> 'ophthalmology',
+        	'name'		=> 'Ophthalmology'
+        ]);
+        Location::create([
+        	'identifier'=> 'orthopaedics',
+        	'name'		=> 'Orthopaedics'
+        ]);
+        Location::create([
+        	'identifier'=> 'PMC',
+        	'name'		=> 'Pain Management Clinics'
+        ]);
+        Location::create([
+        	'identifier'=> 'pharmacy',
+        	'name'		=> 'Pharmacy'
+        ]);
+        Location::create([
+        	'identifier'=> 'physiotherapy',
+        	'name'		=> 'Physiotherapy'
+        ]);
+        Location::create([
+        	'identifier'=> 'radiotherapy',
+        	'name'		=> 'Radiotherapy'
+        ]);
+        Location::create([
+        	'identifier'=> 'RU',
+        	'name'		=> 'Renal Unit'
+        ]);
+        Location::create([
+        	'identifier'=> 'rheumatology',
+        	'name'		=> 'Rheumatology'
+        ]);
+        Location::create([
+        	'identifier'=> 'SH',
+        	'name'		=> 'Sexual health (genitourinary medicine)'
+        ]);
+        Location::create([
+        	'identifier'=> 'urology',
+        	'name'		=> 'Urology'
+        ]);
+
+        //Encounters
+        $patient = Patient::pluck('id');
+        $location = Location::pluck('id');
+
+        Encounter::truncate();
+        for ($i = 0; $i < 1000; $i++) {
+        	Encounter::create([
+        		'patient_id' => $faker->randomElement($patient),
+        		'location_id'=> $faker->randomElement($location),
+        		'encounter_class_id'=> mt_rand(1, 2)
+        	]);
+        }
 
         //ItemCategory table
         ItemCategory::truncate();

@@ -38,6 +38,11 @@ class Patient extends Model
         return $this->hasOne('App\Models\Gender', 'id', 'gender_id');
     }
 
+    public function bloodGroup()
+    {
+        return $this->hasOne('App\Models\BloodGroup', 'id', 'blood_group_id');
+    }
+
     public function practitioner()
     {
         return $this->hasOne('App\Models\Practitioner');

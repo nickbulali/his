@@ -168,6 +168,12 @@ class CreateEmrTables extends Migration
             $table->string('display', 10);
         });
 
+        Schema::create('blood_groups', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('code');
+            $table->string('display');
+        });
+
         /*
          * @system https://www.hl7.org/fhir/patient.html
          * @animal if patient is animal
@@ -179,6 +185,7 @@ class CreateEmrTables extends Migration
             $table->boolean('active')->default(1);
             $table->integer('name_id')->unsigned();
             $table->integer('gender_id')->unsigned();
+            $table->integer('blood_group_id')->unsigned();
             $table->date('birth_date');
             $table->boolean('deceased')->default(0);
             $table->date('deceased_date_time')->nullable();
@@ -192,6 +199,7 @@ class CreateEmrTables extends Migration
 
             $table->foreign('name_id')->references('id')->on('names');
             $table->foreign('gender_id')->references('id')->on('genders');
+            $table->foreign('blood_group_id')->references('id')->on('blood_groups');
             $table->foreign('organization_id')->references('id')->on('organizations');
         });
 
@@ -199,6 +207,7 @@ class CreateEmrTables extends Migration
             $table->increments('id');
             $table->string('code');
             $table->string('display');
+            $table->string('color');
         });
 
         Schema::create('queues', function (Blueprint $table) {
