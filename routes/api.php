@@ -124,6 +124,7 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('encounterclass', 'EncounterClassController');
     Route::resource('encounterstatus', 'EncounterStatusController');
     Route::resource('encounter', 'EncounterController');
+    Route::get('encounter/patient/{id}', 'EncounterController@patientVisits');
     Route::post('encounter/addtests', 'EncounterController@addTests');
     Route::post('encounter/specimencollection', 'EncounterController@specimenCollection');
 
@@ -132,6 +133,9 @@ Route::middleware('auth:api')->group( function () {
 
     //Gender
     Route::resource('gender', 'GenderController');
+
+    //Gender
+    Route::resource('maritalstatus', 'MaritalStatusController');
 
     //GynecologicHistories
     Route::resource('gynecologichistories', 'GynecologicHistoriesController');
@@ -169,6 +173,9 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('patient/get_patients', 'PatientController');
     Route::resource('patient', 'PatientController');
     Route::post('patient/testrequest', 'PatientController@testRequest');
+
+    //Patient
+    Route::resource('queue', 'QueueController');
 
     //Permission
     Route::resource('permission', 'PermissionController');

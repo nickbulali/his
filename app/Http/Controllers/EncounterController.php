@@ -127,7 +127,6 @@ class EncounterController extends Controller
             return response()->json($validator, 422);
         } else {
             foreach ($request->input('testTypeIds') as $testTypeId) {
-         save order items in tests
                 $test = new Test;
                 $test->encounter_id = $request->input('encounter_id');
                 $test->test_type_id = $testTypeId;
@@ -143,5 +142,17 @@ class EncounterController extends Controller
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
+    }
+
+    public function patientVisits($id){
+        $encounters = Encounter::wherePatient_id($id)->with(
+                'patient.name',
+                'patient.gender',
+                'encounterClass',
+                'location',
+                'tests.testType.specimenTypes'
+            )->orderBy('created_at', 'DESC')->paginate(4);
+
+        return response()->json($encounters);
     }
 }
