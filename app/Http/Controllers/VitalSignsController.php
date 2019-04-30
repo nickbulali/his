@@ -7,17 +7,15 @@ class VitalSignsController extends Controller
 {
     public function index(Request $request)
     {
-
-
- if ($request->query('search')) {
+        if ($request->query('search')) {
             $search = $request->query('search');
-            $VitalSigns = VitalSigns::with('patient.name')->where('description', 'LIKE', "%{$search}%")
+            $vitalSigns = VitalSigns::with('patient.name')->where('description', 'LIKE', "%{$search}%")
                 ->paginate(10);
         } else {
-            $VitalSigns = VitalSigns::with('patient.name')->orderBy('id', 'ASC')->paginate(10);
+            $vitalSigns = VitalSigns::with('patient.name')->orderBy('id', 'ASC')->paginate(10);
         }
 
-        return response()->json($VitalSigns);
+        return response()->json($vitalSigns);
 
     }
     /**
@@ -36,20 +34,20 @@ class VitalSignsController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $VitalSigns = new VitalSigns;
-           $VitalSigns->patient_id = $request->input('patient_id');
+            $vitalSigns = new VitalSigns;
+            $vitalSigns->patient_id = $request->input('patient_id');
 
-            $VitalSigns->body_temperature = $request->input('body_temperature');
-            $VitalSigns->respiratory_rate = $request->input('respiratory_rate');
-            $VitalSigns->heart_rate = $request->input('heart_rate');
-            $VitalSigns->blood_pressure = $request->input('blood_pressure');
-            $VitalSigns->height = $request->input('height');
-            $VitalSigns->weight = $request->input('weight');
-            $VitalSigns->body_mass_index = $request->input('body_mass_index');
-            $VitalSigns->body_surface_area = $request->input('body_surface_area');
+            $vitalSigns->body_temperature = $request->input('body_temperature');
+            $vitalSigns->respiratory_rate = $request->input('respiratory_rate');
+            $vitalSigns->heart_rate = $request->input('heart_rate');
+            $vitalSigns->blood_pressure = $request->input('blood_pressure');
+            $vitalSigns->height = $request->input('height');
+            $vitalSigns->weight = $request->input('weight');
+            $vitalSigns->body_mass_index = $request->input('body_mass_index');
+            $vitalSigns->body_surface_area = $request->input('body_surface_area');
             try {
-                $VitalSigns->save();
-                return response()->json($VitalSigns);
+                $vitalSigns->save();
+                return response()->json($vitalSigns);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -63,8 +61,8 @@ class VitalSignsController extends Controller
      */
     public function show($id)
     {
-        $VitalSigns = VitalSigns::findOrFail($id);
-        return response()->json($VitalSigns);
+        $vitalSigns = VitalSigns::findOrFail($id);
+        return response()->json($vitalSigns);
     }
     /**
      * Update the specified resource in storage.
@@ -82,20 +80,20 @@ class VitalSignsController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $VitalSigns = VitalSigns::findOrFail($id);
-            $VitalSigns->patient_id = $request->input('patient_id');
-            $VitalSigns->body_temperature = $request->input('body_temperature');
-            $VitalSigns->respiratory_rate = $request->input('respiratory_rate');
-            $VitalSigns->heart_rate = $request->input('heart_rate');
-            $VitalSigns->blood_pressure = $request->input('blood_pressure');
+            $vitalSigns = VitalSigns::findOrFail($id);
+            $vitalSigns->patient_id = $request->input('patient_id');
+            $vitalSigns->body_temperature = $request->input('body_temperature');
+            $vitalSigns->respiratory_rate = $request->input('respiratory_rate');
+            $vitalSigns->heart_rate = $request->input('heart_rate');
+            $vitalSigns->blood_pressure = $request->input('blood_pressure');
 
-            $VitalSigns->height = $request->input('height');
-            $VitalSigns->weight = $request->input('weight');
-            $VitalSigns->body_mass_index = $request->input('body_mass_index');
-            $VitalSigns->body_surface_area = $request->input('body_surface_area');
+            $vitalSigns->height = $request->input('height');
+            $vitalSigns->weight = $request->input('weight');
+            $vitalSigns->body_mass_index = $request->input('body_mass_index');
+            $vitalSigns->body_surface_area = $request->input('body_surface_area');
             try {
-                $VitalSigns->save();
-                return response()->json($VitalSigns);
+                $vitalSigns->save();
+                return response()->json($vitalSigns);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -110,9 +108,9 @@ class VitalSignsController extends Controller
     public function destroy($id)
     {
         try {
-            $VitalSigns = VitalSigns::findOrFail($id);
-            $VitalSigns->delete();
-            return response()->json($VitalSigns, 200);
+            $vitalSigns = VitalSigns::findOrFail($id);
+            $vitalSigns->delete();
+            return response()->json($vitalSigns, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
