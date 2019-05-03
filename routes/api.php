@@ -174,8 +174,9 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('patient', 'PatientController');
     Route::post('patient/testrequest', 'PatientController@testRequest');
 
-    //Patient
+    //Queue
     Route::resource('queue', 'QueueController');
+    Route::get('queuestats', 'QueueController@stats');
 
     //Permission
     Route::resource('permission', 'PermissionController');

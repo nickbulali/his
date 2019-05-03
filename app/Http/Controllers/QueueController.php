@@ -2,11 +2,13 @@
 namespace App\Http\Controllers;
 use App\Models\Queue;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+
 class QueueController extends Controller
 {
     public function index()
     {
-        $queue = Queue::with('patient.name')->with('patient.gender')->with('patient.maritalStatus')->with('queueStatus')->orderBy('created_at', 'DESC')->get();
+        $queue = Queue::whereDate('created_at', Carbon::today())->with('patient.name')->with('patient.gender')->with('patient.maritalStatus')->with('queueStatus')->orderBy('created_at', 'DESC')->paginate(5);
         return response()->json($queue);
     }
     /**
@@ -86,5 +88,12 @@ class QueueController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
+    }
+    public function stats()
+    {
+        $queue = Queue::whereDate('created_at', Carbon::today())->get()->groupBy(function($date) {
+            return Carbon::parse($date->created_at)->format('H');
+        });
+        return response()->json($queue);
     }
 }
