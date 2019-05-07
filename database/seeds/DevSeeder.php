@@ -5,6 +5,8 @@ use Faker\Factory;
 
 use App\Models\MedicationStatus;
 use App\Models\EncounterClass;
+use App\Models\ConditionTypes;
+use App\Models\FamilyHistory;
 use App\Models\MaritalStatus;
 use App\Models\ItemCategory;
 use App\Models\InvoiceItem;
@@ -334,6 +336,78 @@ class DevSeeder extends Seeder
         MedicationStatus::create([
             'display' => 'Unknown'
         ]);
+
+        ConditionTypes::truncate();
+
+        ConditionTypes::create([
+            'code_id' => '001',
+            'description' => 'cystic fibrosis'
+        ]);
+        ConditionTypes::create([
+            'code_id' => '002',
+            'description' => 'alpha-and beta-thalassemias'
+        ]);
+        ConditionTypes::create([
+            'code_id' => '003',
+            'description' => 'sickle cell anemia'
+        ]);
+        ConditionTypes::create([
+            'code_id' => '004',
+            'description' => 'Marfan syndrome'
+        ]);
+        ConditionTypes::create([
+            'code_id' => '005',
+            'description' => 'fragile X syndrome'
+        ]);
+        ConditionTypes::create([
+            'code_id' => '006',
+            'description' => "Huntington's disease"
+        ]);
+        ConditionTypes::create([
+            'code_id' => '007',
+            'description' => 'hemochromatosis'
+        ]);
+        ConditionTypes::create([
+            'code_id' => '008',
+            'description' => 'heart disease'
+        ]);
+        ConditionTypes::create([
+            'code_id' => '009',
+            'description' => 'high blood pressure'
+        ]);
+        ConditionTypes::create([
+            'code_id' => '010',
+            'description' => "Alzheimer's disease"
+        ]);
+        ConditionTypes::create([
+            'code_id' => '011',
+            'description' => 'arthritis'
+        ]);
+        ConditionTypes::create([
+            'code_id' => '012',
+            'description' => 'diabetes'
+        ]);
+        ConditionTypes::create([
+            'code_id' => '013',
+            'description' => 'cancer'
+        ]);
+        ConditionTypes::create([
+            'code_id' => '014',
+            'description' => 'obesity'
+        ]);
+
+        $conditionTypes = ConditionTypes::pluck('id');
+        $relation = ['mother', 'father', 'son', 'daughter', 'uncle', 'aunt', 'grand-mother', 'grand-father', 'cousin', 'niece', 'nephew'];
+
+        FamilyHistory::truncate();
+
+        for ($i = 0; $i < 500; $i++){
+            FamilyHistory::create([
+                'condition_type_id' => $faker->randomElement($conditionTypes),
+                'description'   => $faker->realText($maxNbChars = 50, $indexSize = 2),
+                'relation' => $faker->randomElement($relation)
+            ]);
+        }
 
         Drugs::truncate();
 

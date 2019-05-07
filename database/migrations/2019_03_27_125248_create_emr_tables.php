@@ -483,6 +483,13 @@ class CreateEmrTables extends Migration
             $table->string('comment');
         });
 
+        Schema::create('family_relations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('code_id');
+            $table->string('display');
+            $table->string('definition')->nullable;
+        });
+
         /*
          * @condition_types diabetes|cancer|hypertension|tuberculosis|asthma|mental illness
          */
@@ -491,6 +498,15 @@ class CreateEmrTables extends Migration
             $table->integer('condition_type_id')->unsigned();
             $table->string('description');
             $table->string('relation');
+        });
+
+        /*
+        * Create table for associating family_history to patients (Many-to-Many)
+        */
+        Schema::create('family_history_patient', function (Blueprint $table) {
+            $table->integer('family_history_id')->unsigned();
+            $table->integer('patient_id')->unsigned();
+            $table->unique(['family_history_id', 'patient_id']);
         });
 
         Schema::create('social_history', function (Blueprint $table) {
@@ -689,7 +705,7 @@ class CreateEmrTables extends Migration
             $table->string('quantity');
             $table->string('start_time');
             $table->string('end_time');
-            $table->integer('refill');
+            $table->boolean('refill');
             $table->string('comments');
         });
 
