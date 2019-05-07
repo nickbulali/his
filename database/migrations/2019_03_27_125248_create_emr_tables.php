@@ -436,9 +436,10 @@ class CreateEmrTables extends Migration
          */
         Schema::create('allergies', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
             $table->integer('code_id')->unsigned();
             $table->string('substance');
-            $table->string('is_drug');
+            $table->boolean('is_drug')->default(0);
         });
 
         /*
@@ -458,6 +459,7 @@ class CreateEmrTables extends Migration
          */
         Schema::create('vital_signs', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
             $table->string('body_temperature');
             $table->string('respiratory_rate');
             $table->string('heart_rate');
@@ -472,15 +474,17 @@ class CreateEmrTables extends Migration
          */
         Schema::create('anthropometric_measurements', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
             $table->string('height');
             $table->string('weight');
             $table->string('body_mass_index');
             $table->string('body_surface_area');
         });
 
-        Schema::create('medical_surgical_histories', function (Blueprint $table) {
+        Schema::create('surgical_histories', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('comment');
+            $table->integer('encounter_id')->unsigned();
+            $table->string('description');
         });
 
         /*
@@ -488,15 +492,20 @@ class CreateEmrTables extends Migration
          */
         Schema::create('family_history', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
             $table->integer('condition_type_id')->unsigned();
             $table->string('description');
             $table->string('relation');
+            $table->string('start_date');
+            $table->string('end_date');
         });
 
-        Schema::create('social_history', function (Blueprint $table) {
+        Schema::create('environmental_history', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('occupation');
-            $table->string('residence');
+            $table->integer('encounter_id')->unsigned();
+            $table->string('description');
+            $table->string('start_date');
+            $table->string('end_date');
         });
 
         /*
@@ -504,9 +513,12 @@ class CreateEmrTables extends Migration
          */
         Schema::create('alcohol', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
             $table->string('kind');
             $table->string('frequency');
             $table->string('quantity');
+            $table->string('start_date');
+            $table->string('end_date');
         });
 
         /*
@@ -514,8 +526,11 @@ class CreateEmrTables extends Migration
          */
         Schema::create('smoking', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
             $table->string('kind');
             $table->string('frequency');
+            $table->string('start_date');
+            $table->string('end_date');
         });
 
         /*
@@ -523,24 +538,62 @@ class CreateEmrTables extends Migration
          */
         Schema::create('drug_abuse', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
             $table->string('kind');
             $table->string('frequency');
+            $table->string('start_date');
+            $table->string('end_date');
         });
 
+        /*
+         * todo this should probably become part of observation
+         */
         Schema::create('presenting_complaints', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
             $table->string('comment');
         });
 
-        Schema::create('history_of_presenting_illness', function (Blueprint $table) {
+        Schema::create('history_of_present_illness', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
             $table->string('comment');
         });
 
+        /*
+         * List from which conditions for used in diagnoses can be gotten
+         * @system ICD9|ICD10
+         * @code E11
+         * description Non-insulin-dependent diabetes mellitus
+         */
         Schema::create('conditions', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('condition_type_id')->unsigned();
-            $table->string('comments')->nullable();
+            $table->string('system')->nullable();
+            $table->string('code')->nullable();
+            $table->string('description');
+        });
+
+        /*
+         * @description {physical examination}|{presenting complaints}
+         * todo consider having observation types | physical examination|presenting complaints
+         */
+        Schema::create('observations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
+            $table->string('description');
+        });
+
+        /*
+         * capture also historical data
+         */
+        Schema::create('diagnoses', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
+            $table->integer('condition_id')->unsigned();
+            $table->string('comment')->nullable();
+            $table->string('start_date')->nullable();// can be genetic
+            $table->string('end_date')->nullable();
         });
 
         /*
@@ -551,6 +604,7 @@ class CreateEmrTables extends Migration
          */
         Schema::create('obstetric_histories', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
             $table->string('year');
             $table->string('place');
             $table->string('maturity');
@@ -568,6 +622,7 @@ class CreateEmrTables extends Migration
          */
         Schema::create('present_pregnancies', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
             $table->string('last_normal_menstrual_period');
             $table->string('expected_date_of_delivery');
             $table->string('gestation');
@@ -584,6 +639,7 @@ class CreateEmrTables extends Migration
          */
         Schema::create('gynecologic_histories', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
             $table->string('age_at_menarche');
             $table->string('duration_of_menstrual_cycle');
             $table->string('length_of_menstrual_cycle');
@@ -614,20 +670,33 @@ class CreateEmrTables extends Migration
             $table->string('name');
         });
 
+        Schema::create('body_organs', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('body_system_id')->unsigned();
+            $table->string('particular');
+        });
+
         Schema::create('system_enquiry', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('encounter_id')->unsigned();
-            $table->integer('body_system_id')->unsigned();
+            $table->integer('body_organ_id')->unsigned();
         });
 
         Schema::create('diagnostic_tests', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('encounter_id')->unsigned();
+            $table->string('results')->nullable();
         });
 
-        Schema::create('x_rays', function (Blueprint $table) {
+        Schema::create('radiology_types', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');// xray, ultrasound, ct-scan
+        });
+
+        Schema::create('radiologies', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('encounter_id')->unsigned();
+            $table->integer('radiology_type_id')->unsigned();
             $table->string('image_url');
             $table->string('comments');
         });
