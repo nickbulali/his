@@ -20,7 +20,6 @@ class MedicationsController extends Controller
             'medication_status_id' => 'required',
             'drug_id' => 'required',
             'prescribed_by' => 'required',
-            'test_type_id'=> 'required',
             'dosage_id'=> 'required',
             'quantity' => 'required',
             'start_time' => 'required',

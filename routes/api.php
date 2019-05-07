@@ -76,7 +76,7 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('alcohol', 'AlcoholController');
 
     //Allergies
-    Route::resource('allergies', 'AllergiesController');
+    Route::resource('allergy', 'AllergyController');
 
     //AntenatalHistory
     Route::resource('antenatalhistory', 'AntenatalHistoryController');
@@ -173,6 +173,7 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('patient/get_patients', 'PatientController');
     Route::resource('patient', 'PatientController');
     Route::post('patient/testrequest', 'PatientController@testRequest');
+    Route::get('patient/{patientId}/allergy/{allergyId}', 'PatientController@attachAllergy');
 
     //Queue
     Route::resource('queue', 'QueueController');

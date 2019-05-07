@@ -13,6 +13,7 @@ class CreateEmrTables extends Migration
      */
     public function up()
     {
+
        /*
         * Create table for general configurations
         * explore putting on .env file
@@ -441,6 +442,15 @@ class CreateEmrTables extends Migration
         });
 
         /*
+        * Create table for associating allergies to patients (Many-to-Many)
+        */
+        Schema::create('allergy_patient', function (Blueprint $table) {
+            $table->integer('allergy_id')->unsigned();
+            $table->integer('patient_id')->unsigned();
+            $table->unique(['allergy_id', 'patient_id']);
+        });
+
+        /*
          * @body_temperature:todo check best data type
          * @respiratory_rate:todo check best data type
          * @heart_rate:todo check best data type
@@ -679,7 +689,7 @@ class CreateEmrTables extends Migration
             $table->string('quantity');
             $table->string('start_time');
             $table->string('end_time');
-            $table->string('refill');
+            $table->integer('refill');
             $table->string('comments');
         });
 

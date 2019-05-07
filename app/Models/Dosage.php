@@ -1,9 +1,10 @@
 <?php
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-class Dosages extends Model
+class Dosage extends Model
 {
     protected $table = 'dosages';
     protected $fillable = ['description'];
+    public $timestamps = false;
 }
