@@ -3,19 +3,25 @@
 use Illuminate\Database\Seeder;
 use Faker\Factory;
 
+use App\Models\MedicationStatus;
 use App\Models\EncounterClass;
 use App\Models\MaritalStatus;
 use App\Models\ItemCategory;
 use App\Models\InvoiceItem;
 use App\Models\QueueStatus;
+use App\Models\Medications;
 use App\Models\BloodGroup;
 use App\Models\Encounter;
 use App\Models\Location;
+use App\Models\Allergy;
 use App\Models\Patient;
 use App\Models\Invoice;
 use App\Models\Gender;
+use App\Models\Dosage;
+use App\Models\Drugs;
 use App\Models\Name;
 use App\Models\Item;
+use App\User;
 
 class DevSeeder extends Seeder
 {
@@ -27,6 +33,180 @@ class DevSeeder extends Seeder
     public function run()
     {
     	$faker = Factory::create();
+
+        //Allergy
+        Allergy::truncate();
+
+        Allergy::create([
+            'code_id'   => 1,
+            'substance' => 'naproxen',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 2,
+            'substance' => 'ibuprofen',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 3,
+            'substance' => 'Aspirin',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 4,
+            'substance' => 'Sulfa drugs',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 5,
+            'substance' => 'Chemotherapy drugs',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 6,
+            'substance' => 'Rituxian',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 7,
+            'substance' => 'cetuximab',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 8,
+            'substance' => 'Aspirin',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 9,
+            'substance' => 'Insulin',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 10,
+            'substance' => 'nevirapine',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 11,
+            'substance' => 'abacavir',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 12,
+            'substance' => 'carbamazepine',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 13,
+            'substance' => 'atracurium',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 14,
+            'substance' => 'succinylcholine',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 15,
+            'substance' => 'vecuronium',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 16,
+            'substance' => 'tetracycline',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 17,
+            'substance' => 'penicillin',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 18,
+            'substance' => 'ampicillin',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 19,
+            'substance' => 'amoxicillin',
+            'is_drug'   => 1
+        ]);
+        Allergy::create([
+            'code_id'   => 20,
+            'substance' => "Cow's Milk",
+            'is_drug'   => 0
+        ]);
+        Allergy::create([
+            'code_id'   => 21,
+            'substance' => 'Eggs',
+            'is_drug'   => 0
+        ]);
+        Allergy::create([
+            'code_id'   => 22,
+            'substance' => 'Tree Nuts',
+            'is_drug'   => 0
+        ]);
+        Allergy::create([
+            'code_id'   => 23,
+            'substance' => 'Peanuts',
+            'is_drug'   => 0
+        ]);
+        Allergy::create([
+            'code_id'   => 24,
+            'substance' => 'Shellfish',
+            'is_drug'   => 0
+        ]);
+        Allergy::create([
+            'code_id'   => 25,
+            'substance' => 'Wheat',
+            'is_drug'   => 0
+        ]);
+        Allergy::create([
+            'code_id'   => 26,
+            'substance' => 'Soy',
+            'is_drug'   => 0
+        ]);
+        Allergy::create([
+            'code_id'   => 27,
+            'substance' => 'Fish',
+            'is_drug'   => 0
+        ]);
+        Allergy::create([
+            'code_id'   => 28,
+            'substance' => 'Pollen',
+            'is_drug'   => 0
+        ]);
+        Allergy::create([
+            'code_id'   => 29,
+            'substance' => 'Dust Mites',
+            'is_drug'   => 0
+        ]);
+        Allergy::create([
+            'code_id'   => 30,
+            'substance' => 'Mold',
+            'is_drug'   => 0
+        ]);
+        Allergy::create([
+            'code_id'   => 31,
+            'substance' => 'Animal Dander and Cockroaches',
+            'is_drug'   => 0
+        ]);
+        Allergy::create([
+            'code_id'   => 32,
+            'substance' => 'Insect Sting',
+            'is_drug'   => 0
+        ]);
+        Allergy::create([
+            'code_id'   => 33,
+            'substance' => 'Latex',
+            'is_drug'   => 0
+        ]);
+        Allergy::create([
+            'code_id'   => 33,
+            'substance' => 'Food',
+            'is_drug'   => 0
+        ]);
 
     	//BloodGroup table
     	BloodGroup::truncate();
@@ -92,6 +272,271 @@ class DevSeeder extends Seeder
                 'blood_group_id'=>$faker->randomElement($bloodGroup),
                 'marital_status'=>$faker->numberBetween($min = 1, $max = 4),
                 'birth_date'=>$faker->date($format = 'Y-m-d', $max = 'now'),
+            ]);
+        }
+
+        //Users table
+        for ($i = 0; $i < 50; $i++) {
+            $email=$faker->companyEmail;
+            if(User::whereEmail($email)->exists()){
+
+            }
+            else{
+                User::create([
+                    'name' => $faker->firstName,
+                    'username' => $faker->name,
+                    'email'=>$email,
+                    'password'=>$faker->password,
+                ]);
+            }
+            
+        }
+
+        $patients = Patient::pluck('id');
+        $allergies = Allergy::pluck('id');
+        
+        //AllergyPatient table
+        DB::table('allergy_patient')->truncate();
+
+        for ($i = 0; $i < 500; $i++){
+            $idAllergy = $faker->randomElement($allergies);
+            $idPatient = $faker->randomElement($patients);
+
+            if(DB::table('allergy_patient')->where('allergy_id', $idAllergy)->where('patient_id', $idPatient)->exists()){
+
+            }else{
+                DB::table('allergy_patient')->insert([
+                   'allergy_id' => $idAllergy,
+                   'patient_id' => $idPatient
+                ]);
+            }
+        }
+
+        MedicationStatus::truncate();
+        MedicationStatus::create([
+            'display' => 'In Progress'
+        ]);
+        MedicationStatus::create([
+            'display' => 'Not Done'
+        ]);
+        MedicationStatus::create([
+            'display' => 'On Hold'
+        ]);
+        MedicationStatus::create([
+            'display' => 'Completed'
+        ]);
+        MedicationStatus::create([
+            'display' => 'Entered in Error'
+        ]);
+        MedicationStatus::create([
+            'display' => 'Stopped'
+        ]);
+        MedicationStatus::create([
+            'display' => 'Unknown'
+        ]);
+
+        Drugs::truncate();
+
+        Drugs::create([
+            'generic_name'  => 'SODIUM CHLORIDE',
+            'trade_name'    => '0.225% W/V SODIUM CHLORIDE (1/4 NORMAL SALINE)  INTRAVENOUS INFUSION BP (500ML BOTTLE)',
+            'strength_value'=> '0.225',
+            'strength_unit' => '%',
+            'dosage_form'   => 'Solution for infusion',
+            'administration_route'=> 'Intravenous (not otherwise specified)'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'METRONIDAZOLE',
+            'trade_name'    => '0.5% METRONIDAZOLE INJECTION USP',
+            'strength_value'=> '5',
+            'strength_unit' => 'mg/ml',
+            'dosage_form'   => 'Solution for infusion',
+            'administration_route'=> 'Intravenous (not otherwise specified)'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'SODIUM CHLORIDE',
+            'trade_name'    => '0.9% W/V SODIUM CHLORIDE INJECTION B.P',
+            'strength_value'=> '0.9',
+            'strength_unit' => '%',
+            'dosage_form'   => 'Solution for injection',
+            'administration_route'=> 'Parenteral'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'LIDOCAINE (LIGNOCAINE) HYDROCHLORIDE',
+            'trade_name'    => '1% W-V LIDOCAINE HCL INJECTION USP',
+            'strength_value'=> '1',
+            'strength_unit' => '%',
+            'dosage_form'   => 'Solution for injection',
+            'administration_route'=> 'Intravenous (not otherwise specified)'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'GLYCINE',
+            'trade_name'    => '1.5% GLYCINE IRRIGATION USP',
+            'strength_value'=> '1.5',
+            'strength_unit' => '%',
+            'dosage_form'   => 'Irrigation solution',
+            'administration_route'=> 'Topical'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'DEXTROSE, SODIUM CHLORIDE',
+            'trade_name'    => '10% DEXTROSE AND 0.18% SODIUM CHLORIDE USP',
+            'strength_value'=> '10, 0.18',
+            'strength_unit' => '%',
+            'dosage_form'   => 'Solution for injection/infusion',
+            'administration_route'=> 'Intravenous (not otherwise specified)'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'MANNITOL',
+            'trade_name'    => '10% MANNITOL INTRAVENOUS INFUSION BP',
+            'strength_value'=> '10',
+            'strength_unit' => '%',
+            'dosage_form'   => 'Solution for injection/infusion',
+            'administration_route'=> 'Intravenous (not otherwise specified)'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'POTASSIUM CHLORIDE',
+            'trade_name'    => '15% W-V POTASSIUM CHLORIDE FOR INJ. USP',
+            'strength_value'=> '15',
+            'strength_unit' => '%',
+            'dosage_form'   => 'Solution for injection',
+            'administration_route'=> 'Intravenous (not otherwise specified)'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'LIDOCAINE (LIGNOCAINE) HYDROCHLORIDE',
+            'trade_name'    => '2% W-V LIDOCAINE HCL INJECTION USP',
+            'strength_value'=> '2',
+            'strength_unit' => '%',
+            'dosage_form'   => 'Solution for injection',
+            'administration_route'=> 'Intravenous (not otherwise specified)'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'DEXTROSE',
+            'trade_name'    => '25% W/V DEXTROSE INTRAVENOUS INFUSION USP (1000ML PP BAG)',
+            'strength_value'=> '25',
+            'strength_unit' => '%',
+            'dosage_form'   => 'Solution for infusion',
+            'administration_route'=> 'Intravenous (not otherwise specified)'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'VITAMIN B1 (THIAMINE), VITAMIN B2 (RIBOFLAVIN), VITAMIN B6 (PYRIDOXINE), NICOTINAMIDE, CALCIUM PANTOTHENOL',
+            'trade_name'    => '3V TABLETS',
+            'strength_value'=> '100, 200, 0.2',
+            'strength_unit' => 'mg',
+            'dosage_form'   => 'Tablet',
+            'administration_route'=> 'Oral'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'ARIPIPRAZOLE',
+            'trade_name'    => 'ABILIFY 10MG TABLET',
+            'strength_value'=> '10',
+            'strength_unit' => 'mg',
+            'dosage_form'   => 'Tablet',
+            'administration_route'=> 'Oral'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'ACARBOSE',
+            'trade_name'    => 'ACAROSE 100MG TABLETS',
+            'strength_value'=> '100',
+            'strength_unit' => 'mg',
+            'dosage_form'   => 'Tablet',
+            'administration_route'=> 'Oral'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'ACETYLCYSTEINE',
+            'trade_name'    => 'ACC 200MG POWDER FOR ORAL SOLUTION',
+            'strength_value'=> '200',
+            'strength_unit' => 'mg',
+            'dosage_form'   => 'Powder for oral solution',
+            'administration_route'=> 'Oral'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'ZAFIRLUKAST',
+            'trade_name'    => 'ACCOLATE 20 MG F.C.TAB',
+            'strength_value'=> '20',
+            'strength_unit' => 'mg',
+            'dosage_form'   => 'Film-coated tablet',
+            'administration_route'=> 'Oral'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'QUINAPRIL, HYDROCHLOROTHIAZIDE',
+            'trade_name'    => 'ACCUZIDE 20 F.C.TAB',
+            'strength_value'=> '20, 12.5',
+            'strength_unit' => 'mg',
+            'dosage_form'   => 'Film-coated tablet',
+            'administration_route'=> 'Oral'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'CAPTOPRIL',
+            'trade_name'    => 'ACETAB 25 MG TABLETS',
+            'strength_value'=> '25',
+            'strength_unit' => 'mg',
+            'dosage_form'   => 'Tablet',
+            'administration_route'=> 'Oral'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'SODIUM CHLORIDE, POTASSIUM CHLORIDE, CALCIUM CHLORIDE, MAGNESIUM CHLORIDE, ACETIC ACID, DEXTROSE',
+            'trade_name'    => 'ACETATE HEMODIALYSIS CAT.NO 3-085-005',
+            'strength_value'=> '0',
+            'strength_unit' => '%',
+            'dosage_form'   => 'Concentrate for haemodialysis solution',
+            'administration_route'=> 'Hemodialysis'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'ACETYLCYSTEINE',
+            'trade_name'    => 'ACETYLCYSTEINE EFFE INSTANT 200MG SACHET',
+            'strength_value'=> '200',
+            'strength_unit' => 'mg',
+            'dosage_form'   => 'Granules',
+            'administration_route'=> 'Oral'
+        ]);
+        Drugs::create([
+            'generic_name'  => 'DIHYDROXY ALUMINIUM SODIUM',
+            'trade_name'    => 'ACICAL CHEWABLE TABLETS',
+            'strength_value'=> '320',
+            'strength_unit' => 'mg',
+            'dosage_form'   => 'Chewable tablet',
+            'administration_route'=> 'Oral'
+        ]);
+
+        Dosage::truncate();
+        Dosage::create([
+            'description' => '1 pill/day'
+        ]);
+        Dosage::create([
+            'description' => '2 pills/day'
+        ]);
+        Dosage::create([
+            'description' => '3 pills/day'
+        ]);
+        Dosage::create([
+            'description' => ' 6.3ml/hr'
+        ]);
+        Dosage::create([
+            'description' => '420ml/hr'
+        ]);
+        Dosage::create([
+            'description' => '620ml/day'
+        ]);
+
+        $patients = Patient::pluck('id');
+        $medicationstatus = MedicationStatus::pluck('id');
+        $drugs = Drugs::pluck('id');
+        $users = User::pluck('id');
+        $dosage = Dosage::pluck('id');
+
+        Medications::truncate();
+        for ($i = 0; $i < 500; $i++){
+            Medications::create([
+                'patient_id'=> $faker->randomElement($patients),
+                'medication_status_id'=> $faker->randomElement($medicationstatus),
+                'drug_id'   => $faker->randomElement($drugs),
+                'prescribed_by'=> $faker->randomElement($users),
+                'dosage_id' => $faker->randomElement($dosage),
+                'quantity'  => mt_rand(1, 50),
+                'start_time'=> $faker->dateTime(),
+                'end_time'  => $faker->dateTime(),
+                'refill'    => mt_rand(0, 1),
+                'comments'  => $faker->realText($maxNbChars = 50, $indexSize = 2),
             ]);
         }
 

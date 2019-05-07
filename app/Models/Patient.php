@@ -63,6 +63,11 @@ class Patient extends Model
         return $this->belongsTo('App\Models\Organization');
     }
 
+    public function allergies()
+    {
+        return $this->belongsToMany('App\Models\Allergy');
+    }
+
     public function loader()
     {
         return Patient::find($this->id)->load(

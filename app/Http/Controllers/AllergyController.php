@@ -1,11 +1,14 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\Allergies;
+use App\Models\Allergy;
 use Illuminate\Http\Request;
-class AllergiesController extends Controller
+
+class AllergyController extends Controller
 {
     public function index(Request $request)
     {
+        $Allergy = Allergy::orderBy('substance', 'asc')->get();
+        return response()->json($Allergy);
     }
     /**
      * Store a newly created resource in storage.
@@ -24,13 +27,13 @@ class AllergiesController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Allergies = new Allergies;
-            $Allergies->code_id = $request->input('code_id');
-            $Allergies->substance = $request->input('substance');
-            $Allergies->fundal_height = $request->input('fundal_height');
+            $Allergy = new Allergy;
+            $Allergy->code_id = $request->input('code_id');
+            $Allergy->substance = $request->input('substance');
+            $Allergy->fundal_height = $request->input('fundal_height');
             try {
-                $Allergies->save();
-                return response()->json($Allergies);
+                $Allergy->save();
+                return response()->json($Allergy);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -44,8 +47,8 @@ class AllergiesController extends Controller
      */
     public function show($id)
     {
-        $Allergies = Allergies::findOrFail($id);
-        return response()->json($Allergies);
+        $Allergy = Allergy::findOrFail($id);
+        return response()->json($Allergy);
     }
     /**
      * Update the specified resource in storage.
@@ -65,13 +68,13 @@ class AllergiesController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Allergies = Allergies::findOrFail($id);
-            $Allergies->code_id = $request->input('code_id');
-            $Allergies->substance = $request->input('substance');
-            $Allergies->fundal_height = $request->input('fundal_height');
+            $Allergy = Allergy::findOrFail($id);
+            $Allergy->code_id = $request->input('code_id');
+            $Allergy->substance = $request->input('substance');
+            $Allergy->fundal_height = $request->input('fundal_height');
             try {
-                $Allergies->save();
-                return response()->json($Allergies);
+                $Allergy->save();
+                return response()->json($Allergy);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -86,9 +89,9 @@ class AllergiesController extends Controller
     public function destroy($id)
     {
         try {
-            $Allergies = Allergies::findOrFail($id);
-            $Allergies->delete();
-            return response()->json($Allergies, 200);
+            $Allergy = Allergy::findOrFail($id);
+            $Allergy->delete();
+            return response()->json($Allergy, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
