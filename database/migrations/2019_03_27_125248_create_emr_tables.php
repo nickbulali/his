@@ -689,7 +689,7 @@ class CreateEmrTables extends Migration
             $table->string('quantity');
             $table->string('start_time');
             $table->string('end_time');
-            $table->integer('refill');
+            $table->boolean('refill')->default(0);
             $table->string('comments');
         });
 
