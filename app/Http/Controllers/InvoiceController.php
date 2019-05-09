@@ -93,11 +93,8 @@ class InvoiceController extends Controller
 
     public function show($id)
     {
-        $model = Invoice::with(['patient', 'items.product'])
-            ->findOrFail($id);
-
-        return response()
-            ->json(['model' => $model]);
+       $invoice = Invoice::whereId($id)->with('items', 'patient.name')->paginate(10);
+        return response()->json($invoice);
     }
 
     public function edit($id)

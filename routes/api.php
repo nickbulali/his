@@ -23,7 +23,7 @@ Route::middleware('auth:api')->group( function () {
     Route::get('/get-user-model', 'Auth\APIController@getUserModel');
 
     //invoice
-    Route::get('/invoice/{id}', 'API\InvoiceController@show');
+    Route::get('/invoice/{id}', 'InvoiceController@show');
 
     Route::get('/invoices', 'API\InvoiceController@index');
 
@@ -31,6 +31,7 @@ Route::middleware('auth:api')->group( function () {
 
     Route::put('/invoice/{id}', 'API\InvoiceController@update');
     
+    Route::get('/payment/{id}', 'PaymentController@show');
 
     Route::get('/payments/create', 'PaymentController@create');
 
@@ -48,7 +49,7 @@ Route::middleware('auth:api')->group( function () {
     Route::delete('/chargeSheet/{id}', 'API\ChargeSheetController@delete');
 
     //payment
-    Route::get('/payment/{id}', 'API\PaymentController@show');
+    
 
     Route::get('/payments', 'PaymentController@index');
 
