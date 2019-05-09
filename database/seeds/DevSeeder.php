@@ -6,6 +6,7 @@ use Faker\Factory;
 use App\Models\MedicationStatus;
 use App\Models\EncounterClass;
 use App\Models\ConditionTypes;
+use App\Models\FamilyRelation;
 use App\Models\FamilyHistory;
 use App\Models\MaritalStatus;
 use App\Models\ItemCategory;
@@ -396,16 +397,144 @@ class DevSeeder extends Seeder
             'description' => 'obesity'
         ]);
 
+        FamilyRelation::truncate();
+
+        FamilyRelation::create([
+            'code_id'   => '1',
+            'display'   => 'son',
+            'definition'=> 'Description: The player of the role is a male child (of any type) of scoping entity (parent)'
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '2',
+            'display'   => 'daughter',
+            'definition'=> 'Description: The player of the role is a female child (of any type) of scoping entity (parent)'
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '3',
+            'display'   => 'aunt',
+            'definition'=> "The player of the role is a sister of the scoping person's mother or father"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '4',
+            'display'   => 'maternal cousin',
+            'definition'=> "Description:The player of the role is a biological relative of the scoping person descended from a common ancestor on the player's mother's side, such as a grandparent, by two or more steps in a diverging line"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '5',
+            'display'   => 'paternal cousin',
+            'definition'=> "Description:The player of the role is a biological relative of the scoping person descended from a common ancestor on the player's father's side, such as a grandparent, by two or more steps in a diverging line"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '6',
+            'display'   => 'maternal great-grandfather',
+            'definition'=> "Description:The player of the role is the biological father of the scoping person's biological mother's parent"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '7',
+            'display'   => 'paternal great-grandfather',
+            'definition'=> "Description:The player of the role is the biological father of the scoping person's biological father's parent"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '8',
+            'display'   => 'maternal great-grandmother',
+            'definition'=> "Description:The player of the role is the biological mother of the scoping person's biological mother's parent"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '9',
+            'display'   => 'paternal great-grandmother',
+            'definition'=> "Description:The player of the role is the biological mother of the scoping person's biological father's parent"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '10',
+            'display'   => 'granddaughter',
+            'definition'=> "The player of the role is a daughter of the scoping person's son or daughter"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '11',
+            'display'   => 'grandson',
+            'definition'=> "The player of the role is a son of the scoping person's son or daughter"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '12',
+            'display'   => 'maternal grandfather',
+            'definition'=> "Description:The player of the role is the biological father of the scoping person's biological mother"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '13',
+            'display'   => 'paternal grandfather',
+            'definition'=> "Description:The player of the role is the biological father of the scoping person's biological father"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '14',
+            'display'   => 'maternal grandmother',
+            'definition'=> "Description:The player of the role is the biological mother of the scoping person's biological mother"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '15',
+            'display'   => 'paternal grandmother',
+            'definition'=> "Description:The player of the role is the biological mother of the scoping person's biological father"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '16',
+            'display'   => 'nephew',
+            'definition'=> "The player of the role is a son of the scoping person's brother or sister or of the brother or sister of the scoping person's spouse"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '17',
+            'display'   => 'niece',
+            'definition'=> "The player of the role is a daughter of the scoping person's brother or sister or of the brother or sister of the scoping person's spouse"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '18',
+            'display'   => 'maternal uncle',
+            'definition'=> "Description:The player of the role is a biological brother of the scoping person's biological mother"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '19',
+            'display'   => 'paternal uncle',
+            'definition'=> "Description:The player of the role is a biological brother of the scoping person's biological father"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '20',
+            'display'   => 'father',
+            'definition'=> 'The player of the role is a male who begets or raises or nurtures the scoping entity (child)'
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '21',
+            'display'   => 'mother',
+            'definition'=> "The player of the role is a female who conceives, gives birth to, or raises and nurtures the scoping entity (child)"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '22',
+            'display'   => 'brother',
+            'definition'=> "The player of the role is a male sharing one or both parents in common with the scoping entity"
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '23',
+            'display'   => 'sister',
+            'definition'=> 'The player of the role is a female sharing one or both parents in common with the scoping entity'
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '24',
+            'display'   => 'husband',
+            'definition'=> 'The player of the role is a man joined to a woman (scoping person) in marriage'
+        ]);
+        FamilyRelation::create([
+            'code_id'   => '25',
+            'display'   => 'wife',
+            'definition'=> 'The player of the role is a woman joined to a man (scoping person) in marriage'
+        ]);
+
         $conditionTypes = ConditionTypes::pluck('id');
-        $relation = ['mother', 'father', 'son', 'daughter', 'uncle', 'aunt', 'grand-mother', 'grand-father', 'cousin', 'niece', 'nephew'];
+        $familyRelation = FamilyRelation::pluck('id');
 
         FamilyHistory::truncate();
 
         for ($i = 0; $i < 500; $i++){
             FamilyHistory::create([
                 'condition_type_id' => $faker->randomElement($conditionTypes),
-                'description'   => $faker->realText($maxNbChars = 50, $indexSize = 2),
-                'relation' => $faker->randomElement($relation)
+                'description'   => $faker->text($maxNbChars = 50, $indexSize = 2),
+                'relation' => $faker->randomElement($familyRelation)
             ]);
         }
 

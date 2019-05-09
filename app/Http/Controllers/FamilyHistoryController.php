@@ -1,7 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 use App\Models\FamilyHistory;
+use App\Models\Patient;
 use Illuminate\Http\Request;
+
 class FamilyHistoryController extends Controller
 {
     public function index(Request $request)
@@ -92,5 +94,27 @@ class FamilyHistoryController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
+    }
+
+    public function attachHistory (Request $request, $patientId)
+    {
+        $FamilyHistory = new FamilyHistory;
+        $FamilyHistory->condition_type_id = $request->input('condition_type_id');
+        $FamilyHistory->description = $request->input('description');
+        $FamilyHistory->relation = $request->input('relation_id');
+        try {
+            $FamilyHistory->save();
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+
+        $patient= Patient::find($patientId);
+        try{
+            $patient->familyHistory()->attach($FamilyHistory->id);
+            return redirect()->action('FamilyHistoryController@show',['patientId' => $patientId]);
+        }catch(\Illuminate\Database\QueryException $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+           }
+
     }
 }

@@ -97,7 +97,7 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('conditions', 'ConditionsController');
 
     //ConditionTypes
-    Route::resource('conditiontype', 'ConditionTypeController');
+    Route::resource('conditiontypes', 'ConditionTypesController');
 
     //CounterController
     Route::resource('counter', 'CounterController');
@@ -130,6 +130,10 @@ Route::middleware('auth:api')->group( function () {
 
     //FamilyHistory
     Route::resource('familyhistory', 'FamilyHistoryController');
+    Route::post('familyhistory/{patientId}', 'FamilyHistoryController@attachHistory');
+
+    //familyRelations
+    Route::resource('familyRelations', 'FamilyRelationsController');
 
     //Gender
     Route::resource('gender', 'GenderController');

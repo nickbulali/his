@@ -15,10 +15,10 @@ class PatientController extends Controller
             $search = $request->query('search');
             $patient = Patient::whereHas('name', function ($query) use ($search) {
                 $query->where('given', 'LIKE', "%{$search}%")->orWhere('family', 'LIKE', "%{$search}%");
-            })->with('gender', 'name', 'maritalStatus', 'bloodGroup', 'allergies')
+            })->with('gender', 'name', 'maritalStatus', 'bloodGroup', 'allergies', 'familyHistory.conditionType')
                 ->paginate(11);
         } else {
-            $patient = Patient::with('name', 'gender', 'maritalStatus', 'bloodGroup', 'allergies')->orderBy('created_at', 'DESC')->paginate(11);
+            $patient = Patient::with('name', 'gender', 'maritalStatus', 'bloodGroup', 'allergies', 'familyHistory.conditionType')->orderBy('created_at', 'DESC')->paginate(11);
         }
         return response()->json($patient);
     }
@@ -70,7 +70,7 @@ class PatientController extends Controller
      */
     public function show($id)
     {
-        $patient = Patient::with('name', 'gender', 'maritalStatus', 'encounter.encounterClass', 'encounter.location', 'bloodGroup', 'allergies', 'medications.drugs', 'medications.dosage', 'familyHistory')->findOrFail($id);
+        $patient = Patient::with('name', 'gender', 'maritalStatus', 'encounter.encounterClass', 'encounter.location', 'bloodGroup', 'allergies', 'medications.drugs', 'medications.dosage', 'familyHistory.conditionType', 'familyHistory.relation')->findOrFail($id);
         return response()->json($patient);
     }
     /**
@@ -174,18 +174,20 @@ class PatientController extends Controller
             }
         }
     }
-    public function get_patients(){
+    public function get_patients()
+    {
     //Registered patrients today
         $patient = Patient::whereDate('created_at', Carbon::today())->count();
         return response()->json( $patient);
     }
-    public function attachAllergy($patientId, $allergyId){
-         $patient= Patient::find($patientId);
-       try{
+    public function attachAllergy($patientId, $allergyId)
+    {
+        $patient= Patient::find($patientId);
+        try{
            $patient->allergies()->attach($allergyId);
            return redirect()->action('PatientController@show',['patientId' => $patientId]);
-       } catch (\Illuminate\Database\QueryException $e) {
+        } catch (\Illuminate\Database\QueryException $e) {
            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-       }
+        }
     }
 }

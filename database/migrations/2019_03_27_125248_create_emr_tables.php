@@ -487,7 +487,7 @@ class CreateEmrTables extends Migration
             $table->increments('id');
             $table->integer('code_id');
             $table->string('display');
-            $table->string('definition')->nullable;
+            $table->text('definition')->nullable();
         });
 
         /*
@@ -496,8 +496,8 @@ class CreateEmrTables extends Migration
         Schema::create('family_history', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('condition_type_id')->unsigned();
-            $table->string('description');
-            $table->string('relation');
+            $table->text('description');
+            $table->integer('relation');
         });
 
         /*
