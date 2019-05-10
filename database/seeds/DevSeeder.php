@@ -3,7 +3,9 @@
 use Illuminate\Database\Seeder;
 use Faker\Factory;
 
+use App\Models\EnvironmentalHistories;
 use App\Models\MedicationStatus;
+use App\Models\SocialHistories;
 use App\Models\EncounterClass;
 use App\Models\ConditionTypes;
 use App\Models\FamilyRelation;
@@ -252,7 +254,7 @@ class DevSeeder extends Seeder
 
         $faker = \Faker\Factory::create();
         
-        for ($i = 0; $i < 500; $i++) {
+        for ($i = 0; $i < 200; $i++) {
             Name::create([
                 'text' => $faker->name,
                 'family' => $faker->lastName,
@@ -301,7 +303,7 @@ class DevSeeder extends Seeder
         //AllergyPatient table
         DB::table('allergy_patient')->truncate();
 
-        for ($i = 0; $i < 500; $i++){
+        for ($i = 0; $i < 200; $i++){
             $idAllergy = $faker->randomElement($allergies);
             $idPatient = $faker->randomElement($patients);
 
@@ -313,6 +315,25 @@ class DevSeeder extends Seeder
                    'patient_id' => $idPatient
                 ]);
             }
+        }
+
+        SocialHistories::truncate();
+        for ($i = 0; $i < 200; $i++){
+            SocialHistories::create([
+                'patient_id' => $faker->randomElement($patients),
+                'social_problem' => $faker->realText($maxNbChars = 50, $indexSize = 2),
+                'start_date'  => $faker->date($format = 'Y-m-d', $max = 'now'),
+                'end_date'  => $faker->date($format = 'Y-m-d', $max = 'now')
+            ]);
+        }
+        EnvironmentalHistories::truncate();
+        for ($i = 0; $i < 200; $i++){
+            EnvironmentalHistories::create([
+                'patient_id' => $faker->randomElement($patients),
+                'description' => $faker->realText($maxNbChars = 50, $indexSize = 2),
+                'start_date'  => $faker->date($format = 'Y-m-d', $max = 'now'),
+                'end_date'  => $faker->date($format = 'Y-m-d', $max = 'now')
+            ]);
         }
 
         MedicationStatus::truncate();
@@ -527,14 +548,18 @@ class DevSeeder extends Seeder
 
         $conditionTypes = ConditionTypes::pluck('id');
         $familyRelation = FamilyRelation::pluck('id');
+        $patients = Patient::pluck('id');
 
         FamilyHistory::truncate();
 
-        for ($i = 0; $i < 500; $i++){
+        for ($i = 0; $i < 200; $i++){
             FamilyHistory::create([
+                'patient_id'        => $faker->randomElement($patients),
                 'condition_type_id' => $faker->randomElement($conditionTypes),
                 'description'   => $faker->text($maxNbChars = 50, $indexSize = 2),
-                'relation' => $faker->randomElement($familyRelation)
+                'relation' => $faker->randomElement($familyRelation),
+                'start_date'    => $faker->date($format = 'Y-m-d', $max = 'now'),
+                'end_date'      => $faker->date($format = 'Y-m-d', $max = 'now')
             ]);
         }
 
@@ -728,7 +753,7 @@ class DevSeeder extends Seeder
         $dosage = Dosage::pluck('id');
 
         Medications::truncate();
-        for ($i = 0; $i < 500; $i++){
+        for ($i = 0; $i < 200; $i++){
             Medications::create([
                 'patient_id'=> $faker->randomElement($patients),
                 'medication_status_id'=> $faker->randomElement($medicationstatus),

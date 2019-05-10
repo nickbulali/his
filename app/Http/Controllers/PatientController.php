@@ -70,7 +70,7 @@ class PatientController extends Controller
      */
     public function show($id)
     {
-        $patient = Patient::with('name', 'gender', 'maritalStatus', 'encounter.encounterClass', 'encounter.location', 'bloodGroup', 'allergies', 'medications.drugs', 'medications.dosage', 'familyHistory.conditionType', 'familyHistory.relation')->findOrFail($id);
+        $patient = Patient::with('name', 'gender', 'maritalStatus', 'encounter.encounterClass', 'encounter.location', 'bloodGroup', 'allergies', 'medications.drugs', 'medications.dosage', 'familyHistory.conditionType', 'familyHistory.relation', 'socialHistory', 'environmentalHistory')->findOrFail($id);
         return response()->json($patient);
     }
     /**

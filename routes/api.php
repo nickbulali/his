@@ -130,7 +130,6 @@ Route::middleware('auth:api')->group( function () {
 
     //FamilyHistory
     Route::resource('familyhistory', 'FamilyHistoryController');
-    Route::post('familyhistory/{patientId}', 'FamilyHistoryController@attachHistory');
 
     //familyRelations
     Route::resource('familyRelations', 'FamilyRelationsController');
@@ -214,6 +213,9 @@ Route::middleware('auth:api')->group( function () {
 
     //Social History
     Route::resource('socialhistory', 'SocialHistoryController');
+
+    //Environmental History
+    Route::resource('environmentalhistory', 'EnvironmentalHistoryController');
 
     //Specimen
     Route::resource('specimen', 'SpecimenController');

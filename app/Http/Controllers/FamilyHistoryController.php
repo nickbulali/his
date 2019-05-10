@@ -20,7 +20,10 @@ class FamilyHistoryController extends Controller
         $rules = [
             'condition_type_id' => 'required',
             'description' => 'required',
-            'relation' => 'required',
+            'relation_id' => 'required',
+            'patient_id' => 'required',
+            'start_date' => 'required',
+            'end_date'   => 'required'
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -29,10 +32,13 @@ class FamilyHistoryController extends Controller
             $FamilyHistory = new FamilyHistory;
             $FamilyHistory->condition_type_id = $request->input('condition_type_id');
             $FamilyHistory->description = $request->input('description');
-            $FamilyHistory->relation = $request->input('relation');
+            $FamilyHistory->relation = $request->input('relation_id');
+            $FamilyHistory->patient_id = $request->input('patient_id');
+            $FamilyHistory->start_date = $request->input('start_date');
+            $FamilyHistory->end_date = $request->input('end_date');
             try {
                 $FamilyHistory->save();
-                return response()->json($FamilyHistory);
+                return response()->json($FamilyHistory->loader(), 200);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -94,27 +100,5 @@ class FamilyHistoryController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
-    }
-
-    public function attachHistory (Request $request, $patientId)
-    {
-        $FamilyHistory = new FamilyHistory;
-        $FamilyHistory->condition_type_id = $request->input('condition_type_id');
-        $FamilyHistory->description = $request->input('description');
-        $FamilyHistory->relation = $request->input('relation_id');
-        try {
-            $FamilyHistory->save();
-        } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-        }
-
-        $patient= Patient::find($patientId);
-        try{
-            $patient->familyHistory()->attach($FamilyHistory->id);
-            return redirect()->action('FamilyHistoryController@show',['patientId' => $patientId]);
-        }catch(\Illuminate\Database\QueryException $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-           }
-
     }
 }

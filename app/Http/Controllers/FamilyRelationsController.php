@@ -1,11 +1,13 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\SocialHistories;
+use App\Models\FamilyRelation;
 use Illuminate\Http\Request;
-class SocialHistoryController extends Controller
+class FamilyRelationsController extends Controller
 {
     public function index(Request $request)
     {
+        $familyRelation = FamilyRelation::orderBy('display', 'asc')->get();
+        return response()->json($familyRelation);
     }
     /**
      * Store a newly created resource in storage.
@@ -16,21 +18,21 @@ class SocialHistoryController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'patient_id' => 'required',
-            'social_problem' => 'required'
+            'condition_type_id' => 'required',
+            'description' => 'required',
+            'relation' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $SocialHistory = new SocialHistories;
-            $SocialHistory->patient_id = $request->input('patient_id');
-            $SocialHistory->social_problem = $request->input('social_problem');
-            $SocialHistory->start_date = $request->input('start_date');
-            $SocialHistory->end_date = $request->input('end_date');
+            $familyRelation = new FamilyRelation;
+            $familyRelation->condition_type_id = $request->input('condition_type_id');
+            $familyRelation->description = $request->input('description');
+            $familyRelation->relation = $request->input('relation');
             try {
-                $SocialHistory->save();
-                return response()->json($SocialHistory);
+                $familyRelation->save();
+                return response()->json($familyRelation);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -44,8 +46,8 @@ class SocialHistoryController extends Controller
      */
     public function show($id)
     {
-        $SocialHistory = SocialHistories::findOrFail($id);
-        return response()->json($SocialHistory);
+        $familyRelation = FamilyRelation::findOrFail($id);
+        return response()->json($familyRelation);
     }
     /**
      * Update the specified resource in storage.
@@ -57,20 +59,21 @@ class SocialHistoryController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'occupation' => 'required',
-            'residence' => 'required',
+            'condition_type_id' => 'required',
+            'description' => 'required',
+            'relation' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $SocialHistory = SocialHistories::findOrFail($id);
-            $SocialHistory->social_problem = $request->input('social_problem');
-            $SocialHistory->start_date = $request->input('start_date');
-            $SocialHistory->end_date = $request->input('end_date');
+            $familyRelation = FamilyRelation::findOrFail($id);
+            $familyRelation->condition_type_id = $request->input('condition_type_id');
+            $familyRelation->description = $request->input('description');
+            $familyRelation->relation = $request->input('relation');
             try {
-                $SocialHistory->save();
-                return response()->json($SocialHistory);
+                $familyRelation->save();
+                return response()->json($familyRelation);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -85,9 +88,9 @@ class SocialHistoryController extends Controller
     public function destroy($id)
     {
         try {
-            $SocialHistory = SocialHistories::findOrFail($id);
-            $SocialHistory->delete();
-            return response()->json($SocialHistory, 200);
+            $familyRelation = FamilyRelation::findOrFail($id);
+            $familyRelation->delete();
+            return response()->json($familyRelation, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

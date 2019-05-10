@@ -75,7 +75,15 @@ class Patient extends Model
 
     public function familyHistory()
     {
-        return $this->belongsToMany('App\Models\FamilyHistory');
+        return $this->hasMany('App\Models\FamilyHistory');
+    }
+    public function socialHistory()
+    {
+        return $this->hasMany('App\Models\SocialHistories');
+    }
+    public function environmentalHistory()
+    {
+        return $this->hasMany('App\Models\EnvironmentalHistories');
     }
 
     public function loader()

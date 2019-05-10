@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\SocialHistories;
+use App\Models\EnvironmentalHistories;
 use Illuminate\Http\Request;
-class SocialHistoryController extends Controller
+class EnvironmentalHistoryController extends Controller
 {
     public function index(Request $request)
     {
@@ -17,15 +17,15 @@ class SocialHistoryController extends Controller
     {
         $rules = [
             'patient_id' => 'required',
-            'social_problem' => 'required'
+            'description' => 'required'
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $SocialHistory = new SocialHistories;
+            $SocialHistory = new EnvironmentalHistories;
             $SocialHistory->patient_id = $request->input('patient_id');
-            $SocialHistory->social_problem = $request->input('social_problem');
+            $SocialHistory->description = $request->input('description');
             $SocialHistory->start_date = $request->input('start_date');
             $SocialHistory->end_date = $request->input('end_date');
             try {
@@ -44,7 +44,7 @@ class SocialHistoryController extends Controller
      */
     public function show($id)
     {
-        $SocialHistory = SocialHistories::findOrFail($id);
+        $SocialHistory = EnvironmentalHistories::findOrFail($id);
         return response()->json($SocialHistory);
     }
     /**
@@ -57,15 +57,15 @@ class SocialHistoryController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'occupation' => 'required',
-            'residence' => 'required',
+            'patient_id' => 'required',
+            'description' => 'required'
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $SocialHistory = SocialHistories::findOrFail($id);
-            $SocialHistory->social_problem = $request->input('social_problem');
+            $SocialHistory = EnvironmentalHistories::findOrFail($id);
+            $SocialHistory->description = $request->input('description');
             $SocialHistory->start_date = $request->input('start_date');
             $SocialHistory->end_date = $request->input('end_date');
             try {
@@ -85,7 +85,7 @@ class SocialHistoryController extends Controller
     public function destroy($id)
     {
         try {
-            $SocialHistory = SocialHistories::findOrFail($id);
+            $SocialHistory = EnvironmentalHistories::findOrFail($id);
             $SocialHistory->delete();
             return response()->json($SocialHistory, 200);
         } catch (\Illuminate\Database\QueryException $e) {
