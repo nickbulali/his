@@ -458,10 +458,30 @@ class CreateEmrTables extends Migration
          */
         Schema::create('vital_signs', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('patient_id')->unsigned();
             $table->string('body_temperature');
             $table->string('respiratory_rate');
             $table->string('heart_rate');
             $table->string('blood_pressure');
+            $table->string('height');
+            $table->string('weight');
+            $table->string('body_mass_index');
+            $table->string('body_surface_area');
+            $table->timestamps();
+        $table->foreign('patient_id')->references('id')->on('patients');
+        });
+
+
+         Schema::create('appointment', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('patient_id')->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->string('appointment_date');
+            $table->string('appointment_time');
+          
+            $table->timestamps();
+        $table->foreign('patient_id')->references('id')->on('patients');
+        $table->foreign('user_id')->references('id')->on('users');
         });
 
         /*
