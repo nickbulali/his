@@ -239,7 +239,7 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('/item', 'ItemController');
 
     //Appointment
-      Route::resource('appointment', 'Appointmentcontroller');
+      Route::resource('appointment', 'AppointmentController');
 
       //Users
       Route::resource('users', 'UserController');
