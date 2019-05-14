@@ -85,6 +85,14 @@ class Patient extends Model
     {
         return $this->hasMany('App\Models\EnvironmentalHistories');
     }
+    public function smokingHistory()
+    {
+        return $this->hasMany('App\Models\Smoking');
+    }
+    public function alcoholHistory()
+    {
+        return $this->hasMany('App\Models\Alcohol');
+    }
 
     public function loader()
     {

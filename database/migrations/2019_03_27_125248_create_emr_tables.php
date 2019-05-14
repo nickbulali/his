@@ -543,6 +543,7 @@ class CreateEmrTables extends Migration
             $table->integer('patient_id')->unsigned();
             $table->string('kind');
             $table->string('frequency');
+            $table->string('quantity');
             $table->string('start_date');
             $table->string('end_date');
         });

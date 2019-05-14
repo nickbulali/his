@@ -19,6 +19,8 @@ use App\Models\BloodGroup;
 use App\Models\Encounter;
 use App\Models\Location;
 use App\Models\Allergy;
+use App\Models\Alcohol;
+use App\Models\Smoking;
 use App\Models\Patient;
 use App\Models\Invoice;
 use App\Models\Gender;
@@ -317,6 +319,33 @@ class DevSeeder extends Seeder
             }
         }
 
+        //Smoking Histories
+        Smoking::truncate();
+        for ($i = 0; $i < 50; $i++){
+            Smoking::create([
+                'patient_id' => $faker->randomElement($patients),
+                'kind' => $faker->word,
+                'frequency' => $faker->word,
+                'quantity' => $faker->randomDigit,
+                'start_date'  => $faker->date($format = 'Y-m-d', $max = 'now'),
+                'end_date'  => $faker->date($format = 'Y-m-d', $max = 'now')
+            ]);
+        }
+
+        //Smoking Histories
+        Alcohol::truncate();
+        for ($i = 0; $i < 50; $i++){
+            Smoking::create([
+                'patient_id' => $faker->randomElement($patients),
+                'kind' => $faker->word,
+                'frequency' => $faker->word,
+                'quantity' => $faker->randomDigit,
+                'start_date'  => $faker->date($format = 'Y-m-d', $max = 'now'),
+                'end_date'  => $faker->date($format = 'Y-m-d', $max = 'now')
+            ]);
+        }
+
+        //Social Histories
         SocialHistories::truncate();
         for ($i = 0; $i < 200; $i++){
             SocialHistories::create([
@@ -326,6 +355,8 @@ class DevSeeder extends Seeder
                 'end_date'  => $faker->date($format = 'Y-m-d', $max = 'now')
             ]);
         }
+
+        //Environmental Histories
         EnvironmentalHistories::truncate();
         for ($i = 0; $i < 200; $i++){
             EnvironmentalHistories::create([
@@ -773,30 +804,36 @@ class DevSeeder extends Seeder
         //Queue Status table
         QueueStatus::create([
             'code' => 'pending',
-            'display' => 'Pending',
+            'display' => 'Pending Vitals',
             'color' => 'red'
         ]);
         QueueStatus::create([
             'code' => 'triage',
-            'display' => 'Triage',
+            'display' => 'In Triage',
             'color' => 'brown'
         ]);
         QueueStatus::create([
-            'code' => 'consultation',
-            'display' => 'Consultation'
+            'code' => 'consultation_pending',
+            'display' => 'Awaiting Consultation'
             ,
             'color' => 'blue'
         ]);
         QueueStatus::create([
-            'code' => 'labs',
-            'display' => 'Labs',
+            'code' => 'consultation_started',
+            'display' => 'In Consult',
             'color' => 'teal'
+        ]);
+        QueueStatus::create([
+            'code' => 'lab',
+            'display' => 'Lab Investigation'
+            ,
+            'color' => 'purple'
         ]);
         QueueStatus::create([
             'code' => 'pharmacy',
             'display' => 'Pharmacy'
             ,
-            'color' => 'purple'
+            'color' => 'orange'
         ]);
         QueueStatus::create([
             'code' => 'complete',
