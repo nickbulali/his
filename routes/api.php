@@ -235,5 +235,12 @@ Route::middleware('auth:api')->group( function () {
     //Billing|Invoices
     Route::resource('/invoice', 'InvoiceController');
     Route::resource('/item-category', 'ItemCategoryController');
+
     Route::resource('/item', 'ItemController');
+
+    //Appointment
+      Route::resource('appointment', 'Appointmentcontroller');
+
+      //Users
+      Route::resource('users', 'UserController');
 });
