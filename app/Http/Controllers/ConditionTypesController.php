@@ -6,6 +6,8 @@ class ConditionTypesController extends Controller
 {
     public function index(Request $request)
     {
+        $conditionTypes = ConditionTypes::orderBy('description', 'asc')->get();
+        return response()->json($conditionTypes);
     }
     /**
      * Store a newly created resource in storage.
@@ -23,12 +25,12 @@ class ConditionTypesController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $ConditionTypes = new ConditionTypes;
-            $ConditionTypes->code_id = $request->input('code_id');
-            $ConditionTypes->description = $request->input('description');
+            $conditionTypes = new ConditionTypes;
+            $conditionTypes->code_id = $request->input('code_id');
+            $conditionTypes->description = $request->input('description');
             try {
-                $ConditionTypes->save();
-                return response()->json($ConditionTypes);
+                $conditionTypes->save();
+                return response()->json($conditionTypes);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -42,8 +44,8 @@ class ConditionTypesController extends Controller
      */
     public function show($id)
     {
-        $ConditionTypes = ConditionTypes::findOrFail($id);
-        return response()->json($ConditionTypes);
+        $conditionTypes = ConditionTypes::findOrFail($id);
+        return response()->json($conditionTypes);
     }
     /**
      * Update the specified resource in storage.
@@ -62,12 +64,12 @@ class ConditionTypesController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $ConditionTypes = ConditionTypes::findOrFail($id);
-            $ConditionTypes->code_id = $request->input('code_id');
-            $ConditionTypes->description = $request->input('description');
+            $conditionTypes = ConditionTypes::findOrFail($id);
+            $conditionTypes->code_id = $request->input('code_id');
+            $conditionTypes->description = $request->input('description');
             try {
-                $ConditionTypes->save();
-                return response()->json($ConditionTypes);
+                $conditionTypes->save();
+                return response()->json($conditionTypes);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -82,9 +84,9 @@ class ConditionTypesController extends Controller
     public function destroy($id)
     {
         try {
-            $ConditionTypes = ConditionTypes::findOrFail($id);
-            $ConditionTypes->delete();
-            return response()->json($ConditionTypes, 200);
+            $conditionTypes = ConditionTypes::findOrFail($id);
+            $conditionTypes->delete();
+            return response()->json($conditionTypes, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

@@ -58,6 +58,11 @@ class Patient extends Model
         return $this->hasMany('App\Models\Encounter');
     }
 
+    public function medications()
+    {
+        return $this->hasMany('App\Models\Medications');
+    }
+
     public function organization()
     {
         return $this->belongsTo('App\Models\Organization');
@@ -66,6 +71,27 @@ class Patient extends Model
     public function allergies()
     {
         return $this->belongsToMany('App\Models\Allergy');
+    }
+
+    public function familyHistory()
+    {
+        return $this->hasMany('App\Models\FamilyHistory');
+    }
+    public function socialHistory()
+    {
+        return $this->hasMany('App\Models\SocialHistories');
+    }
+    public function environmentalHistory()
+    {
+        return $this->hasMany('App\Models\EnvironmentalHistories');
+    }
+    public function smokingHistory()
+    {
+        return $this->hasMany('App\Models\Smoking');
+    }
+    public function alcoholHistory()
+    {
+        return $this->hasMany('App\Models\Alcohol');
     }
 
     public function loader()

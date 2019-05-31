@@ -1,14 +1,11 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\Conditions;
+use App\Models\EnvironmentalHistories;
 use Illuminate\Http\Request;
-class ConditionsController extends Controller
+class EnvironmentalHistoryController extends Controller
 {
     public function index(Request $request)
     {
-        $conditions = Conditions::orderBy('created_at', 'desc')
-                ->paginate(15);
-        return response()->json($conditions);
     }
     /**
      * Store a newly created resource in storage.
@@ -19,19 +16,21 @@ class ConditionsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'condition_type_id' => 'required',
-            'comments' => 'required',
+            'patient_id' => 'required',
+            'description' => 'required'
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $conditions = new Conditions;
-            $conditions->condition_type_id = $request->input('condition_type_id');
-            $conditions->comments = $request->input('comments');
+            $SocialHistory = new EnvironmentalHistories;
+            $SocialHistory->patient_id = $request->input('patient_id');
+            $SocialHistory->description = $request->input('description');
+            $SocialHistory->start_date = $request->input('start_date');
+            $SocialHistory->end_date = $request->input('end_date');
             try {
-                $conditions->save();
-                return response()->json($conditions);
+                $SocialHistory->save();
+                return response()->json($SocialHistory);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -45,8 +44,8 @@ class ConditionsController extends Controller
      */
     public function show($id)
     {
-        $Conditions = Conditions::findOrFail($id);
-        return response()->json($Conditions);
+        $SocialHistory = EnvironmentalHistories::findOrFail($id);
+        return response()->json($SocialHistory);
     }
     /**
      * Update the specified resource in storage.
@@ -58,19 +57,20 @@ class ConditionsController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-           'condition_type_id' => 'required',
-            'comments' => 'required',
+            'patient_id' => 'required',
+            'description' => 'required'
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Conditions = Conditions::findOrFail($id);
-            $Conditions->condition_type_id = $request->input('condition_type_id');
-            $Conditions->comments = $request->input('comments');
+            $SocialHistory = EnvironmentalHistories::findOrFail($id);
+            $SocialHistory->description = $request->input('description');
+            $SocialHistory->start_date = $request->input('start_date');
+            $SocialHistory->end_date = $request->input('end_date');
             try {
-                $Conditions->save();
-                return response()->json($Conditions);
+                $SocialHistory->save();
+                return response()->json($SocialHistory);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -85,9 +85,9 @@ class ConditionsController extends Controller
     public function destroy($id)
     {
         try {
-            $Conditions = Conditions::findOrFail($id);
-            $Conditions->delete();
-            return response()->json($Conditions, 200);
+            $SocialHistory = EnvironmentalHistories::findOrFail($id);
+            $SocialHistory->delete();
+            return response()->json($SocialHistory, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

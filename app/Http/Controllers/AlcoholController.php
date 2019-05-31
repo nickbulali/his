@@ -24,13 +24,16 @@ class AlcoholController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Alcohol = new Alcohol;
-            $Alcohol->kind = $request->input('kind');
-            $Alcohol->frequency = $request->input('frequency');
-            $Alcohol->quantity = $request->input('quantity');
+            $alcohol = new Alcohol;
+            $alcohol->patient_id = $request->input('patient_id');
+            $alcohol->kind = $request->input('kind');
+            $alcohol->frequency = $request->input('frequency');
+            $alcohol->quantity = $request->input('quantity');
+            $alcohol->start_date = $request->input('start_date');
+            $alcohol->end_date = $request->input('end_date');
             try {
-                $Alcohol->save();
-                return response()->json($Alcohol);
+                $alcohol->save();
+                return response()->json($alcohol);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -65,13 +68,15 @@ class AlcoholController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Alcohol = Alcohol::findOrFail($id);
-            $Alcohol->kind = $request->input('kind');
-            $Alcohol->frequency = $request->input('frequency');
-            $Alcohol->quantity = $request->input('quantity');
+            $alcohol = Alcohol::findOrFail($id);
+            $alcohol->kind = $request->input('kind');
+            $alcohol->frequency = $request->input('frequency');
+            $alcohol->quantity = $request->input('quantity');
+            $alcohol->start_date = $request->input('start_date');
+            $alcohol->end_date = $request->input('end_date');
             try {
-                $Alcohol->save();
-                return response()->json($Alcohol);
+                $alcohol->save();
+                return response()->json($alcohol);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }

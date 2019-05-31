@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\Models\VitalSigns;
+use App\Models\Queue;
 use Illuminate\Http\Request;
 use DB;
 class VitalSignsController extends Controller
@@ -45,6 +46,16 @@ class VitalSignsController extends Controller
             $vitalSigns->weight = $request->input('weight');
             $vitalSigns->body_mass_index = $request->input('body_mass_index');
             $vitalSigns->body_surface_area = $request->input('body_surface_area');
+
+            $queue = Queue::wherePatient_id($request->input('patient_id'))->orderBy('created_at', 'desc')->first();;
+            $queue->queue_status_id = 3;
+
+            try {
+                $queue->save();
+            } catch (\Illuminate\Database\QueryException $e) {
+                return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+            }
+
             try {
                 $vitalSigns->save();
                 return response()->json($vitalSigns);
