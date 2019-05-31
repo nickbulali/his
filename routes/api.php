@@ -97,7 +97,7 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('conditions', 'ConditionsController');
 
     //ConditionTypes
-    Route::resource('conditiontypes', 'ConditionTypesController');
+    Route::resource('conditiontype', 'ConditionTypesController');
 
     //CounterController
     Route::resource('counter', 'CounterController');
@@ -132,7 +132,7 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('familyhistory', 'FamilyHistoryController');
 
     //familyRelations
-    Route::resource('familyRelations', 'FamilyRelationsController');
+    Route::resource('familyrelation', 'FamilyRelationsController');
 
     //Gender
     Route::resource('gender', 'GenderController');

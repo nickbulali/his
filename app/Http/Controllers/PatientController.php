@@ -18,7 +18,7 @@ class PatientController extends Controller
             })->with('gender', 'name', 'maritalStatus', 'bloodGroup', 'allergies', 'familyHistory.conditionType')
                 ->paginate(11);
         } else {
-            $patient = Patient::with('name', 'gender', 'maritalStatus', 'bloodGroup', 'allergies', 'familyHistory.conditionType')->orderBy('created_at', 'DESC')->paginate(11);
+            $patient = Patient::with('name', 'gender', 'maritalStatus', 'encounter.encounterClass', 'encounter.location', 'bloodGroup', 'allergies', 'medications.drugs', 'medications.dosage', 'familyHistory.conditionType', 'familyHistory.relation', 'socialHistory', 'environmentalHistory', 'smokingHistory', 'alcoholHistory')->orderBy('created_at', 'DESC')->paginate(11);
         }
         return response()->json($patient);
     }
@@ -39,9 +39,9 @@ class PatientController extends Controller
             return response()->json($validator, 422);
         } else {
             $name = new Name;
-            $name->text = $request->input('family');
-            $name->family = $request->input('family');
-            $name->given = $request->input('given');
+            $name->text = $request->input('family_name');
+            $name->family = $request->input('family_name');
+            $name->given = $request->input('given_name');
             try {
                 $name->save();
             } catch (\Illuminate\Database\QueryException $e) {
@@ -129,7 +129,7 @@ class PatientController extends Controller
             $patient->delete();
             return response()->json($patient, 200);
         } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
     }
     /**

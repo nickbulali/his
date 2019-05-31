@@ -186,7 +186,7 @@ class CreateEmrTables extends Migration
             $table->boolean('active')->default(1);
             $table->integer('name_id')->unsigned();
             $table->integer('gender_id')->unsigned();
-            $table->integer('blood_group_id')->unsigned();
+            $table->integer('blood_group_id')->nullable()->unsigned();
             $table->date('birth_date');
             $table->boolean('deceased')->default(0);
             $table->date('deceased_date_time')->nullable();
