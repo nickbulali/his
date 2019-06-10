@@ -7,20 +7,35 @@ use App\Models\Patient;
 use App\Models\Encounter;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Http\Resources\PatientResource;
+use App\Http\Resources\PatientCollection;
+
 class PatientController extends Controller
 {
     public function index(Request $request)
     {
+        $queried = null;
+        $frequency = null;
         if ($request->query('search')) {
             $search = $request->query('search');
-            $patient = Patient::whereHas('name', function ($query) use ($search) {
+            $query = Patient::whereHas('name', function ($query) use ($search) {
                 $query->where('given', 'LIKE', "%{$search}%")->orWhere('family', 'LIKE', "%{$search}%");
-            })->with('gender', 'name', 'maritalStatus', 'bloodGroup', 'allergies', 'familyHistory.conditionType')
-                ->paginate(11);
+            });
+            
+            $queried = clone $query;
+            $patient = $query->with('gender', 'name', 'maritalStatus', 'bloodGroup', 'allergies', 'familyHistory.conditionType')->paginate(11);
         } else {
             $patient = Patient::with('name', 'gender', 'maritalStatus', 'encounter.encounterClass', 'encounter.location', 'bloodGroup', 'allergies', 'medications.drugs', 'medications.dosage', 'familyHistory.conditionType', 'familyHistory.relation', 'socialHistory', 'environmentalHistory', 'smokingHistory', 'alcoholHistory')->orderBy('created_at', 'DESC')->paginate(11);
         }
-        return response()->json($patient);
+        if($queried!=null){
+            $frequency = Patient::frequency($queried);
+        }else{
+            $frequency = Patient::frequency();
+        }
+        return (new PatientCollection($patient))->additional(['meta' => [
+            'frequency' => $frequency,
+        ]]);
+        // return response()->json($patient);
     }
     /**
      * Store a newly created resource in storage.
