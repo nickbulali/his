@@ -2,10 +2,21 @@
 namespace App\Http\Controllers;
 use App\Models\Drugs;
 use Illuminate\Http\Request;
+use DB;
 class DrugsController extends Controller
 {
     public function index(Request $request)
     {
+
+  if ($request->query('search')) {
+            $search = $request->query('search');
+            $drugs = Drugs::where('trade_name', 'LIKE', "%{$search}%")
+                ->get();
+        } else {
+            $drugs = Drugs::get();
+        }
+        return response()->json($drugs);
+
     }
     /**
      * Store a newly created resource in storage.
@@ -63,7 +74,7 @@ class DrugsController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-              'generic_name' => 'required',
+            'generic_name' => 'required',
             'trade_name' => 'required',
             'strength_value' => 'required',
             'strength_unit' => 'required',

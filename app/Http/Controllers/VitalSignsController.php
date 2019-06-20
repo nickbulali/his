@@ -61,7 +61,7 @@ class VitalSignsController extends Controller
      */
     public function show($id)
     {
-        $vitalSigns = VitalSigns::findOrFail($id);
+        $vitalSigns = VitalSigns::wherePatientId($id)->get();
         return response()->json($vitalSigns);
     }
     /**

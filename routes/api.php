@@ -157,7 +157,7 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('medicationsheets', 'MedicalSheetsController');
 
     //MedicationStauses
-    Route::resource('medicationstatus', 'MedicationStatusesController');
+    Route::resource('medicationstatus', 'MedicationStatusController');
 
     //Name
     Route::resource('name', 'NameController');

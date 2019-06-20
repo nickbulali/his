@@ -478,12 +478,18 @@ class CreateEmrTables extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('appointment_date');
             $table->string('appointment_time');
-          
+            $table->string('appointment_status_id');
             $table->timestamps();
-        $table->foreign('patient_id')->references('id')->on('patients');
-        $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('patient_id')->references('id')->on('patients');
+            $table->foreign('user_id')->references('id')->on('users');
         });
 
+    Schema::create('appointment_status', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('code');
+            $table->string('display');
+            $table->string('color');
+        });
         /*
          * @height:todo check best data type
          * @weight:todo check best data type
@@ -703,14 +709,17 @@ class CreateEmrTables extends Migration
             $table->integer('patient_id')->unsigned();
             $table->integer('medication_status_id')->unsigned();
             $table->integer('drug_id')->unsigned();
-            $table->integer('prescribed_by')->unsigned()
-                ->foreign('test_type_id')->references('id')->on('test_types');
+            $table->integer('prescribed_by')->unsigned();
             $table->integer('dosage_id')->unsigned();
             $table->string('quantity');
             $table->string('start_time');
             $table->string('end_time');
             $table->boolean('refill')->default(0);
             $table->string('comments');
+            $table->foreign('patient_id')->references('id')->on('patients');
+            $table->foreign('drug_id')->references('id')->on('drugs');
+            $table->foreign('medication_status_id')->references('id')->on('medication_statuses');
+            $table->foreign('dosage_id')->references('id')->on('dosages');
         });
 
         /*
