@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 /*
  * Demographics and other administrative information about an individual or animal receiving care or
  * other health-related services.racking patient is the center of the healthcare process.
@@ -101,5 +102,39 @@ class Patient extends Model
             'gender',
             'maritalStatus'
         );
+    }
+    public static function frequency($query=null, $by_status=true, $by_year=true, $by_month=true, $by_gender=true){
+        $counts = [];
+        if($query===null){
+            $query = DB::table('patients');
+        }
+
+        $selects = "count(*) as num";
+        $group_bys = '';
+
+        if($by_status){
+            $selects = $selects.", patients.active";
+            $group_bys = $group_bys.", patients.active";
+        }
+        if($by_year){
+            $selects = $selects.", YEAR(patients.created_at) as year";
+            $group_bys = $group_bys.", year";
+        }
+        if($by_month){
+            $selects = $selects.", MONTH(patients.created_at) as month";
+            $group_bys = $group_bys.", month";
+        }
+        if($by_gender){
+            $selects = $selects.", patients.gender_id";
+            $group_bys = $group_bys.", patients.gender_id";
+        }
+
+        if($group_bys){ //substr($group_bys, 1)
+            $counts = $query->selectRaw($selects)->groupBy(DB::raw(substr($group_bys, 1)))->get();
+        }else{
+            $counts = $query->selectRaw($selects)->get();
+        }
+
+        return $counts;
     }
 }
