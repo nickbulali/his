@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
 use App\Models\Counter;
+use App\Models\Item;
+
 use DB;
 
 class InvoiceController extends Controller

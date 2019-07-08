@@ -22,17 +22,6 @@ Route::middleware('auth:api')->group( function () {
     Route::get('/get-user', 'Auth\APIController@getUser');
     Route::get('/get-user-model', 'Auth\APIController@getUserModel');
 
-    //invoice
-    Route::get('/invoice/{id}', 'API\InvoiceController@show');
-
-    Route::get('/invoices', 'API\InvoiceController@index');
-
-    Route::post('/invoice', 'API\InvoiceController@store');
-
-    Route::put('/invoice/{id}', 'API\InvoiceController@update');
-
-    Route::delete('/invoice/{id}', 'API\InvoiceController@delete');
-
     //chargeSheet
     Route::get('/chargeSheet/{id}', 'API\ChargeSheetController@show');
 
