@@ -23,10 +23,11 @@ class Invoice extends Model
         return $this->belongsTo(Patient::class);
     }
 
-    public function items()
+     public function items()
     {
         return $this->hasMany(InvoiceItem::class);
     }
+
 
     public function setSubTotalAttribute($value)
     {

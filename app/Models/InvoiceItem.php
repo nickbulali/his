@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class InvoiceItem extends Model
 {
     protected $fillable = [
-        'product_id', 'unit_price', 'qty'
+        'item_id', 'unit_price', 'qty'
     ];
 
-    public function product()
+     public function item()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Item::class);
     }
+
 }
