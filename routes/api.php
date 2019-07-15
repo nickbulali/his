@@ -22,43 +22,6 @@ Route::middleware('auth:api')->group( function () {
     Route::get('/get-user', 'Auth\APIController@getUser');
     Route::get('/get-user-model', 'Auth\APIController@getUserModel');
 
-    //invoice
-    Route::get('/invoice/{id}', 'InvoiceController@show');
-
-
-    //chargeSheet
-    Route::get('/chargeSheet/{id}', 'API\ChargeSheetController@show');
-
-    Route::get('/chargeSheets', 'API\ChargeSheetController@index');
-
-    Route::post('/chargeSheet', 'API\ChargeSheetController@store');
-
-    Route::put('/chargeSheet/{id}', 'API\ChargeSheetController@update');
-
-    Route::delete('/chargeSheet/{id}', 'API\ChargeSheetController@delete');
-
-    //payment
-    Route::get('/payment/{id}', 'API\PaymentController@show');
-
-    Route::get('/payments', 'API\PaymentController@index');
-
-    Route::post('/payment', 'API\PaymentController@store');
-
-    Route::put('/payment/{id}', 'API\PaymentController@update');
-
-    Route::delete('/payment/{id}', 'API\PaymentController@delete');
-
-    //order
-    Route::get('/order/{id}', 'API\OrderController@show');
-
-    Route::get('/orders', 'API\OrderController@index');
-
-    Route::post('/order', 'API\OrderController@store');
-
-    Route::put('/order/{id}', 'API\OrderController@update');
-
-    Route::delete('/order/{id}', 'API\OrderController@delete');
-
     //AdmissionEncounter
     Route::resource('admissionencounter', 'AdmissionEncounterController');
 
@@ -226,10 +189,10 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('xrays', 'XraysController');
 
     //Billing|Invoices
-    Route::resource('/invoice', 'InvoiceController');
-    Route::resource('/item-category', 'ItemCategoryController');
+    Route::resource('invoice', 'InvoiceController');
+    Route::resource('item-category', 'ItemCategoryController');
 
-    Route::resource('/item', 'ItemController');
+    Route::resource('item', 'ItemController');
 
     //Appointment
       Route::resource('appointment', 'AppointmentController');
