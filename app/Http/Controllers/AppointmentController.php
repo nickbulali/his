@@ -12,16 +12,31 @@ class AppointmentController extends Controller
         if ($request->query('search')) {
             $search = $request->query('search');
             $Appointment = Appointment::with('patient.name','user')->where('description', 'LIKE', "%{$search}%")
-                ->get();
+                ->paginate(10);
         } else {
-            $Appointment = Appointment::with('patient.name','user')->orderBy('id', 'ASC')->get()->groupBy(function($date) {
-            return Carbon::parse($date->appointment_date)->format('Y-m-d');
-        });
+            $Appointment = Appointment::with('patient.name','user')->orderBy('id', 'ASC')->paginate(10);
+
         }
 
         return response()->json($Appointment);
 
     }
+
+       public function report(Request $request)
+    {
+         if ($request->query('search')) {
+            $search = $request->query('search');
+            $AppointmentReport = Appointment::with('patient.name','user')->where('description', 'LIKE', "%{$search}%")
+                ->paginate(10);
+        } else {
+            $AppointmentReport = Appointment::with('patient.name','user')->orderBy('id', 'ASC')->paginate(10);
+
+        }
+
+        return response()->json($AppointmentReport);
+    }
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -64,6 +79,18 @@ class AppointmentController extends Controller
         $Appointment = Appointment::wherePatientId($id)->get();
         return response()->json($Appointment);
     }
+
+
+ public function countAppointments(Request $request)
+    {
+       
+            $AppointmentCount = Appointment::count();
+        
+
+        return response()->json($AppointmentCount);
+    }
+
+
     /**
      * Update the specified resource in storage.
      *

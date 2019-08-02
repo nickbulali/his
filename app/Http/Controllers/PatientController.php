@@ -118,6 +118,19 @@ class PatientController extends Controller
             }
         }
     }
+
+
+ public function countPatients(Request $request)
+    {
+       
+            $Patient = Patient::count();
+        
+
+        return response()->json($Patient);
+    }
+
+
+
     /**
      * Remove the specified resource from storage.
      *

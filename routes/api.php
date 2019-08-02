@@ -16,8 +16,12 @@ use Illuminate\Http\Request;
 Route::post('/register', 'Auth\APIController@register');
 Route::post('/login', 'Auth\APIController@login');
 Route::get('/auth/signup/activate/{token}', 'Auth\APIController@signupActivate');
-
-Route::middleware('auth:api')->group( function () {
+   // Route::get('users/count/{id}', 'InvoiceController@countUsers');
+    Route::get('/users/count', 'UserController@countUsers');
+    Route::get('/patient/count', 'PatientController@countPatients');
+     Route::get('/appointment/count', 'AppointmentController@countAppointments');
+         Route::get('/appointment/report', 'AppointmentController@report');
+    Route::middleware('auth:api')->group( function () {
     Route::post('/logout', 'Auth\APIController@logout');
     Route::get('/get-user', 'Auth\APIController@getUser');
     Route::get('/get-user-model', 'Auth\APIController@getUserModel');
@@ -237,10 +241,29 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('/item-category', 'ItemCategoryController');
 
     Route::resource('/item', 'ItemController');
+    Route::resource('/expense-category', 'ExpensesCategoryController');
+
+    Route::resource('/expenses', 'ExpenseController');
 
     //Appointment
       Route::resource('appointment', 'AppointmentController');
+  
+
 
       //Users
-      Route::resource('users', 'UserController');
+       Route::resource('users', 'UserController');
+    
+   
+      //Inventory
+
+Route::resource('supplier', 'SupplierController');
+Route::resource('supplies', 'SuppliesController');
+Route::resource('stock', 'StockController');
+Route::resource('request', 'RequestController');
+Route::resource('issueStock', 'StockIssueController');
+Route::get('stockDetails/{id}', 'StockController@stockDetails');
+Route::get('requestIssue/{id}', 'RequestController@requestIssue');
+
+Route::get('add-to-log', 'HomeController@myTestAddToLog');
+Route::get('logActivity', 'HomeController@logActivity');
 });

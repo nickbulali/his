@@ -115,6 +115,7 @@ class MedicationsController extends Controller
             $Medications->start_time = $request->input('start_time');
             $Medications->end_time = $request->input('end_time');
             $Medications->comments = $request->input('comments');
+            
             try {
                 $Medications->save();
                 return response()->json($Medications);
