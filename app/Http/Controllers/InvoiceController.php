@@ -97,14 +97,15 @@ class InvoiceController extends Controller
             ->json(['saved' => true, 'id' => $invoice->id]);
     }
 
-    public function show($id)
+      public function show($id)
     {
-        $model = Invoice::with(['patient', 'items.product'])
+        $invoice = Invoice::with(['patient.name', 'items'])
             ->findOrFail($id);
 
         return response()
-            ->json(['model' => $model]);
+            ->json(['invoice' => $invoice]);
     }
+
 
     public function edit($id)
     {

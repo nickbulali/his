@@ -478,7 +478,7 @@ class CreateEmrTables extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('appointment_date');
             $table->string('appointment_time');
-            $table->string('appointment_status_id');
+            $table->string('status');
             $table->timestamps();
             $table->foreign('patient_id')->references('id')->on('patients');
             $table->foreign('user_id')->references('id')->on('users');
