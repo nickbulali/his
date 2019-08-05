@@ -21,6 +21,29 @@ class UserController extends Controller
         }
         return response()->json($user);
     }
+
+
+ public function countUsers(Request $request)
+    {
+       
+            $users = User::count();
+        
+
+        return response()->json($users);
+    }
+
+
+
+  // public function countUsers(Request $request)
+  //   {
+        
+  //           $users = User::where('username','=','admin')->count();
+      
+
+  //       return response()->json($users);
+  //   }
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -64,6 +87,15 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         return response()->json($user);
     }
+
+
+        // $bookings = DB::table('bookings')->get();
+
+        // $pendings = DB::table('bookings')->where('status', '=', 'pending')->get();
+
+        // $approved = DB::table('bookings')->where('status', '=', 'approved')->get();
+
+        // $declined = DB::table('bookings')->where('status', '=', '2')->get();
     /*public function profile()
     {
         $user = Auth::user();
@@ -104,6 +136,7 @@ class UserController extends Controller
             if ($request->input('adminPasswordChange')) {
                 $user->password = bcrypt($request->input('password'));
             }
+            
             if ($request->input('removePic')) {
                 $user->profile_picture = null;
             }

@@ -26,6 +26,12 @@ class InvoiceController extends Controller
         return response()->json($invoice);
     }
 
+    public function countUsers($id)
+    {
+         return Invoice::where('id',$id)->count();
+    }
+
+
     public function create()
     {
         $counter = Counter::where('key', 'invoice')->first();
