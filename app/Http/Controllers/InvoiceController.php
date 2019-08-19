@@ -13,7 +13,9 @@ class InvoiceController extends Controller
     {
         if ($request->query('search')) {
             $search = $request->query('search');
-            $invoice = Invoice::with('patient.name')->where('number', 'LIKE', "%{$search}%")
+            $invoice = Invoice::with('patient.name')
+            ->where('number', 'LIKE', "%{$search}%")
+            ->orWhere('date', 'LIKE', "%{$search}%")
                 ->paginate(15);
         } else {
             $invoice = Invoice::with(['patient.name'])
@@ -67,7 +69,7 @@ class InvoiceController extends Controller
             'discount' => 'required|numeric|min:0',
             'terms_and_conditions' => 'required|max:2000',
             'items' => 'required|array|min:1',
-            'items.*.product_id' => 'required|integer|exists:products,id',
+            'items.*.item_id' => 'required|integer|exists:items,id',
             'items.*.unit_price' => 'required|numeric|min:0',
             'items.*.qty' => 'required|integer|min:1'
         ]);
@@ -129,7 +131,7 @@ class InvoiceController extends Controller
             'terms_and_conditions' => 'required|max:2000',
             'items' => 'required|array|min:1',
             'items.*.id' => 'sometimes|required|integer|exists:invoice_items,id,invoice_id,'.$invoice->id,
-            'items.*.product_id' => 'required|integer|exists:products,id',
+            'items.*.item_id' => 'required|integer|exists:items,id',
             'items.*.unit_price' => 'required|numeric|min:0',
             'items.*.qty' => 'required|integer|min:1'
         ]);

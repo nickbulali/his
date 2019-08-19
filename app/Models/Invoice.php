@@ -35,4 +35,12 @@ class Invoice extends Model
         $discount = $this->attributes['discount'];
         $this->attributes['total'] = $value - $discount;
     }
+
+    public function getStatusAttribute($value)
+    {
+        if($value==0){
+        return 'not paid';
+    }
+    return 'paid';
+    }
 }

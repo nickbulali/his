@@ -50,6 +50,7 @@ class HisTables extends Migration
             $table->integer('patient_id')->unsigned();
             $table->date('date');
             $table->date('due_date');
+            $table->boolean('status')->default(0);
             $table->string('reference')->nullable();
             $table->text('terms_and_conditions');
             $table->double('sub_total');
