@@ -67,6 +67,10 @@ class Patient extends Model
     {
         return $this->belongsToMany('App\Models\Allergy');
     }
+    public function diagnosis()
+    {
+        return $this->belongsToMany('App\Models\Diagnosis');
+    }
 
     public function loader()
     {

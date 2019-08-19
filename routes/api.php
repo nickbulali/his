@@ -12,7 +12,10 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+   Route::resource('diagnosis', 'DiagnosisController');
+    Route::resource('medications', 'MedicationsController');
+    Route::resource('radiology', 'RadiologyController');
+    Route::resource('vitalsigns', 'VitalSignsController');
 Route::post('/register', 'Auth\APIController@register');
 Route::post('/login', 'Auth\APIController@login');
 Route::get('/auth/signup/activate/{token}', 'Auth\APIController@signupActivate');
@@ -37,7 +40,8 @@ Route::get('/auth/signup/activate/{token}', 'Auth\APIController@signupActivate')
 
     //Allergies
     Route::resource('allergy', 'AllergyController');
-
+     //Diagnosis
+   Route::resource('diagnosis', 'DiagnosisController');
     //AntenatalHistory
     Route::resource('antenatalhistory', 'AntenatalHistoryController');
 
@@ -134,7 +138,7 @@ Route::get('/auth/signup/activate/{token}', 'Auth\APIController@signupActivate')
     Route::resource('patient', 'PatientController');
     Route::post('patient/testrequest', 'PatientController@testRequest');
     Route::get('patient/{patientId}/allergy/{allergyId}', 'PatientController@attachAllergy');
-
+  Route::get('patient/{patientId}/diagnosis/{diagnosisId}', 'PatientController@attachDiagnosis');
     //Queue
     Route::resource('queue', 'QueueController');
     Route::get('queuestats', 'QueueController@stats');
@@ -211,7 +215,7 @@ Route::get('/auth/signup/activate/{token}', 'Auth\APIController@signupActivate')
 
       //Users
        Route::resource('users', 'UserController');
-    
+       Route::post('user/image', 'UserController@profilepic');
    
       //Inventory
 

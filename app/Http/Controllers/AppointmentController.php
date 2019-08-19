@@ -14,15 +14,17 @@ class AppointmentController extends Controller
             $Appointment = Appointment::with('patient.name','user')->where('description', 'LIKE', "%{$search}%")
                 ->paginate(10);
         } else {
-            $Appointment = Appointment::with('patient.name','user')->orderBy('id', 'ASC')->paginate(10);
-
+            $Appointment = Appointment::with('patient.name','user')->orderBy('id', 'ASC')->paginate(10)->groupBy(function($date) {
+            return Carbon::parse($date->appointment_date)->format('Y-m-d');
+        });
         }
 
         return response()->json($Appointment);
 
     }
 
-       public function report(Request $request)
+
+     public function report(Request $request)
     {
          if ($request->query('search')) {
             $search = $request->query('search');
@@ -35,7 +37,6 @@ class AppointmentController extends Controller
 
         return response()->json($AppointmentReport);
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -58,7 +59,6 @@ class AppointmentController extends Controller
             $Appointment->user_id = $request->input('user_id');
             $Appointment->appointment_date = $request->input('appointment_date');
             $Appointment->appointment_time = $request->input('appointment_time');
-            $Appointment->status = $request->input('status');
 
        
             try {
@@ -113,7 +113,6 @@ class AppointmentController extends Controller
             $Appointment->user_id = $request->input('user_id');
             $Appointment->appointment_date = $request->input('appointment_date');
             $Appointment->appointment_time = $request->input('appointment_time');
-            $Appointment->status = $request->input('status');
             try {
                 $Appointment->save();
                 return response()->json($Appointment);

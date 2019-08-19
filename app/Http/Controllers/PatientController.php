@@ -15,10 +15,10 @@ class PatientController extends Controller
             $search = $request->query('search');
             $patient = Patient::whereHas('name', function ($query) use ($search) {
                 $query->where('given', 'LIKE', "%{$search}%")->orWhere('family', 'LIKE', "%{$search}%");
-            })->with('gender', 'name', 'maritalStatus', 'bloodGroup', 'allergies')
+            })->with('gender', 'name', 'maritalStatus', 'bloodGroup', 'allergies','diagnosis')
                 ->paginate(25);
         } else {
-            $patient = Patient::with('name', 'gender', 'maritalStatus', 'bloodGroup', 'allergies')->orderBy('created_at', 'DESC')->paginate(25);
+            $patient = Patient::with('name', 'gender', 'maritalStatus', 'bloodGroup', 'allergies','diagnosis')->orderBy('created_at', 'DESC')->paginate(25);
 
             
         }
@@ -72,7 +72,7 @@ class PatientController extends Controller
      */
     public function show($id)
     {
-        $patient = Patient::with('name', 'gender', 'maritalStatus', 'encounter.encounterClass', 'encounter.location', 'bloodGroup', 'allergies')->findOrFail($id);
+        $patient = Patient::with('name', 'gender', 'maritalStatus', 'encounter.encounterClass', 'encounter.location', 'bloodGroup', 'allergies','diagnosis')->findOrFail($id);
         return response()->json($patient);
     }
     /**
@@ -198,6 +198,16 @@ class PatientController extends Controller
          $patient= Patient::find($patientId);
        try{
            $patient->allergies()->attach($allergyId);
+           return redirect()->action('PatientController@show',['patientId' => $patientId]);
+       } catch (\Illuminate\Database\QueryException $e) {
+           return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+       }
+    }
+
+        public function attachDiagnosis($patientId, $diagnosisId){
+         $patient= Patient::find($patientId);
+       try{
+           $patient->diagnosis()->attach($diagnosisId);
            return redirect()->action('PatientController@show',['patientId' => $patientId]);
        } catch (\Illuminate\Database\QueryException $e) {
            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
