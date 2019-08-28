@@ -12,13 +12,13 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-   Route::resource('diagnosis', 'DiagnosisController');
+    Route::resource('diagnosis', 'DiagnosisController');
     Route::resource('medications', 'MedicationsController');
     Route::resource('radiology', 'RadiologyController');
     Route::resource('vitalsigns', 'VitalSignsController');
-Route::post('/register', 'Auth\APIController@register');
-Route::post('/login', 'Auth\APIController@login');
-Route::get('/auth/signup/activate/{token}', 'Auth\APIController@signupActivate');
+    Route::post('/register', 'Auth\APIController@register');
+    Route::post('/login', 'Auth\APIController@login');
+    Route::get('/auth/signup/activate/{token}', 'Auth\APIController@signupActivate');
    // Route::get('users/count/{id}', 'InvoiceController@countUsers');
     Route::get('/users/count', 'UserController@countUsers');
     Route::get('/patient/count', 'PatientController@countPatients');
@@ -168,7 +168,7 @@ Route::get('/auth/signup/activate/{token}', 'Auth\APIController@signupActivate')
     Route::get('roleuser/attach', 'RoleUserController@attach');
     Route::get('roleuser/detach', 'RoleUserController@detach');
     Route::get('roleuser', 'RoleUserController@index');
-
+       Route::resource('test', 'TestController');
     //Smoking
     Route::resource('smoking', 'SmokingController');
 
@@ -227,6 +227,7 @@ Route::resource('issueStock', 'StockIssueController');
 Route::get('stockDetails/{id}', 'StockController@stockDetails');
 Route::get('requestIssue/{id}', 'RequestController@requestIssue');
 
+Route::post('/mpesa-post', 'MpesaController@newRequest');
 Route::get('add-to-log', 'HomeController@myTestAddToLog');
 Route::get('logActivity', 'HomeController@logActivity');
 });

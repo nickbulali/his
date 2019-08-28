@@ -176,7 +176,7 @@ class PatientController extends Controller
                 $test = new Test;
                 $test->encounter_id = $encounter->id;
                 $test->test_type_id = $testTypeId;
-                $test->test_status_id = TestStatus::pending;
+                $test->test_status_id = '1';
                 $test->created_by = Auth::user()->id;
                 $test->requested_by = $request->input('practitioner_name');
                 $test->save();
