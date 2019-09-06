@@ -10,7 +10,7 @@ class Invoice extends Model
     use HasManyRelation;
 
     protected $fillable = [
-        'customer_id', 'date', 'due_date', 'discount',
+        'patient_id', 'date', 'due_date', 'discount',
         'terms_and_conditions', 'reference'
     ];
 
@@ -21,6 +21,11 @@ class Invoice extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
     }
 
      public function items()

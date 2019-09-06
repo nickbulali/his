@@ -101,7 +101,7 @@ class InvoiceController extends Controller
 
       public function show($id)
     {
-        $invoice = Invoice::with(['patient.name', 'items'])
+        $invoice = Invoice::with(['patient.name', 'items.item'])
             ->findOrFail($id);
 
         return response()
@@ -111,7 +111,7 @@ class InvoiceController extends Controller
 
     public function edit($id)
     {
-        $form = Invoice::with(['patient', 'items.product'])
+        $form = Invoice::with(['patient', 'items.item'])
             ->findOrFail($id);
 
         return response()

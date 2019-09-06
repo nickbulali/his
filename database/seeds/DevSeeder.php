@@ -16,6 +16,7 @@ use App\Models\Location;
 use App\Models\Allergy;
 use App\Models\Patient;
 use App\Models\Invoice;
+use App\Models\Payment;
 use App\Models\Gender;
 use App\Models\Dosage;
 use App\Models\Drugs;
@@ -753,12 +754,39 @@ class DevSeeder extends Seeder
             $invoice = Invoice::create([
                 'number' => 'INV-'.$i,
                 'patient_id' => $faker->randomElement($patients),
+                'payment_id' => $faker->randomElement($patients),
                 'date' => $faker->date($format = 'Y-m-d', $max = 'now'),
                 'due_date' => $faker->date($format = 'Y-m-d', $max = 'now'),
                 'reference' => 'LPO #'.$i,
                 'terms_and_conditions' => $faker->text,
+                'status' => true,
                 'discount' => mt_rand(0, 100),
                 'sub_total' => mt_rand(1000, 2000)
+            ]);
+
+            foreach(range(1, mt_rand(2, 4)) as $j) {
+                InvoiceItem::create([
+                    'invoice_id' => $invoice->id,
+                    'item_id' => $faker->randomElement($items),
+                    'unit_price' => mt_rand(100, 500),
+                    'qty' => mt_rand(1, 6)
+                ]);
+            }
+        }
+
+        //Payment table
+        Payment::truncate();
+
+        for ($i = 0; $i < 1000; $i++) {
+            $payment = Payment::create([
+                'number' => 'PMT-'.$i,
+                'invoice_number' => 'INV-'.$i,
+                'date' => $faker->date($format = 'Y-m-d', $max = 'now'),
+                'description' => $faker->text,
+                'status' => true,
+                'method' => 'cash',
+                'balance' => mt_rand(0, 100),
+                'amount' => mt_rand(1000, 2000)
             ]);
 
             foreach(range(1, mt_rand(2, 4)) as $j) {

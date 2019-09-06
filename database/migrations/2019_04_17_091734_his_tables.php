@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use App\Models\Counter;
 
 class HisTables extends Migration
 {
@@ -19,19 +20,21 @@ class HisTables extends Migration
             $table->string('key')->unique();
             $table->string('prefix');
             $table->string('value');
-            $table->string('invoice_no')->unique();
-            $table->integer('encounter_id')->unsigned()
-                ->foreign('encounter_id')->references('id')->on('encounters');
-            $table->string('opened_by');
-            $table->boolean('status');
-            $table->double('total')->default(0);
             $table->timestamps();
         });
-        /*Counter::create([
+
+         Counter::create([
             'key' => 'invoice',
             'prefix' => 'INV-',
             'value' => 10000
-        ]);*/
+        ]);
+
+         Counter::create([
+            'key' => 'payment',
+            'prefix' => 'PMT-',
+            'value' => 10000
+        ]);
+        
 
         //Create Items table for chargesheet
         Schema::create('items', function (Blueprint $table) {
@@ -48,6 +51,7 @@ class HisTables extends Migration
             $table->increments('id');
             $table->string('number')->unique();
             $table->integer('patient_id')->unsigned();
+            $table->integer('payment_id')->unsigned();
             $table->date('date');
             $table->date('due_date');
             $table->boolean('status')->default(0);
@@ -56,6 +60,20 @@ class HisTables extends Migration
             $table->double('sub_total');
             $table->double('discount')->default(0);
             $table->double('total');
+            $table->timestamps();
+        });
+
+        //Create Payment table
+        Schema::create('payments', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('number')->unique();
+            $table->string('invoice_number');
+            $table->date('date');
+            $table->boolean('status')->default(0);
+            $table->string('method');
+            $table->text('description');
+            $table->double('amount');
+            $table->double('balance');
             $table->timestamps();
         });
 
@@ -87,6 +105,7 @@ class HisTables extends Migration
         Schema::dropIfExists('counters');
         Schema::dropIfExists('items');
         Schema::dropIfExists('invoices');
+        Schema::dropIfExists('payments');
         Schema::dropIfExists('invoice_items');
         Schema::dropIfExists('item_categories');
     }

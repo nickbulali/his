@@ -194,6 +194,7 @@ Route::get('/auth/signup/activate/{token}', 'Auth\APIController@signupActivate')
 
     //Billing|Invoices
     Route::resource('invoice', 'InvoiceController');
+    Route::resource('payment', 'PaymentController');
     Route::resource('item-category', 'ItemCategoryController');
 
     Route::resource('/item', 'ItemController');
