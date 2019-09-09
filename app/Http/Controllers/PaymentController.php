@@ -29,6 +29,20 @@ class PaymentController extends Controller
     {
         //
         $counter = Counter::where('key', 'payment')->first();
+
+              $form = [
+            'number' => $counter->prefix . $counter->value,
+            'invoice_number' => null,
+            'date' => null,
+            'status' => null,
+            'method' => null,
+            'amount' => null,
+            'balance' => null,
+            'description' => null
+        ];
+
+        return response()
+            ->json(['form' => $form]);
     }
 
     /**
