@@ -33,6 +33,7 @@ class DrugsController extends Controller
             'strength_unit' => 'required',
             'dosage_form'=> 'required',
             'administration_route'=> 'required',
+             'price'=> 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -80,6 +81,7 @@ class DrugsController extends Controller
             'strength_unit' => 'required',
             'dosage_form'=> 'required',
             'administration_route'=> 'required',
+            'price'=> 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -92,6 +94,7 @@ class DrugsController extends Controller
             $Drugs->strength_unit = $request->input('strength_unit');
             $Drugs->dosage_form = $request->input('dosage_form');
             $Drugs->administration_route = $request->input('administration_route');
+            $Drugs->price = $request->input('price');
             try {
                 $Drugs->save();
                 return response()->json($Drugs);

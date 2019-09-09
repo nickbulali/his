@@ -12,10 +12,13 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::post('/register', 'Auth\APIController@register');
-Route::post('/login', 'Auth\APIController@login');
-Route::get('/auth/signup/activate/{token}', 'Auth\APIController@signupActivate');
+    Route::resource('diagnosis', 'DiagnosisController');
+    Route::resource('medications', 'MedicationsController');
+    Route::resource('radiology', 'RadiologyController');
+    Route::resource('vitalsigns', 'VitalSignsController');
+    Route::post('/register', 'Auth\APIController@register');
+    Route::post('/login', 'Auth\APIController@login');
+    Route::get('/auth/signup/activate/{token}', 'Auth\APIController@signupActivate');
    // Route::get('users/count/{id}', 'InvoiceController@countUsers');
     Route::get('/users/count', 'UserController@countUsers');
     Route::get('/patient/count', 'PatientController@countPatients');
@@ -37,7 +40,8 @@ Route::get('/auth/signup/activate/{token}', 'Auth\APIController@signupActivate')
 
     //Allergies
     Route::resource('allergy', 'AllergyController');
-
+     //Diagnosis
+   Route::resource('diagnosis', 'DiagnosisController');
     //AntenatalHistory
     Route::resource('antenatalhistory', 'AntenatalHistoryController');
 
@@ -134,7 +138,7 @@ Route::get('/auth/signup/activate/{token}', 'Auth\APIController@signupActivate')
     Route::resource('patient', 'PatientController');
     Route::post('patient/testrequest', 'PatientController@testRequest');
     Route::get('patient/{patientId}/allergy/{allergyId}', 'PatientController@attachAllergy');
-
+  Route::get('patient/{patientId}/diagnosis/{diagnosisId}', 'PatientController@attachDiagnosis');
     //Queue
     Route::resource('queue', 'QueueController');
     Route::get('queuestats', 'QueueController@stats');
@@ -164,7 +168,7 @@ Route::get('/auth/signup/activate/{token}', 'Auth\APIController@signupActivate')
     Route::get('roleuser/attach', 'RoleUserController@attach');
     Route::get('roleuser/detach', 'RoleUserController@detach');
     Route::get('roleuser', 'RoleUserController@index');
-
+       Route::resource('test', 'TestController');
     //Smoking
     Route::resource('smoking', 'SmokingController');
 
@@ -212,7 +216,7 @@ Route::get('/auth/signup/activate/{token}', 'Auth\APIController@signupActivate')
 
       //Users
        Route::resource('users', 'UserController');
-    
+       Route::post('user/image', 'UserController@profilepic');
    
       //Inventory
 
@@ -224,6 +228,7 @@ Route::resource('issueStock', 'StockIssueController');
 Route::get('stockDetails/{id}', 'StockController@stockDetails');
 Route::get('requestIssue/{id}', 'RequestController@requestIssue');
 
+Route::post('/mpesa-post', 'MpesaController@newRequest');
 Route::get('add-to-log', 'HomeController@myTestAddToLog');
 Route::get('logActivity', 'HomeController@logActivity');
 });

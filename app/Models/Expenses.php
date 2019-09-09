@@ -22,3 +22,4 @@ class Expenses extends Model
         return $this->belongsTo('App\Models\ExpensesCategory', 'expense_category_id', 'id');
     }
 }
+ 

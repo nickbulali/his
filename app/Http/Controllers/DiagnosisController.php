@@ -1,18 +1,27 @@
 <?php
+
 namespace App\Http\Controllers;
-use App\Models\LabTestType;
 use Illuminate\Http\Request;
-class LabTestTypeController extends Controller
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+use App\Models\Diagnosis;
+use App\User;
+use Auth;
+class DiagnosisController extends Controller
 {
     public function index(Request $request)
     {
-        
-            $LabTestType = LabTestType::orderBy('id', 'ASC')->paginate(10);
-
-             return response()->json($LabTestType);
+        if ($request->query('search')) {
+            $search = $request->query('search');
+            $Diagnosis = Diagnosis::where('name', 'LIKE', "%{$search}%")
+                ->paginate(10);
+        } else {
+            $Diagnosis = Diagnosis::orderBy('id', 'ASC')->get();
         }
-       
-    
+
+        return response()->json($Diagnosis);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -22,27 +31,29 @@ class LabTestTypeController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name' => 'required',
-            'test_type_category_id' => 'required',
+            //'number' => 'required',
+            //'expiry' => 'required',
+            //'instrument_id' => 'required',
         ];
+
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $LabTestType = new LabTestType;
-            $LabTestType->name = $request->input('name');
-            $LabTestType->description = $request->input('description');
-            $LabTestType->culture = $request->input('culture');
-            $LabTestType->test_type_category_id = $request->input('test_type_category_id');
-            $LabTestType->targetTAT = $request->input('targetTAT');
+            $Diagnosis = new Diagnosis;
+            $Diagnosis->patient_id = $request->input('patient_id');
+            $Diagnosis->user_id =Auth::user()->id;
+            $Diagnosis->description = $request->input('description');
             try {
-                $LabTestType->save();
-                return response()->json($LabTestType->loader());
+                $Diagnosis->save();
+
+                return response()->json($Diagnosis);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
+
     /**
      * Display the specified resource.
      *
@@ -51,8 +62,13 @@ class LabTestTypeController extends Controller
      */
     public function show($id)
     {
-        return response()->json(LabTestType::find($id)->loader());
+        $Diagnosis = Diagnosis::wherePatientId($id)->get();
+
+        return response()->json($Diagnosis);
     }
+
+
+
     /**
      * Update the specified resource in storage.
      *
@@ -63,27 +79,29 @@ class LabTestTypeController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'name' => 'required',
-            'test_type_category_id' => 'required',
+            //'number' => 'required',
+            //'expiry' => 'required',
+            //'instrument_id' => 'required',
         ];
+
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $LabTestType = LabTestType::findOrFail($id);
-            $LabTestType->name = $request->input('name');
-            $LabTestType->description = $request->input('description');
-            $LabTestType->culture = $request->input('culture');
-            $LabTestType->test_type_category_id = $request->input('test_type_category_id');
-            $LabTestType->targetTAT = $request->input('targetTAT');
+            $Diagnosis = Diagnosis::findOrFail($id);
+            $Diagnosis->patient_id = $request->input('patient_id');
+            $Diagnosis->user_id =Auth::user()->id;
+            $Diagnosis->description = $request->input('description');
             try {
-                $LabTestType->save();
-                return response()->json($LabTestType->loader());
+                $Diagnosis->save();
+
+                return response()->json($Diagnosis);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -93,11 +111,13 @@ class LabTestTypeController extends Controller
     public function destroy($id)
     {
         try {
-            $LabTestType = LabTestType::findOrFail($id);
-            $LabTestType->delete();
-            return response()->json($LabTestType, 200);
+            $Diagnosis = Diagnosis::findOrFail($id);
+            $Diagnosis->delete();
+
+            return response()->json($Diagnosis, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
+
 }

@@ -5,8 +5,11 @@ use Illuminate\Database\Eloquent\Model;
 class Medications extends Model
 {
     protected $table = 'medications';
-    protected $fillable = ['patient_id','medication_status_id','drug_id','prescribed_by','test_type_id','dosage_id','quantity','start_time','end_time','refill','comments'];
-    public $timestamps = false;
+    protected $fillable = ['patient_id','medication_status_id','drugs','prescribed_by','test_type_id','dosage_id','quantity','start_time','end_time','refill','comments'];
+     protected $casts = [
+    'created_at'  => 'date:Y-m-d',
+  
+];
 
      public function patient()
     {

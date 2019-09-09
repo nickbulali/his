@@ -1,18 +1,26 @@
 <?php
+
 namespace App\Http\Controllers;
-use App\Models\LabTestType;
 use Illuminate\Http\Request;
-class LabTestTypeController extends Controller
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+use App\Models\Radiology;
+
+class RadiologyController extends Controller
 {
     public function index(Request $request)
     {
-        
-            $LabTestType = LabTestType::orderBy('id', 'ASC')->paginate(10);
-
-             return response()->json($LabTestType);
+        if ($request->query('search')) {
+            $search = $request->query('search');
+            $Radiology = Radiology::where('name', 'LIKE', "%{$search}%")
+                ->paginate(10);
+        } else {
+            $Radiology = Radiology::orderBy('id', 'ASC')->paginate(10);
         }
-       
-    
+
+        return response()->json($Radiology);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -22,27 +30,31 @@ class LabTestTypeController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name' => 'required',
-            'test_type_category_id' => 'required',
+            //'number' => 'required',
+            //'expiry' => 'required',
+            //'instrument_id' => 'required',
         ];
+
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $LabTestType = new LabTestType;
-            $LabTestType->name = $request->input('name');
-            $LabTestType->description = $request->input('description');
-            $LabTestType->culture = $request->input('culture');
-            $LabTestType->test_type_category_id = $request->input('test_type_category_id');
-            $LabTestType->targetTAT = $request->input('targetTAT');
+            $Radiology = new Radiology;
+            $Radiology->testname = $request->input('testname');
+            $Radiology->shortname = $request->input('shortname');
+            $Radiology->testtype = $request->input('testtype');
+            $Radiology->category = $request->input('category');
+            $Radiology->charge = $request->input('charge');
             try {
-                $LabTestType->save();
-                return response()->json($LabTestType->loader());
+                $Radiology->save();
+
+                return response()->json($Radiology);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
+
     /**
      * Display the specified resource.
      *
@@ -51,8 +63,11 @@ class LabTestTypeController extends Controller
      */
     public function show($id)
     {
-        return response()->json(LabTestType::find($id)->loader());
+        $Radiology = Radiology::findOrFail($id);
+
+        return response()->json($Radiology);
     }
+
     /**
      * Update the specified resource in storage.
      *
@@ -63,27 +78,32 @@ class LabTestTypeController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'name' => 'required',
-            'test_type_category_id' => 'required',
+            //'number' => 'required',
+            //'expiry' => 'required',
+            //'instrument_id' => 'required',
         ];
+
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $LabTestType = LabTestType::findOrFail($id);
-            $LabTestType->name = $request->input('name');
-            $LabTestType->description = $request->input('description');
-            $LabTestType->culture = $request->input('culture');
-            $LabTestType->test_type_category_id = $request->input('test_type_category_id');
-            $LabTestType->targetTAT = $request->input('targetTAT');
+            $Radiology = Radiology::findOrFail($id);
+            $Radiology->testname = $request->input('testname');
+            $Radiology->shortname = $request->input('shortname');
+            $Radiology->testtype = $request->input('testtype');
+            $Radiology->category = $request->input('category');
+            $Radiology->charge = $request->input('charge');
+
             try {
-                $LabTestType->save();
-                return response()->json($LabTestType->loader());
+                $Radiology->save();
+
+                return response()->json($Radiology);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -93,11 +113,13 @@ class LabTestTypeController extends Controller
     public function destroy($id)
     {
         try {
-            $LabTestType = LabTestType::findOrFail($id);
-            $LabTestType->delete();
-            return response()->json($LabTestType, 200);
+            $Radiology = Radiology::findOrFail($id);
+            $Radiology->delete();
+
+            return response()->json($Radiology, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
+
 }
