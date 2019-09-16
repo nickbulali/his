@@ -51,10 +51,9 @@ class HisTables extends Migration
             $table->increments('id');
             $table->string('number')->unique();
             $table->integer('patient_id')->unsigned();
-            $table->integer('payment_id')->unsigned();
             $table->date('date');
             $table->date('due_date');
-            $table->boolean('status')->default(0);
+            $table->string('status');
             $table->string('reference')->nullable();
             $table->text('terms_and_conditions');
             $table->double('sub_total');
@@ -67,9 +66,9 @@ class HisTables extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('number')->unique();
-            $table->string('invoice_number');
+            $table->integer('invoice_id')->unsigned();
             $table->date('date');
-            $table->boolean('status')->default(0);
+            $table->string('status');
             $table->string('method');
             $table->text('description');
             $table->double('amount');

@@ -8,7 +8,7 @@ class Payment extends Model
 {
     //
     protected $fillable = [
-        'invoice_number', 'date', 'method',
+        'invoice_id', 'date', 'method',
         'description', 'status'
     ];
 
@@ -16,11 +16,10 @@ class Payment extends Model
         'number', 'amount', 'balance'
     ];
 
-     public function getStatusAttribute($value)
+    public function invoice()
     {
-        if($value==0){
-        return 'not complete';
+        return $this->belongsTo(Invoice::class);
     }
-    return 'complete';
-    }
+
+     
 }

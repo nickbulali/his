@@ -720,6 +720,8 @@ class CreateEmrTables extends Migration
             $table->foreign('drug_id')->references('id')->on('drugs');
             $table->foreign('medication_status_id')->references('id')->on('medication_statuses');
             $table->foreign('dosage_id')->references('id')->on('dosages');
+            $table->timestamps();
+            
         });
 
         /*

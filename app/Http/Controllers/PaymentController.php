@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
 use App\Models\Counter;
 use App\Models\Payment;
+use App\Models\Invoice;
 use DB;
 
 class PaymentController extends Controller
@@ -16,7 +19,18 @@ class PaymentController extends Controller
      */
     public function index(Request $request)
     {
-         $payment = Payment::orderBy('number', 'asc')->get();
+        if ($request->query('search')) {
+            $search = $request->query('search');
+            $payment = Payment::with('invoice')
+            ->where('number', 'LIKE', "%{$search}%")
+            ->orWhere('date', 'LIKE', "%{$search}%")
+                ->paginate(15);
+        } else {
+            $payment = Payment::with(['invoice'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(15);
+        }
+
         return response()->json($payment);
     }
 
@@ -32,7 +46,7 @@ class PaymentController extends Controller
 
               $form = [
             'number' => $counter->prefix . $counter->value,
-            'invoice_number' => null,
+            'invoice_id' => null,
             'date' => null,
             'status' => null,
             'method' => null,
@@ -54,35 +68,40 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
         //
-        $rules = [
-            'invoice_number' => 'required',
-            'date' => 'required',
+         $request->validate([
+            'invoice_id' => 'required',
+            'date' => 'required|date_format:Y-m-d',
             'method' => 'required',
             'status' => 'required',
-            'amount' => 'required',
+            'amount' => 'required|numeric|min:0',
             'number' => 'required',
-            'balance' => 'required'
-        ];
-        $validator = \Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json($validator, 422);
-        } else {
-            $Payment = new Payment;
-            $Payment->invoice_number = $request->input('invoice_number');
-            $Payment->date = $request->input('date');
-            $Payment->method = $request->input('method');
-            $Payment->description = $request->input('description');
-            $Payment->status = $request->input('status');
-            $Payment->amount = $request->input('amount');
-            $Payment->balance = $request->input('balance');
-            $Payment->number = $request->input('number');
-            try {
-                $Payment->save();
-                return response()->json($Payment);
-            } catch (\Illuminate\Database\QueryException $e) {
-                return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-            }
-        }
+            'balance' => 'required|numeric|min:0'
+        ]);
+
+        $payment = new Payment;
+        $payment->fill([ $payment->invoice_id = $request->input('invoice_id'),
+            $payment->date = $request->input('date'),
+            $payment->method = $request->input('method'),
+            $payment->description = $request->input('description'),
+            $payment->status = $request->input('status'),
+            $payment->amount = $request->input('amount'),
+            $payment->balance = $request->input('balance'),
+            $payment->number = $request->input('number') ])->save();
+
+       
+
+        $payment = DB::transaction(function() use ($payment, $request) {
+            $counter = Counter::where('key', 'payment')->first();
+            $payment->number = $counter->prefix . $counter->value;
+          
+
+            $counter->increment('value');
+
+            return $payment;
+        });
+
+        return response()
+            ->json(['saved' => true, 'id' => $payment->id]);
     }
 
     /**
@@ -120,20 +139,20 @@ class PaymentController extends Controller
     {
         //
           $rules = [
-            'invoice_number' => 'required',
-            'date' => 'required',
+            'invoice_id' => 'required',
+            'date' => 'required|date_format:Y-m-d',
             'method' => 'required',
             'status' => 'required',
-            'amount' => 'required',
+            'amount' => 'required|numeric|min:0',
             'number' => 'required',
-            'balance' => 'required'
+            'balance' => 'required|numeric|min:0'
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
             $payment = Payment::findOrFail($id);
-            $payment->invoice_number = $request->input('invoice_number');
+            $payment->invoice_id = $request->input('invoice_id');
             $payment->date = $request->input('date');
             $payment->method = $request->input('method');
             $payment->description = $request->input('description');

@@ -23,10 +23,6 @@ class Invoice extends Model
         return $this->belongsTo(Patient::class);
     }
 
-    public function payment()
-    {
-        return $this->belongsTo(Payment::class);
-    }
 
      public function items()
     {
@@ -41,11 +37,4 @@ class Invoice extends Model
         $this->attributes['total'] = $value - $discount;
     }
 
-    public function getStatusAttribute($value)
-    {
-        if($value==0){
-        return 'not paid';
-    }
-    return 'paid';
-    }
 }
