@@ -2,7 +2,7 @@
 namespace App\Http\Controllers;
 use App\Models\Surgeries;
 use Illuminate\Http\Request;
-class SurgeriesController extends Controller
+class SurgeryController extends Controller
 {
     public function index(Request $request)
     {

@@ -2,7 +2,7 @@
 namespace App\Http\Controllers;
 use App\Models\ObstetricHistories;
 use Illuminate\Http\Request;
-class ObstetricHistoriesController extends Controller
+class ObstetricHistoryController extends Controller
 {
     public function index(Request $request)
     {

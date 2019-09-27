@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\SocialHistories;
+use App\Models\SocialHistory;
 use Illuminate\Http\Request;
 class SocialHistoryController extends Controller
 {
@@ -23,7 +23,7 @@ class SocialHistoryController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $SocialHistory = new SocialHistories;
+            $SocialHistory = new SocialHistory;
             $SocialHistory->patient_id = $request->input('patient_id');
             $SocialHistory->social_problem = $request->input('social_problem');
             $SocialHistory->start_date = $request->input('start_date');
@@ -44,7 +44,7 @@ class SocialHistoryController extends Controller
      */
     public function show($id)
     {
-        $SocialHistory = SocialHistories::findOrFail($id);
+        $SocialHistory = SocialHistory::findOrFail($id);
         return response()->json($SocialHistory);
     }
     /**
@@ -64,7 +64,7 @@ class SocialHistoryController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $SocialHistory = SocialHistories::findOrFail($id);
+            $SocialHistory = SocialHistory::findOrFail($id);
             $SocialHistory->social_problem = $request->input('social_problem');
             $SocialHistory->start_date = $request->input('start_date');
             $SocialHistory->end_date = $request->input('end_date');
@@ -85,7 +85,7 @@ class SocialHistoryController extends Controller
     public function destroy($id)
     {
         try {
-            $SocialHistory = SocialHistories::findOrFail($id);
+            $SocialHistory = SocialHistory::findOrFail($id);
             $SocialHistory->delete();
             return response()->json($SocialHistory, 200);
         } catch (\Illuminate\Database\QueryException $e) {
