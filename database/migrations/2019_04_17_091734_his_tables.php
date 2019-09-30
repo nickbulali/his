@@ -54,10 +54,10 @@ class HisTables extends Migration
             $table->date('date');
             $table->date('due_date');
             $table->string('status');
-            $table->string('reference')->nullable();
-            $table->text('terms_and_conditions');
+            $table->string('description')->nullable();
             $table->double('sub_total');
             $table->double('discount')->default(0);
+            $table->double('tax');
             $table->double('total');
             $table->timestamps();
         });

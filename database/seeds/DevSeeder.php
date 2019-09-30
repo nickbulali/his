@@ -725,8 +725,8 @@ class DevSeeder extends Seeder
         ItemCategory::truncate();
         for ($i = 0; $i < 10; $i++) {
             ItemCategory::create([
-                'name' => $faker->word,
-                'description' => 'description of Item '.$faker->word,
+                'name' => 'consultation',
+                'description' => 'radiology consultation',
             ]);
         }
 
@@ -736,8 +736,8 @@ class DevSeeder extends Seeder
         Item::truncate();
         for ($i = 0; $i < 200; $i++) {
             Item::create([
-                'item_code' => 'PDT-'.$i,
-                'description' => 'Name of Item '.$i,
+                'item_code' => 'CNT-'.$i,
+                'description' => 'consultation',
                 'item_category_id' => $faker->randomElement($itemCategories),
                 'unit_price' => mt_rand(100, 1000)
             ]);
@@ -756,10 +756,10 @@ class DevSeeder extends Seeder
                 'patient_id' => $faker->randomElement($patients),
                 'date' => $faker->date($format = 'Y-m-d', $max = 'now'),
                 'due_date' => $faker->date($format = 'Y-m-d', $max = 'now'),
-                'reference' => 'LPO #'.$i,
-                'terms_and_conditions' => $faker->text,
+                'description' => 'LPO #'.$i,
                 'status' => 'paid',
                 'discount' => mt_rand(0, 100),
+                'tax' => mt_rand(0, 100),
                 'sub_total' => mt_rand(1000, 2000)
             ]);
 

@@ -41,6 +41,24 @@ class CreateEmrTables extends Migration
             $table->timestamps();
         });
 
+         Schema::create('diagnosis', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
+            $table->integer('condition_id')->unsigned();
+            $table->integer('diagnosed_by')->unsigned()->nullable();
+            $table->string('comment')->nullable();
+            $table->string('start_date')->nullable();// can be genetic
+            $table->string('end_date')->nullable();
+        });
+
+
+         Schema::create('diagnosis_patient', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('diagnosis_id')->unsigned();
+            $table->integer('patient_id')->unsigned();
+            $table->timestamps();
+        });
+
        /*
         * Create table for associating roles to users (Many-to-Many)
         */

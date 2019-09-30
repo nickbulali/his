@@ -10,8 +10,8 @@ class Invoice extends Model
     use HasManyRelation;
 
     protected $fillable = [
-        'patient_id', 'date', 'due_date', 'discount',
-        'terms_and_conditions', 'reference'
+        'patient_id', 'date', 'due_date', 'discount','tax',
+        'description','status'
     ];
 
     protected $guarded = [
