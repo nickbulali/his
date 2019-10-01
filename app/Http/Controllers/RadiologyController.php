@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\Admissions;
+use App\Models\Xrays;
 use Illuminate\Http\Request;
-class AdmissionsController extends Controller
+class RadiologyController extends Controller
 {
     public function index(Request $request)
     {
@@ -16,21 +16,21 @@ class AdmissionsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'reason_for_admission' => 'required',
-            'reason_for_discharge' => 'required',
+            'encounter_id' => 'required',
+            'image_url' => 'required',
             'comments' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Admissions = new Admissions;
-            $Admissions->reason_for_admission = $request->input('reason_for_admission');
-            $Admissions->reason_for_discharge = $request->input('reason_for_discharge');
-            $Admissions->comments = $request->input('comments');
+            $Xrays = new Xrays;
+            $Xrays->encounter_id = $request->input('encounter_id');
+            $Xrays->image_url = $request->input('image_url');
+            $Xrays->comments = $request->input('comments');
             try {
-                $Admissions->save();
-                return response()->json($Admissions);
+                $Xrays->save();
+                return response()->json($Xrays);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -44,8 +44,8 @@ class AdmissionsController extends Controller
      */
     public function show($id)
     {
-        $Admissions = Admissions::findOrFail($id);
-        return response()->json($Admissions);
+        $Xrays = Xrays::findOrFail($id);
+        return response()->json($Xrays);
     }
     /**
      * Update the specified resource in storage.
@@ -57,21 +57,21 @@ class AdmissionsController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'reason_for_admission' => 'required',
-            'reason_for_discharge' => 'required',
+            'encounter_id' => 'required',
+            'image_url' => 'required',
             'comments' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Admissions = Admissions::findOrFail($id);
-            $Admissions->reason_for_admission = $request->input('reason_for_admission');
-            $Admissions->reason_for_discharge = $request->input('reason_for_discharge');
-            $Admissions->comments = $request->input('comments');
+            $Xrays = Xrays::findOrFail($id);
+            $Xrays->encounter_id = $request->input('encounter_id');
+            $Xrays->image_url = $request->input('image_url');
+            $Xrays->comments = $request->input('comments');
             try {
-                $Admissions->save();
-                return response()->json($Admissions);
+                $Xrays->save();
+                return response()->json($Xrays);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -86,9 +86,9 @@ class AdmissionsController extends Controller
     public function destroy($id)
     {
         try {
-            $Admissions = Admissions::findOrFail($id);
-            $Admissions->delete();
-            return response()->json($Admissions, 200);
+            $Xrays = Xrays::findOrFail($id);
+            $Xrays->delete();
+            return response()->json($Xrays, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

@@ -2,10 +2,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-class VitalSigns extends Model
+class VitalSign extends Model
 {
     protected $table = 'vital_signs';
-    protected $fillable = ['patient_id','body_temperature','respiratory_rate','heart_rate','blood_pressure','height','weight','body_mass_index','body_surface_area'];
+    protected $fillable = [
+    	'patient_id',
+    	'body_temperature',
+    	'respiratory_rate',
+    	'heart_rate',
+    	'blood_pressure',
+    	'height',
+    	'weight',
+    	'body_mass_index',
+    	'body_surface_area'
+   	];
     public $timestamps = false;
 
       public function patient()

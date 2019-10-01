@@ -3,9 +3,9 @@
 use Illuminate\Database\Seeder;
 use Faker\Factory;
 
-use App\Models\EnvironmentalHistories;
+use App\Models\EnvironmentalHistory;
 use App\Models\MedicationStatus;
-use App\Models\SocialHistories;
+use App\Models\SocialHistory;
 use App\Models\EncounterClass;
 use App\Models\ConditionTypes;
 use App\Models\FamilyRelation;
@@ -346,9 +346,9 @@ class DevSeeder extends Seeder
         }
 
         //Social Histories
-        SocialHistories::truncate();
+        SocialHistory::truncate();
         for ($i = 0; $i < 200; $i++){
-            SocialHistories::create([
+            SocialHistory::create([
                 'patient_id' => $faker->randomElement($patients),
                 'social_problem' => $faker->realText($maxNbChars = 50, $indexSize = 2),
                 'start_date'  => $faker->date($format = 'Y-m-d', $max = 'now'),
@@ -357,9 +357,9 @@ class DevSeeder extends Seeder
         }
 
         //Environmental Histories
-        EnvironmentalHistories::truncate();
+        EnvironmentalHistory::truncate();
         for ($i = 0; $i < 200; $i++){
-            EnvironmentalHistories::create([
+            EnvironmentalHistory::create([
                 'patient_id' => $faker->randomElement($patients),
                 'description' => $faker->realText($maxNbChars = 50, $indexSize = 2),
                 'start_date'  => $faker->date($format = 'Y-m-d', $max = 'now'),

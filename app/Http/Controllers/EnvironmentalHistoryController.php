@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\EnvironmentalHistories;
+use App\Models\EnvironmentalHistory;
 use Illuminate\Http\Request;
 class EnvironmentalHistoryController extends Controller
 {
@@ -23,7 +23,7 @@ class EnvironmentalHistoryController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $SocialHistory = new EnvironmentalHistories;
+            $SocialHistory = new EnvironmentalHistory;
             $SocialHistory->patient_id = $request->input('patient_id');
             $SocialHistory->description = $request->input('description');
             $SocialHistory->start_date = $request->input('start_date');
@@ -44,7 +44,7 @@ class EnvironmentalHistoryController extends Controller
      */
     public function show($id)
     {
-        $SocialHistory = EnvironmentalHistories::findOrFail($id);
+        $SocialHistory = EnvironmentalHistory::findOrFail($id);
         return response()->json($SocialHistory);
     }
     /**
@@ -64,7 +64,7 @@ class EnvironmentalHistoryController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $SocialHistory = EnvironmentalHistories::findOrFail($id);
+            $SocialHistory = EnvironmentalHistory::findOrFail($id);
             $SocialHistory->description = $request->input('description');
             $SocialHistory->start_date = $request->input('start_date');
             $SocialHistory->end_date = $request->input('end_date');
@@ -85,7 +85,7 @@ class EnvironmentalHistoryController extends Controller
     public function destroy($id)
     {
         try {
-            $SocialHistory = EnvironmentalHistories::findOrFail($id);
+            $SocialHistory = EnvironmentalHistory::findOrFail($id);
             $SocialHistory->delete();
             return response()->json($SocialHistory, 200);
         } catch (\Illuminate\Database\QueryException $e) {

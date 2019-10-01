@@ -1,4 +1,5 @@
 <?php
+// this should handle in patient encounters a.k.a ward rounds
 namespace App\Http\Controllers;
 use App\Models\AdmissionEncounter;
 use Illuminate\Http\Request;

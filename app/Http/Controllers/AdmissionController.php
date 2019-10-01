@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\Xrays;
+use App\Models\Admissions;
 use Illuminate\Http\Request;
-class XraysController extends Controller
+class AdmissionController extends Controller
 {
     public function index(Request $request)
     {
@@ -16,21 +16,21 @@ class XraysController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'encounter_id' => 'required',
-            'image_url' => 'required',
+            'reason_for_admission' => 'required',
+            'reason_for_discharge' => 'required',
             'comments' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Xrays = new Xrays;
-            $Xrays->encounter_id = $request->input('encounter_id');
-            $Xrays->image_url = $request->input('image_url');
-            $Xrays->comments = $request->input('comments');
+            $Admissions = new Admissions;
+            $Admissions->reason_for_admission = $request->input('reason_for_admission');
+            $Admissions->reason_for_discharge = $request->input('reason_for_discharge');
+            $Admissions->comments = $request->input('comments');
             try {
-                $Xrays->save();
-                return response()->json($Xrays);
+                $Admissions->save();
+                return response()->json($Admissions);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -44,8 +44,8 @@ class XraysController extends Controller
      */
     public function show($id)
     {
-        $Xrays = Xrays::findOrFail($id);
-        return response()->json($Xrays);
+        $Admissions = Admissions::findOrFail($id);
+        return response()->json($Admissions);
     }
     /**
      * Update the specified resource in storage.
@@ -57,21 +57,21 @@ class XraysController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'encounter_id' => 'required',
-            'image_url' => 'required',
+            'reason_for_admission' => 'required',
+            'reason_for_discharge' => 'required',
             'comments' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Xrays = Xrays::findOrFail($id);
-            $Xrays->encounter_id = $request->input('encounter_id');
-            $Xrays->image_url = $request->input('image_url');
-            $Xrays->comments = $request->input('comments');
+            $Admissions = Admissions::findOrFail($id);
+            $Admissions->reason_for_admission = $request->input('reason_for_admission');
+            $Admissions->reason_for_discharge = $request->input('reason_for_discharge');
+            $Admissions->comments = $request->input('comments');
             try {
-                $Xrays->save();
-                return response()->json($Xrays);
+                $Admissions->save();
+                return response()->json($Admissions);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -86,9 +86,9 @@ class XraysController extends Controller
     public function destroy($id)
     {
         try {
-            $Xrays = Xrays::findOrFail($id);
-            $Xrays->delete();
-            return response()->json($Xrays, 200);
+            $Admissions = Admissions::findOrFail($id);
+            $Admissions->delete();
+            return response()->json($Admissions, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
