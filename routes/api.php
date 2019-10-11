@@ -201,7 +201,6 @@ use Illuminate\Http\Request;
     Route::resource('payment', 'PaymentController');
     Route::resource('item-category', 'ItemCategoryController');
 
-    Route::resource('/item', 'ItemController');
     Route::resource('/expense-category', 'ExpensesCategoryController');
 
     Route::resource('/expenses', 'ExpenseController');

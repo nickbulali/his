@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use App\Models\Counter;
 use DB;
 
@@ -61,43 +62,51 @@ class InvoiceController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'patient_id' => 'required|integer|exists:patients,id',
-            'date' => 'required|date_format:Y-m-d',
-            'due_date' => 'required|date_format:Y-m-d',
-            'description' => 'nullable|max:100',
-            'status' => 'required',
-            'discount' => 'required|numeric|min:0',
-            'tax' => 'required|numeric|min:0',
-            'items' => 'required|array|min:1',
-            'items.*.item_id' => 'required|integer|exists:items,id',
-            'items.*.unit_price' => 'required|numeric|min:0',
-            'items.*.qty' => 'required|integer|min:1'
-        ]);
-
-        $invoice = new Invoice;
-        $invoice->fill($request->except('items'));
-
-        $invoice->sub_total = collect($request->items)->sum(function($item) {
-            return $item['qty'] * $item['unit_price'];
-        });
-
-        $invoice = DB::transaction(function() use ($invoice, $request) {
-            $counter = Counter::where('key', 'invoice')->first();
-            $invoice->number = $counter->prefix . $counter->value;
-
-            // custom method from app/Helper/HasManyRelation
-            $invoice->storeHasMany([
-                'items' => $request->items
-            ]);
-
-            $counter->increment('value');
-
-            return $invoice;
-        });
-
-        return response()
-            ->json(['saved' => true, 'id' => $invoice->id]);
+       $rules = [
+            // 'patient_id' => 'required|integer|exists:patients,id',
+            // 'date' => 'required|date_format:Y-m-d',
+            // 'due_date' => 'required|date_format:Y-m-d',
+            // 'description' => 'nullable|max:100',
+            // 'discount' => 'required|numeric|min:0',
+            // 'tax' => 'required|numeric|min:0',
+            // 'status' => 'required',
+            // 'total' => 'required',
+            // 'sub_total' => 'required',
+            // 'number' => 'required|unique',
+        ];
+        $validator = \Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json($validator, 422);
+        } else {
+            $invoice = new Invoice;
+            $invoice->number = $request->input('number');
+            $invoice->patient_id = $request->input('patient_id');
+            $invoice->date = $request->input('date');
+            $invoice->due_date = $request->input('due_date');
+            $invoice->description = $request->input('description');
+            $invoice->discount = $request->input('discount');
+            $invoice->tax = $request->input('tax');
+            $invoice->status = $request->input('status');
+            $invoice->total = $request->input('total');
+            $invoice->sub_total = $request->input('sub_total');
+            try {
+                $invoice->save();
+            } catch (\Illuminate\Database\QueryException $e) {
+                return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+            }
+            $invoiceItem = new invoiceItem;
+            $invoiceItem->item_id = $request->input('item_id');
+            $invoiceItem->invoice_id = $invoice->id;
+            $invoiceItem->unit_price = $request->input('unit_price');
+            $invoiceItem->qty = $request->input('qty');
+            
+            try {
+                $invoiceItem->save();
+                return response()->json($invoiceItem);
+            } catch (\Illuminate\Database\QueryException $e) {
+                return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+            }
+        }
     }
 
       public function show($id)
