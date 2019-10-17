@@ -61,7 +61,7 @@ class Patient extends Model
 
     public function medications()
     {
-        return $this->hasMany('App\Models\Medications');
+        return $this->hasMany('App\Models\Medication');
     }
 
     public function organization()
@@ -80,11 +80,11 @@ class Patient extends Model
     }
     public function socialHistory()
     {
-        return $this->hasMany('App\Models\SocialHistories');
+        return $this->hasMany('App\Models\SocialHistory');
     }
     public function environmentalHistory()
     {
-        return $this->hasMany('App\Models\EnvironmentalHistories');
+        return $this->hasMany('App\Models\EnvironmentalHistory');
     }
     public function smokingHistory()
     {
