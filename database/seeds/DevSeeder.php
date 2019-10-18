@@ -14,7 +14,7 @@ use App\Models\MaritalStatus;
 use App\Models\ItemCategory;
 use App\Models\InvoiceItem;
 use App\Models\QueueStatus;
-use App\Models\Medications;
+use App\Models\Medication;
 use App\Models\BloodGroup;
 use App\Models\Encounter;
 use App\Models\Location;
@@ -783,9 +783,9 @@ class DevSeeder extends Seeder
         $users = User::pluck('id');
         $dosage = Dosage::pluck('id');
 
-        Medications::truncate();
+        Medication::truncate();
         for ($i = 0; $i < 200; $i++){
-            Medications::create([
+            Medication::create([
                 'patient_id'=> $faker->randomElement($patients),
                 'medication_status_id'=> $faker->randomElement($medicationstatus),
                 'drug_id'   => $faker->randomElement($drugs),
