@@ -26,6 +26,13 @@ class PatientController extends Controller
             $patient = $query->with('gender', 'name', 'maritalStatus', 'bloodGroup', 'allergies', 'familyHistory.conditionType')->paginate(11);
         } else {
             $patient = Patient::with('name', 'gender', 'maritalStatus', 'encounter.encounterClass', 'encounter.location', 'bloodGroup', 'allergies', 'medications.drugs', 'medications.dosage', 'familyHistory.conditionType', 'familyHistory.relation', 'socialHistory', 'environmentalHistory', 'smokingHistory', 'alcoholHistory')->orderBy('created_at', 'DESC')->paginate(11);
+
+            })->with('gender', 'name', 'maritalStatus', 'bloodGroup', 'allergies','diagnosis')
+                ->paginate(25);
+        } else {
+            $patient = Patient::with('name', 'gender', 'maritalStatus', 'bloodGroup', 'allergies','diagnosis')->orderBy('created_at', 'DESC')->paginate(25);
+
+            
         }
         if($queried!=null){
             $frequency = Patient::frequency($queried);
@@ -85,7 +92,11 @@ class PatientController extends Controller
      */
     public function show($id)
     {
+
         $patient = Patient::with('name', 'gender', 'maritalStatus', 'encounter.encounterClass', 'encounter.location', 'bloodGroup', 'allergies', 'medications.drugs', 'medications.dosage', 'familyHistory.conditionType', 'familyHistory.relation', 'socialHistory', 'environmentalHistory', 'smokingHistory', 'alcoholHistory')->findOrFail($id);
+
+        $patient = Patient::with('name', 'gender', 'maritalStatus', 'encounter.encounterClass', 'encounter.location', 'bloodGroup', 'allergies','diagnosis')->findOrFail($id);
+
         return response()->json($patient);
     }
     /**
@@ -131,6 +142,19 @@ class PatientController extends Controller
             }
         }
     }
+
+
+ public function countPatients(Request $request)
+    {
+       
+            $Patient = Patient::count();
+        
+
+        return response()->json($Patient);
+    }
+
+
+
     /**
      * Remove the specified resource from storage.
      *
@@ -176,7 +200,7 @@ class PatientController extends Controller
                 $test = new Test;
                 $test->encounter_id = $encounter->id;
                 $test->test_type_id = $testTypeId;
-                $test->test_status_id = TestStatus::pending;
+                $test->test_status_id = '1';
                 $test->created_by = Auth::user()->id;
                 $test->requested_by = $request->input('practitioner_name');
                 $test->save();
@@ -204,5 +228,15 @@ class PatientController extends Controller
         } catch (\Illuminate\Database\QueryException $e) {
            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
+    }
+
+        public function attachDiagnosis($patientId, $diagnosisId){
+         $patient= Patient::find($patientId);
+       try{
+           $patient->diagnosis()->attach($diagnosisId);
+           return redirect()->action('PatientController@show',['patientId' => $patientId]);
+       } catch (\Illuminate\Database\QueryException $e) {
+           return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+       }
     }
 }

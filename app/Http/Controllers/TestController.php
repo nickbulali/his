@@ -25,15 +25,12 @@ class TestController extends Controller
             $tests = Test::with(
                 'encounter.patient.name',
                 'encounter.patient.gender',
-                'results.measure.measureType',
-                'results.measure.measureRanges',
-                'specimen.specimenType',
-                'testStatus.testPhase',
-                'testType.measures.results',
-                'testType.measures.measureType',
-                'testType.measures.measureRanges',
-                'testType.specimenTypes'
-            )->orderBy('created_at', 'DESC')->paginate(10);
+
+                 'testType',
+                'testStatus.testPhase'
+  
+                
+            )->orderBy('created_at', 'DESC')->paginate(25);
         }
         return response()->json($tests);
     }

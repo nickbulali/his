@@ -41,6 +41,24 @@ class CreateEmrTables extends Migration
             $table->timestamps();
         });
 
+         Schema::create('diagnosis', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('encounter_id')->unsigned();
+            $table->integer('condition_id')->unsigned();
+            $table->integer('diagnosed_by')->unsigned()->nullable();
+            $table->string('comment')->nullable();
+            $table->string('start_date')->nullable();// can be genetic
+            $table->string('end_date')->nullable();
+        });
+
+
+         Schema::create('diagnosis_patient', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('diagnosis_id')->unsigned();
+            $table->integer('patient_id')->unsigned();
+            $table->timestamps();
+        });
+
        /*
         * Create table for associating roles to users (Many-to-Many)
         */
@@ -459,12 +477,40 @@ class CreateEmrTables extends Migration
         Schema::create('vital_signs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('encounter_id')->unsigned();
+
+            $table->integer('patient_id')->unsigned();
+
             $table->string('body_temperature');
             $table->string('respiratory_rate');
             $table->string('heart_rate');
             $table->string('blood_pressure');
+            $table->string('height');
+            $table->string('weight');
+            $table->string('body_mass_index');
+            $table->string('body_surface_area');
+            $table->timestamps();
+        $table->foreign('patient_id')->references('id')->on('patients');
         });
 
+
+         Schema::create('appointment', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('patient_id')->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->string('appointment_date');
+            $table->string('appointment_time');
+            $table->string('status');
+            $table->timestamps();
+            $table->foreign('patient_id')->references('id')->on('patients');
+            $table->foreign('user_id')->references('id')->on('users');
+        });
+
+    Schema::create('appointment_status', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('code');
+            $table->string('display');
+            $table->string('color');
+        });
         /*
          * @height:todo check best data type
          * @weight:todo check best data type
@@ -768,8 +814,7 @@ class CreateEmrTables extends Migration
             $table->integer('patient_id')->unsigned();
             $table->integer('medication_status_id')->unsigned();
             $table->integer('drug_id')->unsigned();
-            $table->integer('prescribed_by')->unsigned()
-                ->foreign('test_type_id')->references('id')->on('test_types');
+            $table->integer('prescribed_by')->unsigned();
             $table->integer('dosage_id')->unsigned();
             $table->string('quantity');
             $table->string('start_time');
@@ -777,6 +822,12 @@ class CreateEmrTables extends Migration
 
             $table->boolean('refill')->default(0);
             $table->string('comments');
+            $table->foreign('patient_id')->references('id')->on('patients');
+            $table->foreign('drug_id')->references('id')->on('drugs');
+            $table->foreign('medication_status_id')->references('id')->on('medication_statuses');
+            $table->foreign('dosage_id')->references('id')->on('dosages');
+            $table->timestamps();
+            
         });
 
         /*

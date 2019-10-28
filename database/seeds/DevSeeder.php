@@ -23,6 +23,7 @@ use App\Models\Alcohol;
 use App\Models\Smoking;
 use App\Models\Patient;
 use App\Models\Invoice;
+use App\Models\Payment;
 use App\Models\Gender;
 use App\Models\Dosage;
 use App\Models\Drugs;
@@ -39,7 +40,7 @@ class DevSeeder extends Seeder
      */
     public function run()
     {
-    	$faker = Factory::create();
+        $faker = Factory::create();
 
         //Allergy
         Allergy::truncate();
@@ -215,8 +216,8 @@ class DevSeeder extends Seeder
             'is_drug'   => 0
         ]);
 
-    	//BloodGroup table
-    	BloodGroup::truncate();
+        //BloodGroup table
+        BloodGroup::truncate();
 
         BloodGroup::create([
             'code' => 'A+',
@@ -251,8 +252,8 @@ class DevSeeder extends Seeder
             'display' => 'AB-'
         ]);
 
-    	//Name Table
-    	Name::truncate();
+        //Name Table
+        Name::truncate();
 
         $faker = \Faker\Factory::create();
         
@@ -268,9 +269,9 @@ class DevSeeder extends Seeder
         $names = Name::all();
         $bloodGroup = BloodGroup::pluck('id');
 
-    	//Patients table
-    	Patient::truncate();
-    	foreach ($names as $name) {
+        //Patients table
+        Patient::truncate();
+        foreach ($names as $name) {
             Patient::create([
                 'identifier' => $faker->ean8,
                 'ulin' => $faker->uuid,
@@ -846,130 +847,130 @@ class DevSeeder extends Seeder
 
         //EncounterClass table
         EncounterClass::create([
-        	'code' => 'in-patient',
+            'code' => 'in-patient',
             'display' => 'In-Patient'
         ]);
         EncounterClass::create([
-        	'code' => 'out-patient',
+            'code' => 'out-patient',
             'display' => 'Out-Patient'
         ]);
 
         //Location table
         Location::create([
-        	'identifier'=> 'accident and emergency',
-        	'name'		=> 'Accident and Emergency (A&E)'
+            'identifier'=> 'accident and emergency',
+            'name'      => 'Accident and Emergency (A&E)'
         ]);
         Location::create([
-        	'identifier'=> 'anaesthetics',
-        	'name'		=> 'Anaesthetics'
+            'identifier'=> 'anaesthetics',
+            'name'      => 'Anaesthetics'
         ]);
         Location::create([
-        	'identifier'=> 'breast screening',
-        	'name'		=> 'Breast Screening'
+            'identifier'=> 'breast screening',
+            'name'      => 'Breast Screening'
         ]);
         Location::create([
-        	'identifier'=> 'cardiology',
-        	'name'		=> 'Cardiology'
+            'identifier'=> 'cardiology',
+            'name'      => 'Cardiology'
         ]);
         Location::create([
-        	'identifier'=> 'critical care',
-        	'name'		=> 'Critical Care'
+            'identifier'=> 'critical care',
+            'name'      => 'Critical Care'
         ]);
         Location::create([
-        	'identifier'=> 'diagnostic Imaging',
-        	'name'		=> 'Diagnostic imaging'
+            'identifier'=> 'diagnostic Imaging',
+            'name'      => 'Diagnostic imaging'
         ]);
         Location::create([
-        	'identifier'=> 'ENT',
-        	'name'		=> 'Ear nose and throat (ENT)'
+            'identifier'=> 'ENT',
+            'name'      => 'Ear nose and throat (ENT)'
         ]);
         Location::create([
-        	'identifier'=> 'ESD',
-        	'name'		=> 'Elderly Services Department'
+            'identifier'=> 'ESD',
+            'name'      => 'Elderly Services Department'
         ]);
         Location::create([
-        	'identifier'=> 'gastro',
-        	'name'		=> 'Gastroenterology'
+            'identifier'=> 'gastro',
+            'name'      => 'Gastroenterology'
         ]);
         Location::create([
-        	'identifier'=> 'GS',
-        	'name'		=> 'General Surgery'
+            'identifier'=> 'GS',
+            'name'      => 'General Surgery'
         ]);
         Location::create([
-        	'identifier'=> 'gynaecology',
-        	'name'		=> 'Gynaecology'
+            'identifier'=> 'gynaecology',
+            'name'      => 'Gynaecology'
         ]);
         Location::create([
-        	'identifier'=> 'haematology',
-        	'name'		=> 'Haematology'
+            'identifier'=> 'haematology',
+            'name'      => 'Haematology'
         ]);
         Location::create([
-        	'identifier'=> 'MD',
-        	'name'		=> 'Maternity departments'
+            'identifier'=> 'MD',
+            'name'      => 'Maternity departments'
         ]);
         Location::create([
-        	'identifier'=> 'microbiology',
-        	'name'		=> 'Microbiology'
+            'identifier'=> 'microbiology',
+            'name'      => 'Microbiology'
         ]);
         Location::create([
-        	'identifier'=> 'NU',
-        	'name'		=> 'Neonatal Unit'
+            'identifier'=> 'NU',
+            'name'      => 'Neonatal Unit'
         ]);
         Location::create([
-        	'identifier'=> 'nephrology',
-        	'name'		=> 'Nephrology'
+            'identifier'=> 'nephrology',
+            'name'      => 'Nephrology'
         ]);
         Location::create([
-        	'identifier'=> 'ND',
-        	'name'		=> 'Nutrition and Dietetics'
+            'identifier'=> 'ND',
+            'name'      => 'Nutrition and Dietetics'
         ]);
         Location::create([
-        	'identifier'=> 'OGU',
-        	'name'		=> 'Obstetrics and Gynaecology Units'
+            'identifier'=> 'OGU',
+            'name'      => 'Obstetrics and Gynaecology Units'
         ]);
         Location::create([
-        	'identifier'=> 'oncology',
-        	'name'		=> 'Oncology'
+            'identifier'=> 'oncology',
+            'name'      => 'Oncology'
         ]);
         Location::create([
-        	'identifier'=> 'ophthalmology',
-        	'name'		=> 'Ophthalmology'
+            'identifier'=> 'ophthalmology',
+            'name'      => 'Ophthalmology'
         ]);
         Location::create([
-        	'identifier'=> 'orthopaedics',
-        	'name'		=> 'Orthopaedics'
+            'identifier'=> 'orthopaedics',
+            'name'      => 'Orthopaedics'
         ]);
         Location::create([
-        	'identifier'=> 'PMC',
-        	'name'		=> 'Pain Management Clinics'
+            'identifier'=> 'PMC',
+            'name'      => 'Pain Management Clinics'
         ]);
         Location::create([
-        	'identifier'=> 'pharmacy',
-        	'name'		=> 'Pharmacy'
+            'identifier'=> 'pharmacy',
+            'name'      => 'Pharmacy'
         ]);
         Location::create([
-        	'identifier'=> 'physiotherapy',
-        	'name'		=> 'Physiotherapy'
+            'identifier'=> 'physiotherapy',
+            'name'      => 'Physiotherapy'
         ]);
         Location::create([
-        	'identifier'=> 'radiotherapy',
-        	'name'		=> 'Radiotherapy'
+            'identifier'=> 'radiotherapy',
+            'name'      => 'Radiotherapy'
         ]);
         Location::create([
-        	'identifier'=> 'RU',
-        	'name'		=> 'Renal Unit'
+            'identifier'=> 'RU',
+            'name'      => 'Renal Unit'
         ]);
         Location::create([
-        	'identifier'=> 'rheumatology',
-        	'name'		=> 'Rheumatology'
+            'identifier'=> 'rheumatology',
+            'name'      => 'Rheumatology'
         ]);
         Location::create([
-        	'identifier'=> 'SH',
-        	'name'		=> 'Sexual health (genitourinary medicine)'
+            'identifier'=> 'SH',
+            'name'      => 'Sexual health (genitourinary medicine)'
         ]);
         Location::create([
-        	'identifier'=> 'urology',
-        	'name'		=> 'Urology'
+            'identifier'=> 'urology',
+            'name'      => 'Urology'
         ]);
 
         //Encounters
@@ -978,19 +979,19 @@ class DevSeeder extends Seeder
 
         Encounter::truncate();
         for ($i = 0; $i < 1000; $i++) {
-        	Encounter::create([
-        		'patient_id' => $faker->randomElement($patient),
-        		'location_id'=> $faker->randomElement($location),
-        		'encounter_class_id'=> mt_rand(1, 2)
-        	]);
+            Encounter::create([
+                'patient_id' => $faker->randomElement($patient),
+                'location_id'=> $faker->randomElement($location),
+                'encounter_class_id'=> mt_rand(1, 2)
+            ]);
         }
 
         //ItemCategory table
         ItemCategory::truncate();
         for ($i = 0; $i < 10; $i++) {
             ItemCategory::create([
-                'name' => $faker->word,
-                'description' => 'description of Item '.$faker->word,
+                'name' => 'consultation',
+                'description' => 'radiology consultation',
             ]);
         }
 
@@ -1000,15 +1001,15 @@ class DevSeeder extends Seeder
         Item::truncate();
         for ($i = 0; $i < 200; $i++) {
             Item::create([
-                'item_code' => 'PDT-'.$i,
-                'description' => 'Name of Item '.$i,
+                'item_code' => 'CNT-'.$i,
+                'description' => 'consultation',
                 'item_category_id' => $faker->randomElement($itemCategories),
                 'unit_price' => mt_rand(100, 1000)
             ]);
         }
 
         //Invoice & InvoiceItem tables
-    	Invoice::truncate();
+        Invoice::truncate();
         InvoiceItem::truncate();
 
         $patients = Patient::pluck('id');
@@ -1020,10 +1021,36 @@ class DevSeeder extends Seeder
                 'patient_id' => $faker->randomElement($patients),
                 'date' => $faker->date($format = 'Y-m-d', $max = 'now'),
                 'due_date' => $faker->date($format = 'Y-m-d', $max = 'now'),
-                'reference' => 'LPO #'.$i,
-                'terms_and_conditions' => $faker->text,
+                'description' => 'LPO #'.$i,
+                'status' => 'paid',
                 'discount' => mt_rand(0, 100),
+                'tax' => mt_rand(0, 100),
                 'sub_total' => mt_rand(1000, 2000)
+            ]);
+
+            foreach(range(1, mt_rand(2, 4)) as $j) {
+                InvoiceItem::create([
+                    'invoice_id' => $invoice->id,
+                    'item_id' => $faker->randomElement($items),
+                    'unit_price' => mt_rand(100, 500),
+                    'qty' => mt_rand(1, 6)
+                ]);
+            }
+        }
+
+        //Payment table
+        Payment::truncate();
+
+        for ($i = 0; $i < 1000; $i++) {
+            $payment = Payment::create([
+                'number' => 'PMT-'.$i,
+                'invoice_id' => $invoice->id,
+                'date' => $faker->date($format = 'Y-m-d', $max = 'now'),
+                'description' => $faker->text,
+                'status' => 'complete',
+                'method' => 'cash',
+                'balance' => mt_rand(0, 100),
+                'amount' => mt_rand(1000, 2000)
             ]);
 
             foreach(range(1, mt_rand(2, 4)) as $j) {
@@ -1039,46 +1066,46 @@ class DevSeeder extends Seeder
         //Gender table
         Gender::truncate();
         Gender::create([
-        	'active' => 1,
-        	'code' => 'male',
-        	'display' => 'Male'
+            'active' => 1,
+            'code' => 'male',
+            'display' => 'Male'
         ]);
         Gender::create([
-        	'active' => 1,
-        	'code' => 'female',
-        	'display' => 'Female'
+            'active' => 1,
+            'code' => 'female',
+            'display' => 'Female'
         ]);
         Gender::create([
-        	'active' => 1,
-        	'code' => 'both',
-        	'display' => 'Both'
+            'active' => 1,
+            'code' => 'both',
+            'display' => 'Both'
         ]);
         Gender::create([
-        	'active' => 1,
-        	'code' => 'unknown',
-        	'display' => 'Unknown'
+            'active' => 1,
+            'code' => 'unknown',
+            'display' => 'Unknown'
         ]);
 
         //Marital Status Table
         MaritalStatus::create([
-        	'active' => 1,
-        	'code' => 'married',
-        	'display' => 'Married'
+            'active' => 1,
+            'code' => 'married',
+            'display' => 'Married'
         ]);
         MaritalStatus::create([
-        	'active' => 1,
-        	'code' => 'single',
-        	'display' => 'Single'
+            'active' => 1,
+            'code' => 'single',
+            'display' => 'Single'
         ]);
         MaritalStatus::create([
-        	'active' => 1,
-        	'code' => 'divorced',
-        	'display' => 'Divorced'
+            'active' => 1,
+            'code' => 'divorced',
+            'display' => 'Divorced'
         ]);
         MaritalStatus::create([
-        	'active' => 1,
-        	'code' => 'widowed',
-        	'display' => 'Widowed'
+            'active' => 1,
+            'code' => 'widowed',
+            'display' => 'Widowed'
         ]);
-   	}
+    }
 }

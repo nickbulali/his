@@ -6,6 +6,10 @@ class Appointment extends Model
 {
     protected $table = 'appointment';
     protected $fillable = ['patient_id','user_id','appointment_date','appointment_time'];
+
+
+    protected $table = 'appointment';
+    protected $fillable = ['patient_id','user_id','appointment_date','appointment_time', 'status'];
    
 
       public function patient()
@@ -16,7 +20,6 @@ class Appointment extends Model
     {
         return $this->belongsTo('App\User', 'user_id', 'id');
     }
-
     
 }
 
