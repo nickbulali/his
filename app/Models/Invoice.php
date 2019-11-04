@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Helper\HasManyRelation;
+use App\Models\InvoiceItem;
 
 class Invoice extends Model
 {
@@ -23,12 +24,10 @@ class Invoice extends Model
         return $this->belongsTo(Patient::class);
     }
 
-
-     public function items()
+    public function items()
     {
-        return $this->hasMany(InvoiceItem::class);
+        return $this->hasManyThrough('App\Models\Item','App\Models\InvoiceItem','invoice_id','id');
     }
-
 
     public function setSubTotalAttribute($value)
     {
@@ -36,5 +35,4 @@ class Invoice extends Model
         $discount = $this->attributes['discount'];
         $this->attributes['total'] = $value - $discount;
     }
-
 }

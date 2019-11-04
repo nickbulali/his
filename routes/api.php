@@ -22,13 +22,21 @@ use Illuminate\Http\Request;
    // Route::get('users/count/{id}', 'InvoiceController@countUsers');
     Route::get('/users/count', 'UserController@countUsers');
     Route::get('/patient/count', 'PatientController@countPatients');
-     Route::get('/appointment/count', 'AppointmentController@countAppointments');
-         Route::get('/appointment/report', 'AppointmentController@report');
+    Route::get('/appointment/count', 'AppointmentController@countAppointments');
+    Route::get('/appointment/report', 'AppointmentController@report');
     Route::middleware('auth:api')->group( function () {
     Route::post('/logout', 'Auth\APIController@logout');
     Route::get('/get-user', 'Auth\APIController@getUser');
     Route::get('/get-user-model', 'Auth\APIController@getUserModel');
 
+    //invoice
+    Route::get('/invoice/{id}', 'InvoiceController@show');
+    Route::get('/invoices', 'API\InvoiceController@index');
+    Route::post('/invoice', 'API\InvoiceController@store');
+    Route::put('/invoice/{id}', 'API\InvoiceController@update');
+    Route::get('/payment/{id}', 'PaymentController@show');
+    Route::get('/payments/create', 'PaymentController@create');
+    Route::delete('/invoice/{id}', 'API\InvoiceController@delete');
 
     //chargeSheet
     Route::get('/chargeSheet/{id}', 'API\ChargeSheetController@show');
@@ -42,11 +50,11 @@ use Illuminate\Http\Request;
     Route::delete('/chargeSheet/{id}', 'API\ChargeSheetController@delete');
 
     //payment
-    Route::get('/payment/{id}', 'API\PaymentController@show');
+    
 
-    Route::get('/payments', 'API\PaymentController@index');
+    Route::get('/payments', 'PaymentController@index');
 
-    Route::post('/payment', 'API\PaymentController@store');
+    Route::post('/payment', 'PaymentController@store');
 
     Route::put('/payment/{id}', 'API\PaymentController@update');
 
@@ -75,8 +83,8 @@ use Illuminate\Http\Request;
 
     //Allergies
     Route::resource('allergy', 'AllergyController');
-     //Diagnosis
-   Route::resource('diagnosis', 'DiagnosisController');
+    //Diagnosis
+    Route::resource('diagnosis', 'DiagnosisController');
     //AntenatalHistory
     Route::resource('antenatalhistory', 'AntenatalHistoryController');
 
@@ -176,7 +184,7 @@ use Illuminate\Http\Request;
     Route::resource('patient', 'PatientController');
     Route::post('patient/testrequest', 'PatientController@testRequest');
     Route::get('patient/{patientId}/allergy/{allergyId}', 'PatientController@attachAllergy');
-  Route::get('patient/{patientId}/diagnosis/{diagnosisId}', 'PatientController@attachDiagnosis');
+    Route::get('patient/{patientId}/diagnosis/{diagnosisId}', 'PatientController@attachDiagnosis');
     //Queue
     Route::resource('queue', 'QueueController');
     Route::get('queuestats', 'QueueController@stats');
@@ -241,34 +249,27 @@ use Illuminate\Http\Request;
     Route::resource('invoice', 'InvoiceController');
     Route::resource('payment', 'PaymentController');
     Route::resource('item-category', 'ItemCategoryController');
-
     Route::resource('/expense-category', 'ExpensesCategoryController');
-
     Route::resource('/expenses', 'ExpenseController');
-
     Route::resource('item', 'ItemController');
 
-
     //Appointment
-      Route::resource('appointment', 'AppointmentController');
-  
+    Route::resource('appointment', 'AppointmentController');
 
+    //Users
+    Route::resource('users', 'UserController');
+    Route::post('user/image', 'UserController@profilepic');
 
-      //Users
-       Route::resource('users', 'UserController');
-       Route::post('user/image', 'UserController@profilepic');
-   
-      //Inventory
+    //Inventory
+    Route::resource('supplier', 'SupplierController');
+    Route::resource('supplies', 'SuppliesController');
+    Route::resource('stock', 'StockController');
+    Route::resource('request', 'RequestController');
+    Route::resource('issueStock', 'StockIssueController');
+    Route::get('stockDetails/{id}', 'StockController@stockDetails');
+    Route::get('requestIssue/{id}', 'RequestController@requestIssue');
 
-Route::resource('supplier', 'SupplierController');
-Route::resource('supplies', 'SuppliesController');
-Route::resource('stock', 'StockController');
-Route::resource('request', 'RequestController');
-Route::resource('issueStock', 'StockIssueController');
-Route::get('stockDetails/{id}', 'StockController@stockDetails');
-Route::get('requestIssue/{id}', 'RequestController@requestIssue');
-
-Route::post('/mpesa-post', 'MpesaController@newRequest');
-Route::get('add-to-log', 'HomeController@myTestAddToLog');
-Route::get('logActivity', 'HomeController@logActivity');
+    Route::post('/mpesa-post', 'MpesaController@newRequest');
+    Route::get('add-to-log', 'HomeController@myTestAddToLog');
+    Route::get('logActivity', 'HomeController@logActivity');
 });

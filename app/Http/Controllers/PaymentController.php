@@ -1,14 +1,12 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
-use App\Models\Counter;
 use App\Models\Payment;
 use App\Models\Invoice;
+use App\Models\Counter;
 use DB;
+use App\Http\Controllers\Controller;
 
 class PaymentController extends Controller
 {
@@ -17,6 +15,14 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function index()
+    {
+     
+      $payment = Payment::orderBy('id', 'ASC')->paginate(10);
+        return response()->json($payment);
+
+    }
+
     public function index(Request $request)
     {
         if ($request->query('search')) {
@@ -67,7 +73,6 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        //
          $request->validate([
             'invoice_id' => 'required',
             'date' => 'required|date_format:Y-m-d',
@@ -112,7 +117,6 @@ class PaymentController extends Controller
      */
     public function show($id)
     {
-        //
         $payment = Payment::findOrFail($id);
         return response()->json($payment);
     }
@@ -137,8 +141,7 @@ class PaymentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-          $rules = [
+        $rules = [
             'invoice_id' => 'required',
             'date' => 'required|date_format:Y-m-d',
             'method' => 'required',
@@ -177,7 +180,6 @@ class PaymentController extends Controller
      */
     public function destroy($id)
     {
-        //
            try {
             $payment = Payment::findOrFail($id);
             $payment->delete();

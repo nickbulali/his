@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
-    //
     protected $fillable = [
         'invoice_id', 'date', 'method',
         'description', 'status'
@@ -20,6 +19,4 @@ class Payment extends Model
     {
         return $this->belongsTo(Invoice::class);
     }
-
-     
 }
