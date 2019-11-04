@@ -1,13 +1,13 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\DiagnosticTests;
+use App\Models\DiagnosticTest;
 use Illuminate\Http\Request;
 class DiagnosticTestsController extends Controller
 {
     public function index()
     {
-        $DiagnosticTests = DiagnosticTests::orderBy('id', 'ASC')->paginate(10);
-        return response()->json($DiagnosticTests);
+        $diagnosticTests = DiagnosticTest::orderBy('id', 'ASC')->paginate(10);
+        return response()->json($diagnosticTests);
     }
     /**
      * Store a newly created resource in storage.
@@ -24,11 +24,11 @@ class DiagnosticTestsController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-             $DiagnosticTests = new DiagnosticTests;
-             $DiagnosticTests->encounter_id = $request->input('encounter_id');
+             $diagnosticTest = new DiagnosticTests;
+             $diagnosticTest->encounter_id = $request->input('encounter_id');
             try {
-                $DiagnosticTests->save();
-                return response()->json($DiagnosticTests);
+                $diagnosticTest->save();
+                return response()->json($diagnosticTest);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -42,8 +42,8 @@ class DiagnosticTestsController extends Controller
      */
     public function show($id)
     {
-        $DiagnosticTests = DiagnosticTests::findOrFail($id);
-        return response()->json($DiagnosticTests);
+        $diagnosticTest = DiagnosticTest::findOrFail($id);
+        return response()->json($diagnosticTest);
     }
     /**
      * Update the specified resource in storage.
@@ -61,11 +61,11 @@ class DiagnosticTestsController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $DiagnosticTests = DiagnosticTests::findOrFail($id);
-            $DiagnosticTests->encounter_id = $request->input('encounter_id');
+            $diagnosticTest = DiagnosticTest::findOrFail($id);
+            $diagnosticTest->encounter_id = $request->input('encounter_id');
             try {
-                $DiagnosticTests->save();
-                return response()->json($DiagnosticTests);
+                $diagnosticTest->save();
+                return response()->json($diagnosticTest);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -80,9 +80,9 @@ class DiagnosticTestsController extends Controller
     public function destroy($id)
     {
         try {
-            $DiagnosticTests = DiagnosticTests::findOrFail($id);
-            $DiagnosticTests->delete();
-            return response()->json($DiagnosticTests, 200);
+            $diagnosticTest = DiagnosticTest::findOrFail($id);
+            $diagnosticTest->delete();
+            return response()->json($diagnosticTest, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

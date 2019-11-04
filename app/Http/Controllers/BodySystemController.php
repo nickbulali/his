@@ -1,13 +1,11 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\ConditionTypes;
+use App\Models\BodySystem;
 use Illuminate\Http\Request;
-class ConditionTypesController extends Controller
+class BodySystemsController extends Controller
 {
     public function index(Request $request)
     {
-        $conditionTypes = ConditionTypes::orderBy('description', 'asc')->get();
-        return response()->json($conditionTypes);
     }
     /**
      * Store a newly created resource in storage.
@@ -18,19 +16,17 @@ class ConditionTypesController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'code_id' => 'required',
-            'description' => 'required',
+            'name' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $conditionTypes = new ConditionTypes;
-            $conditionTypes->code_id = $request->input('code_id');
-            $conditionTypes->description = $request->input('description');
+            $bodySystem = new BodySystem;
+            $bodySystem->name = $request->input('name');
             try {
-                $conditionTypes->save();
-                return response()->json($conditionTypes);
+                $bodySystem->save();
+                return response()->json($bodySystem);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -44,8 +40,8 @@ class ConditionTypesController extends Controller
      */
     public function show($id)
     {
-        $conditionTypes = ConditionTypes::findOrFail($id);
-        return response()->json($conditionTypes);
+        $bodySystem = BodySystems::findOrFail($id);
+        return response()->json($bodySystem);
     }
     /**
      * Update the specified resource in storage.
@@ -57,19 +53,17 @@ class ConditionTypesController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'code_id' => 'required',
-            'description' => 'required',
+            'name' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $conditionTypes = ConditionTypes::findOrFail($id);
-            $conditionTypes->code_id = $request->input('code_id');
-            $conditionTypes->description = $request->input('description');
+            $bodySystem = BodySystems::findOrFail($id);
+            $bodySystem->name = $request->input('name');
             try {
-                $conditionTypes->save();
-                return response()->json($conditionTypes);
+                $bodySystem->save();
+                return response()->json($bodySystem);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -84,9 +78,9 @@ class ConditionTypesController extends Controller
     public function destroy($id)
     {
         try {
-            $conditionTypes = ConditionTypes::findOrFail($id);
-            $conditionTypes->delete();
-            return response()->json($conditionTypes, 200);
+            $bodySystem = BodySystems::findOrFail($id);
+            $bodySystem->delete();
+            return response()->json($bodySystem, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

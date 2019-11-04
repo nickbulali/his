@@ -1,14 +1,11 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\Conditions;
+use App\Models\MedicationSheet;
 use Illuminate\Http\Request;
-class ConditionsController extends Controller
+class MedicationSheetController extends Controller
 {
     public function index(Request $request)
     {
-        $conditions = Conditions::orderBy('created_at', 'desc')
-                ->paginate(15);
-        return response()->json($conditions);
     }
     /**
      * Store a newly created resource in storage.
@@ -19,19 +16,19 @@ class ConditionsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'condition_type_id' => 'required',
-            'comments' => 'required',
+            'medication_id' => 'required',
+            'time_due' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $conditions = new Conditions;
-            $conditions->condition_type_id = $request->input('condition_type_id');
-            $conditions->comments = $request->input('comments');
+            $medicationSheet = new MedicationSheet;
+            $medicationSheet->medication_id = $request->input('medication_id');
+            $medicationSheet->time_due = $request->input('time_due');
             try {
-                $conditions->save();
-                return response()->json($conditions);
+                $medicationSheet->save();
+                return response()->json($medicationSheet);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -45,8 +42,8 @@ class ConditionsController extends Controller
      */
     public function show($id)
     {
-        $Conditions = Conditions::findOrFail($id);
-        return response()->json($Conditions);
+        $medicationSheet = MedicationSheet::findOrFail($id);
+        return response()->json($medicationSheet);
     }
     /**
      * Update the specified resource in storage.
@@ -58,19 +55,19 @@ class ConditionsController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-           'condition_type_id' => 'required',
-            'comments' => 'required',
+            'medication_id' => 'required',
+            'time_due' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Conditions = Conditions::findOrFail($id);
-            $Conditions->condition_type_id = $request->input('condition_type_id');
-            $Conditions->comments = $request->input('comments');
+            $medicationSheet = MedicationSheet::findOrFail($id);
+            $medicationSheet->medication_id = $request->input('medication_id');
+            $medicationSheet->time_due = $request->input('time_due');
             try {
-                $Conditions->save();
-                return response()->json($Conditions);
+                $medicationSheet->save();
+                return response()->json($medicationSheet);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -85,9 +82,9 @@ class ConditionsController extends Controller
     public function destroy($id)
     {
         try {
-            $Conditions = Conditions::findOrFail($id);
-            $Conditions->delete();
-            return response()->json($Conditions, 200);
+            $medicationSheet = MedicationSheet::findOrFail($id);
+            $medicationSheet->delete();
+            return response()->json($medicationSheet, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

@@ -81,10 +81,10 @@ use Illuminate\Http\Request;
     Route::resource('antenatalhistory', 'AntenatalHistoryController');
 
     //AnthropometricMeasurements
-    Route::resource('anthropometricmeasurements', 'AnthropometricMeasurementsController');
+    Route::resource('anthropometricmeasurement', 'AnthropometricMeasurementController');
 
     //BodySystems
-    Route::resource('bodysystems', 'BodySystemsController');
+    Route::resource('bodysystem', 'BodySystemController');
 
     //Code
     Route::resource('code', 'CodeController');
@@ -93,16 +93,16 @@ use Illuminate\Http\Request;
     Route::resource('codesystem', 'CodeSystemController');
 
     //Conditions
-    Route::resource('conditions', 'ConditionsController');
+    Route::resource('condition', 'ConditionController');
 
     //ConditionTypes
-    Route::resource('conditiontype', 'ConditionTypesController');
+    Route::resource('conditiontype', 'ConditionTypeController');
 
     //CounterController
     Route::resource('counter', 'CounterController');
 
     //DiagnosticTests
-    Route::resource('diagnostictests', 'DiagnosticTestsController');
+    Route::resource('diagnostictest', 'DiagnosticTestController');
 
     //Dosage
     Route::resource('dosage', 'DosageController');
@@ -114,10 +114,10 @@ use Illuminate\Http\Request;
     Route::resource('anthropometricmeasurements', 'AnthropometricMeasurementsController');
 
     //DrugCategories
-    Route::resource('drugcategories', 'DrugCategoriesController');
+    Route::resource('drugcategoy', 'DrugCategoryController');
 
     //Drugs
-    Route::resource('drugs', 'DrugsController');
+    Route::resource('drug', 'DrugController');
 
     //Encounter
     Route::resource('encounterclass', 'EncounterClassController');
@@ -139,8 +139,8 @@ use Illuminate\Http\Request;
     //Gender
     Route::resource('maritalstatus', 'MaritalStatusController');
 
-    //GynecologicHistories
-    Route::resource('gynecologichistories', 'GynecologicHistoriesController');
+    //GynecologicHistory
+    Route::resource('gynecologichistory', 'GynecologicHistoryController');
 
     //Lab Test Types
     Route::resource('labtesttype', 'LabTestTypeController');
@@ -149,14 +149,14 @@ use Illuminate\Http\Request;
     //Location
     Route::resource('location', 'LocationController');
 
-    //MedicalSurgicalHistories
-    Route::resource('medicalsurgicalhistories', 'MedicalSurgicalHistoriesController');
+    //MedicalSurgicalHistory
+    Route::resource('medicalsurgicalhistory', 'MedicalSurgicalHistoryController');
 
     //Medications
-    Route::resource('medications', 'MedicationsController');
+    Route::resource('medication', 'MedicationController');
 
     //Medication Sheets
-    Route::resource('medicationsheets', 'MedicalSheetsController');
+    Route::resource('medicationsheet', 'MedicalSheetController');
 
     //MedicationStauses
     Route::resource('medicationstatus', 'MedicationStatusController');
@@ -165,7 +165,7 @@ use Illuminate\Http\Request;
     Route::resource('name', 'NameController');
 
     //ObstericHistories
-    Route::resource('obstetrichistories', 'ObstetricHistoriesController');
+    Route::resource('obstetrichistory', 'ObstetricHistoryController');
 
     //Organization
     Route::resource('organization', 'OrganizationController');
@@ -194,7 +194,7 @@ use Illuminate\Http\Request;
     Route::resource('presentingillness', 'PresentingIllnessController');
 
     //Present Pregnancies
-    Route::resource('presentpregnancies', 'PresentPregnanciesController');
+    Route::resource('presentpregnancy', 'PresentPregnancyController');
 
     //Results
     Route::post('result', 'ResultController@store');
@@ -232,7 +232,7 @@ use Illuminate\Http\Request;
     Route::resource('test', 'TestController');
 
     //VitalSigns
-    Route::resource('vitalsigns', 'VitalSignsController');
+    Route::resource('vitalsign', 'VitalSignController');
 
     //Radiology
     Route::resource('/radiology', 'RadiologyController');

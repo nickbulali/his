@@ -23,12 +23,12 @@ class DrugCategoryDrugController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $DrugCategoryDrug = new DrugCategoryDrug;
-            $DrugCategoryDrug->drug_id = $request->input('drug_id');
-            $DrugCategoryDrug->drug_category_id = $request->input('drug_category_id');
+            $drugCategoryDrug = new DrugCategoryDrug;
+            $drugCategoryDrug->drug_id = $request->input('drug_id');
+            $drugCategoryDrug->drug_category_id = $request->input('drug_category_id');
             try {
-                $DrugCategoryDrug->save();
-                return response()->json($DrugCategoryDrug);
+                $drugCategoryDrug->save();
+                return response()->json($drugCategoryDrug);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -42,8 +42,8 @@ class DrugCategoryDrugController extends Controller
      */
     public function show($id)
     {
-        $DrugCategoryDrug = DrugCategoryDrug::findOrFail($id);
-        return response()->json($DrugCategoryDrug);
+        $drugCategoryDrug = DrugCategoryDrug::findOrFail($id);
+        return response()->json($drugCategoryDrug);
     }
     /**
      * Update the specified resource in storage.
@@ -62,12 +62,12 @@ class DrugCategoryDrugController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $DrugCategoryDrug = DrugCategoryDrug::findOrFail($id);
-            $DrugCategoryDrug->drug_id = $request->input('drug_id');
-            $DrugCategoryDrug->drug_category_id = $request->input('drug_category_id');
+            $drugCategoryDrug = DrugCategoryDrug::findOrFail($id);
+            $drugCategoryDrug->drug_id = $request->input('drug_id');
+            $drugCategoryDrug->drug_category_id = $request->input('drug_category_id');
             try {
-                $DrugCategoryDrug->save();
-                return response()->json($DrugCategoryDrug);
+                $drugCategoryDrug->save();
+                return response()->json($drugCategoryDrug);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -82,9 +82,9 @@ class DrugCategoryDrugController extends Controller
     public function destroy($id)
     {
         try {
-            $DrugCategoryDrug = DrugCategoryDrug::findOrFail($id);
-            $DrugCategoryDrug->delete();
-            return response()->json($DrugCategoryDrug, 200);
+            $drugCategoryDrug = DrugCategoryDrug::findOrFail($id);
+            $drugCategoryDrug->delete();
+            return response()->json($drugCategoryDrug, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

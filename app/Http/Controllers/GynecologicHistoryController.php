@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\GynecologicHistories;
+use App\Models\GynecologicHistory;
 use Illuminate\Http\Request;
-class GynecologicHistoriesController extends Controller
+class GynecologicHistoryController extends Controller
 {
     public function index(Request $request)
     {
@@ -28,17 +28,17 @@ class GynecologicHistoriesController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $GynecologicHistories = new GynecologicHistories;
-            $GynecologicHistories->age_at_menarche = $request->input('age_at_menarche');
-            $GynecologicHistories->duration_of_menstrual_cycle = $request->input('duration_of_menstrual_cycle');
-            $GynecologicHistories->length_of_menstrual_cycle = $request->input('length_of_menstrual_cycle');
-            $GynecologicHistories->any_menstrual_problem = $request->input('any_menstrual_problem');
-            $GynecologicHistories->history_of_sti = $request->input('history_of_sti');
-            $GynecologicHistories->history_of_gynecological_operation = $request->input('history_of_gynecological_operation');
-            $GynecologicHistories->contraception_history = $request->input('contraception_history');
+            $gynecologicHistory = new GynecologicHistory;
+            $gynecologicHistory->age_at_menarche = $request->input('age_at_menarche');
+            $gynecologicHistory->duration_of_menstrual_cycle = $request->input('duration_of_menstrual_cycle');
+            $gynecologicHistory->length_of_menstrual_cycle = $request->input('length_of_menstrual_cycle');
+            $gynecologicHistory->any_menstrual_problem = $request->input('any_menstrual_problem');
+            $gynecologicHistory->history_of_sti = $request->input('history_of_sti');
+            $gynecologicHistory->history_of_gynecological_operation = $request->input('history_of_gynecological_operation');
+            $gynecologicHistory->contraception_history = $request->input('contraception_history');
             try {
-                $GynecologicHistories->save();
-                return response()->json($GynecologicHistories);
+                $gynecologicHistory->save();
+                return response()->json($gynecologicHistory);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -52,8 +52,8 @@ class GynecologicHistoriesController extends Controller
      */
     public function show($id)
     {
-        $GynecologicHistories = GynecologicHistories::findOrFail($id);
-        return response()->json($GynecologicHistories);
+        $gynecologicHistory = GynecologicHistory::findOrFail($id);
+        return response()->json($gynecologicHistory);
     }
     /**
      * Update the specified resource in storage.
@@ -77,17 +77,17 @@ class GynecologicHistoriesController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $GynecologicHistories = GynecologicHistories::findOrFail($id);
-            $GynecologicHistories->age_at_menarche = $request->input('age_at_menarche');
-            $GynecologicHistories->duration_of_menstrual_cycle = $request->input('duration_of_menstrual_cycle');
-            $GynecologicHistories->length_of_menstrual_cycle = $request->input('length_of_menstrual_cycle');
-            $GynecologicHistories->any_menstrual_problem = $request->input('any_menstrual_problem');
-            $GynecologicHistories->history_of_sti = $request->input('history_of_sti');
-            $GynecologicHistories->history_of_gynecological_operation = $request->input('history_of_gynecological_operation');
-            $GynecologicHistories->contraception_history = $request->input('contraception_history');
+            $gynecologicHistory = GynecologicHistory::findOrFail($id);
+            $gynecologicHistory->age_at_menarche = $request->input('age_at_menarche');
+            $gynecologicHistory->duration_of_menstrual_cycle = $request->input('duration_of_menstrual_cycle');
+            $gynecologicHistory->length_of_menstrual_cycle = $request->input('length_of_menstrual_cycle');
+            $gynecologicHistory->any_menstrual_problem = $request->input('any_menstrual_problem');
+            $gynecologicHistory->history_of_sti = $request->input('history_of_sti');
+            $gynecologicHistory->history_of_gynecological_operation = $request->input('history_of_gynecological_operation');
+            $gynecologicHistory->contraception_history = $request->input('contraception_history');
             try {
-                $GynecologicHistories->save();
-                return response()->json($GynecologicHistories);
+                $gynecologicHistory->save();
+                return response()->json($gynecologicHistory);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -102,9 +102,9 @@ class GynecologicHistoriesController extends Controller
     public function destroy($id)
     {
         try {
-            $GynecologicHistories = GynecologicHistories::findOrFail($id);
-            $GynecologicHistories->delete();
-            return response()->json($GynecologicHistories, 200);
+            $gynecologicHistory = GynecologicHistory::findOrFail($id);
+            $gynecologicHistory->delete();
+            return response()->json($gynecologicHistory, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

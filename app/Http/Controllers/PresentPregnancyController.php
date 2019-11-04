@@ -1,13 +1,11 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\DrugCatgeories;
+use App\Models\PresentPregnancy;
 use Illuminate\Http\Request;
-class DrugCatgeoriesController extends Controller
+class PresentPregnancyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $DrugCatgeories = DrugCatgeories::orderBy('id', 'ASC')->paginate(10);
-        return response()->json($DrugCatgeories);
     }
     /**
      * Store a newly created resource in storage.
@@ -18,17 +16,21 @@ class DrugCatgeoriesController extends Controller
     public function store(Request $request)
     {
         $rules = [
-        	'description' => 'required',
+            'last_normal_menstrual_period' => 'required',
+            'expected_date_of_delivery' => 'required',
+            'gestation' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-             $DrugCatgeories = new DrugCatgeories;
-             $DrugCatgeories->description = $request->input('description');
+            $PresentPregnancy = new PresentPregnancy;
+            $PresentPregnancy->reason_for_admission = $request->input('reason_for_admission');
+            $PresentPregnancy->expected_date_of_delivery = $request->input('expected_date_of_delivery');
+            $PresentPregnancy->gestation = $request->input('gestation');
             try {
-                $DrugCatgeories->save();
-                return response()->json($DrugCatgeories);
+                $PresentPregnancy->save();
+                return response()->json($PresentPregnancy);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -42,8 +44,8 @@ class DrugCatgeoriesController extends Controller
      */
     public function show($id)
     {
-        $DrugCatgeories = DrugCatgeories::findOrFail($id);
-        return response()->json($DrugCatgeories);
+        $PresentPregnancy = PresentPregnancy::findOrFail($id);
+        return response()->json($PresentPregnancy);
     }
     /**
      * Update the specified resource in storage.
@@ -55,17 +57,21 @@ class DrugCatgeoriesController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-        	   'description' => 'required',
+            'reason_for_admission' => 'required',
+            'expected_date_of_delivery' => 'required',
+            'gestation' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $DrugCatgeories = DrugCatgeories::findOrFail($id);
-            $DrugCatgeories->description = $request->input('description');
+            $PresentPregnancy = PresentPregnancy::findOrFail($id);
+            $PresentPregnancy->reason_for_admission = $request->input('reason_for_admission');
+            $PresentPregnancy->expected_date_of_delivery = $request->input('expected_date_of_delivery');
+            $PresentPregnancy->gestation = $request->input('gestation');
             try {
-                $DrugCatgeories->save();
-                return response()->json($DrugCatgeories);
+                $PresentPregnancy->save();
+                return response()->json($PresentPregnancy);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -80,9 +86,9 @@ class DrugCatgeoriesController extends Controller
     public function destroy($id)
     {
         try {
-            $DrugCatgeories = DrugCatgeories::findOrFail($id);
-            $DrugCatgeories->delete();
-            return response()->json($DrugCatgeories, 200);
+            $PresentPregnancy = PresentPregnancy::findOrFail($id);
+            $PresentPregnancy->delete();
+            return response()->json($PresentPregnancy, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
