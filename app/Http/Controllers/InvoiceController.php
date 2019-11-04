@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\Counter;
-use App\Models\Item;
-
 use DB;
 
 class InvoiceController extends Controller

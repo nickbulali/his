@@ -12,9 +12,6 @@ class InvoiceItem extends Model
 
      public function invoice()
     {
-
-        return $this->belongsTo(Item::class);
-
         return $this->belongsTo(Invoice::class);
     }
 
