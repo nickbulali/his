@@ -4,6 +4,7 @@ use App\Models\VitalSigns;
 use App\Models\Queue;
 use Illuminate\Http\Request;
 use DB;
+use Carbon\Carbon;
 class VitalSignsController extends Controller
 {
     public function index(Request $request)
@@ -13,7 +14,9 @@ class VitalSignsController extends Controller
             $vitalSigns = VitalSigns::with('patient.name')->where('description', 'LIKE', "%{$search}%")
                 ->paginate(10);
         } else {
-            $vitalSigns = VitalSigns::with('patient.name')->orderBy('id', 'ASC')->paginate(10);
+            $vitalSigns = VitalSigns::with('patient.name')->orderBy('id', 'ASC')->paginate(10)->groupBy(function($date) {
+            return Carbon::parse($date->created_at)->format('Y-m-d');
+        });
         }
 
         return response()->json($vitalSigns);
@@ -72,7 +75,7 @@ class VitalSignsController extends Controller
      */
     public function show($id)
     {
-        $vitalSigns = VitalSigns::findOrFail($id);
+        $vitalSigns = VitalSigns::wherePatientId($id)->get();
         return response()->json($vitalSigns);
     }
     /**
