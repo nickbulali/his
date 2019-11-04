@@ -2,7 +2,7 @@
 namespace App\Http\Controllers;
 use App\Models\Alcohol;
 use Illuminate\Http\Request;
-class AlcoholController extends Controller
+class HabitController extends Controller
 {
     public function index(Request $request)
     {
@@ -24,13 +24,16 @@ class AlcoholController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Alcohol = new Alcohol;
-            $Alcohol->kind = $request->input('kind');
-            $Alcohol->frequency = $request->input('frequency');
-            $Alcohol->quantity = $request->input('quantity');
+            $habit = new Alcohol;
+            $habit->patient_id = $request->input('patient_id');
+            $habit->kind = $request->input('kind');
+            $habit->frequency = $request->input('frequency');
+            $habit->quantity = $request->input('quantity');
+            $habit->start_date = $request->input('start_date');
+            $habit->end_date = $request->input('end_date');
             try {
-                $Alcohol->save();
-                return response()->json($Alcohol);
+                $habit->save();
+                return response()->json($habit);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -44,8 +47,8 @@ class AlcoholController extends Controller
      */
     public function show($id)
     {
-        $Alcohol = Alcohol::findOrFail($id);
-        return response()->json($Alcohol);
+        $habit = Alcohol::findOrFail($id);
+        return response()->json($habit);
     }
     /**
      * Update the specified resource in storage.
@@ -65,13 +68,15 @@ class AlcoholController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Alcohol = Alcohol::findOrFail($id);
-            $Alcohol->kind = $request->input('kind');
-            $Alcohol->frequency = $request->input('frequency');
-            $Alcohol->quantity = $request->input('quantity');
+            $habit = Alcohol::findOrFail($id);
+            $habit->kind = $request->input('kind');
+            $habit->frequency = $request->input('frequency');
+            $habit->quantity = $request->input('quantity');
+            $habit->start_date = $request->input('start_date');
+            $habit->end_date = $request->input('end_date');
             try {
-                $Alcohol->save();
-                return response()->json($Alcohol);
+                $habit->save();
+                return response()->json($habit);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -86,9 +91,9 @@ class AlcoholController extends Controller
     public function destroy($id)
     {
         try {
-            $Alcohol = Alcohol::findOrFail($id);
-            $Alcohol->delete();
-            return response()->json($Alcohol, 200);
+            $habit = Alcohol::findOrFail($id);
+            $habit->delete();
+            return response()->json($habit, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

@@ -20,7 +20,7 @@ class Patient extends Model
 
     public function maritalStatus()
     {
-        return $this->hasOne('App\Models\CodeableConcept', 'code');
+        return $this->hasOne('App\Models\MaritalStatus', 'id', 'marital_status');
     }
 
     public function user()
@@ -36,6 +36,11 @@ class Patient extends Model
     public function gender()
     {
         return $this->hasOne('App\Models\Gender', 'id', 'gender_id');
+    }
+
+    public function bloodGroup()
+    {
+        return $this->hasOne('App\Models\BloodGroup', 'id', 'blood_group_id');
     }
 
     public function practitioner()
@@ -58,11 +63,21 @@ class Patient extends Model
         return $this->belongsTo('App\Models\Organization');
     }
 
+    public function allergies()
+    {
+        return $this->belongsToMany('App\Models\Allergy');
+    }
+    public function diagnosis()
+    {
+        return $this->belongsToMany('App\Models\Diagnosis');
+    }
+
     public function loader()
     {
         return Patient::find($this->id)->load(
             'name',
-            'gender'
+            'gender',
+            'maritalStatus'
         );
     }
 }

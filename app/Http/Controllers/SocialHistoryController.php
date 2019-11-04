@@ -16,16 +16,18 @@ class SocialHistoryController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'occupation' => 'required',
-            'residence' => 'required',
+            'patient_id' => 'required',
+            'social_problem' => 'required'
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
             $SocialHistory = new SocialHistory;
-            $SocialHistory->occupation = $request->input('occupation');
-            $SocialHistory->residence = $request->input('residence');
+            $SocialHistory->patient_id = $request->input('patient_id');
+            $SocialHistory->social_problem = $request->input('social_problem');
+            $SocialHistory->start_date = $request->input('start_date');
+            $SocialHistory->end_date = $request->input('end_date');
             try {
                 $SocialHistory->save();
                 return response()->json($SocialHistory);
@@ -63,8 +65,9 @@ class SocialHistoryController extends Controller
             return response()->json($validator, 422);
         } else {
             $SocialHistory = SocialHistory::findOrFail($id);
-            $SocialHistory->occupation = $request->input('occupation');
-            $SocialHistory->residence = $request->input('residence');
+            $SocialHistory->social_problem = $request->input('social_problem');
+            $SocialHistory->start_date = $request->input('start_date');
+            $SocialHistory->end_date = $request->input('end_date');
             try {
                 $SocialHistory->save();
                 return response()->json($SocialHistory);

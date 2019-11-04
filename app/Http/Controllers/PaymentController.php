@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -7,6 +6,7 @@ use App\Models\Payment;
 use App\Models\Invoice;
 use App\Models\Counter;
 use DB;
+use App\Http\Controllers\Controller;
 
 class PaymentController extends Controller
 {
@@ -23,33 +23,48 @@ class PaymentController extends Controller
 
     }
 
-    public function search(Request $request)
+    public function index(Request $request)
     {
-        //
-         if ($request->query('search')) {
+        if ($request->query('search')) {
             $search = $request->query('search');
-            $invoice = Invoice::with('invoice.number')->where('number', 'LIKE', "%{$search}%")
+            $payment = Payment::with('invoice')
+            ->where('number', 'LIKE', "%{$search}%")
+            ->orWhere('date', 'LIKE', "%{$search}%")
                 ->paginate(15);
         } else {
-            $invoice = Invoice::with(['invoice.number'])
+            $payment = Payment::with(['invoice'])
                 ->orderBy('created_at', 'desc')
                 ->paginate(15);
         }
 
-        return response()->json($invoice);
+        return response()->json($payment);
     }
 
-public function create()
-{
-     $counter = Counter::where('key', 'payment')->first();
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+        $counter = Counter::where('key', 'payment')->first();
 
-        $form = [
+              $form = [
+            'number' => $counter->prefix . $counter->value,
+            'invoice_id' => null,
+            'date' => null,
+            'status' => null,
+            'method' => null,
+            'amount' => null,
+            'balance' => null,
+            'description' => null
+        ];
 
-            'number' => $counter->prefix . $counter->value
-];
         return response()
             ->json(['form' => $form]);
-}
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -58,40 +73,42 @@ public function create()
      */
     public function store(Request $request)
     {
-         $rules = [
-            
-          
-        
-        ];
-        $validator = \Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json($validator, 422);
-        } else {
-            $payment = new Payment;
-            $payment->invoice_id = $request->input('invoice_id');
-            $payment->number = $request->input('number');
-            $payment->date = $request->input('date');
-            $payment->amount = $request->input('amount');
-            $payment->balance = $request->input('balance');
-            $payment->method = $request->input('method');
-            $payment->description = $request->input('description');
-            $payment = DB::transaction(function() use ($payment, $request) {
+         $request->validate([
+            'invoice_id' => 'required',
+            'date' => 'required|date_format:Y-m-d',
+            'method' => 'required',
+            'status' => 'required',
+            'amount' => 'required|numeric|min:0',
+            'number' => 'required',
+            'balance' => 'required|numeric|min:0'
+        ]);
+
+        $payment = new Payment;
+        $payment->fill([ $payment->invoice_id = $request->input('invoice_id'),
+            $payment->date = $request->input('date'),
+            $payment->method = $request->input('method'),
+            $payment->description = $request->input('description'),
+            $payment->status = $request->input('status'),
+            $payment->amount = $request->input('amount'),
+            $payment->balance = $request->input('balance'),
+            $payment->number = $request->input('number') ])->save();
+
+       
+
+        $payment = DB::transaction(function() use ($payment, $request) {
             $counter = Counter::where('key', 'payment')->first();
             $payment->number = $counter->prefix . $counter->value;
+          
+
             $counter->increment('value');
 
             return $payment;
+        });
 
-              });
-
-            try {
-                $payment->save();
-                return response()->json($payment->loader(), 200);
-            } catch (\Illuminate\Database\QueryException $e) {
-                return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-            }
-        }
+        return response()
+            ->json(['saved' => true, 'id' => $payment->id]);
     }
+
     /**
      * Display the specified resource.
      *
@@ -100,9 +117,19 @@ public function create()
      */
     public function show($id)
     {
-        //
-          $payment = Payment::whereId($id)->with('invoice.patient.name')->get();
+        $payment = Payment::findOrFail($id);
         return response()->json($payment);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**
@@ -114,7 +141,35 @@ public function create()
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = [
+            'invoice_id' => 'required',
+            'date' => 'required|date_format:Y-m-d',
+            'method' => 'required',
+            'status' => 'required',
+            'amount' => 'required|numeric|min:0',
+            'number' => 'required',
+            'balance' => 'required|numeric|min:0'
+        ];
+        $validator = \Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json($validator, 422);
+        } else {
+            $payment = Payment::findOrFail($id);
+            $payment->invoice_id = $request->input('invoice_id');
+            $payment->date = $request->input('date');
+            $payment->method = $request->input('method');
+            $payment->description = $request->input('description');
+            $payment->status = $request->input('status');
+            $payment->amount = $request->input('amount');
+            $payment->balance = $request->input('balance');
+            $payment->number = $request->input('number');
+            try {
+                $payment->save();
+                return response()->json($payment);
+            } catch (\Illuminate\Database\QueryException $e) {
+                return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+            }
+        }
     }
 
     /**
@@ -125,6 +180,12 @@ public function create()
      */
     public function destroy($id)
     {
-        //
+           try {
+            $payment = Payment::findOrFail($id);
+            $payment->delete();
+            return response()->json($payment, 200);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
     }
 }

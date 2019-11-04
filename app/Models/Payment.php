@@ -6,15 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
-    //
-     protected $fillable = ['date','payment_method','description'];
+    protected $fillable = [
+        'invoice_id', 'date', 'method',
+        'description', 'status'
+    ];
 
-     protected $guarded = [
+    protected $guarded = [
         'number', 'amount', 'balance'
     ];
 
-    public function Invoice()
-   {
-       return $this->hasMany('App\Models\Invoice', 'id', 'invoice_id');
-   }
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
+    }
 }

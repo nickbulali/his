@@ -5,6 +5,6 @@ use Illuminate\Database\Eloquent\Model;
 class Location extends Model
 {
     public $timestamps = false;
-    protected $table = 'location';
+    protected $table = 'locations';
     protected $fillable = ['identifier','name'];
 }

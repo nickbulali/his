@@ -6,6 +6,9 @@ class ConditionsController extends Controller
 {
     public function index(Request $request)
     {
+        $conditions = Conditions::orderBy('created_at', 'desc')
+                ->paginate(15);
+        return response()->json($conditions);
     }
     /**
      * Store a newly created resource in storage.
@@ -23,12 +26,12 @@ class ConditionsController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Conditions = new Conditions;
-            $Conditions->condition_type_id = $request->input('condition_type_id');
-            $Conditions->comments = $request->input('comments');
+            $conditions = new Conditions;
+            $conditions->condition_type_id = $request->input('condition_type_id');
+            $conditions->comments = $request->input('comments');
             try {
-                $Conditions->save();
-                return response()->json($Conditions);
+                $conditions->save();
+                return response()->json($conditions);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }

@@ -2,35 +2,17 @@
 namespace App\Http\Controllers;
 use App\Models\LabTestType;
 use Illuminate\Http\Request;
-class LabLabTestTypeController extends Controller
+class LabTestTypeController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->query('search')) {
-            $search = $request->query('search');
-            $LabTestType = LabTestType::where('name', 'LIKE', "%{$search}%")->orderBy('id', 'ASC')->with(
-                'measures.measureType',
-                'measures.measureRanges.gender',
-                'LabTestTypeCategory',
-                'specimenTypes'
-            )->paginate(10);
-        } elseif ($request->query('fetch')) {
-            $LabTestType = LabTestType::with(
-                'measures.measureType',
-                'measures.measureRanges.gender',
-                'LabTestTypeCategory',
-                'specimenTypes'
-            )->get();
-        } else {
-            $LabTestType = LabTestType::with(
-                'measures.measureType',
-                'measures.measureRanges.gender',
-                'LabTestTypeCategory',
-                'specimenTypes'
-            )->orderBy('id', 'ASC')->paginate(10);
+        
+            $LabTestType = LabTestType::orderBy('id', 'ASC')->paginate(10);
+
+             return response()->json($LabTestType);
         }
-        return response()->json($LabTestType);
-    }
+       
+    
     /**
      * Store a newly created resource in storage.
      *

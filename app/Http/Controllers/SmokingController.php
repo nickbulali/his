@@ -24,13 +24,16 @@ class SmokingController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Smoking = new Smoking;
-            $Smoking->kind = $request->input('kind');
-            $Smoking->frequency = $request->input('frequency');
-            $Smoking->quantity = $request->input('quantity');
+            $smoking = new Smoking;
+            $smoking->patient_id = $request->input('patient_id');
+            $smoking->kind = $request->input('kind');
+            $smoking->frequency = $request->input('frequency');
+            $smoking->quantity = $request->input('quantity');
+            $smoking->start_date = $request->input('start_date');
+            $smoking->end_date = $request->input('end_date');
             try {
-                $Smoking->save();
-                return response()->json($Smoking);
+                $smoking->save();
+                return response()->json($smoking);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -65,13 +68,15 @@ class SmokingController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Smoking = Smoking::findOrFail($id);
-            $Smoking->kind = $request->input('kind');
-            $Smoking->frequency = $request->input('frequency');
-            $Smoking->quantity = $request->input('quantity');
+            $smoking = Smoking::findOrFail($id);
+            $smoking->kind = $request->input('kind');
+            $smoking->frequency = $request->input('frequency');
+            $smoking->quantity = $request->input('quantity');
+            $smoking->start_date = $request->input('start_date');
+            $smoking->end_date = $request->input('end_date');
             try {
-                $Smoking->save();
-                return response()->json($Smoking);
+                $smoking->save();
+                return response()->json($smoking);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }

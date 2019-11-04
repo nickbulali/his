@@ -11,8 +11,8 @@ class Invoice extends Model
     use HasManyRelation;
 
     protected $fillable = [
-        'customer_id', 'date', 'due_date', 'discount',
-        'terms_and_conditions', 'reference'
+        'patient_id', 'date', 'due_date', 'discount','tax',
+        'description','status'
     ];
 
     protected $guarded = [
@@ -28,7 +28,7 @@ class Invoice extends Model
     {
         return $this->hasManyThrough('App\Models\Item','App\Models\InvoiceItem','invoice_id','id');
     }
-  
+
     public function setSubTotalAttribute($value)
     {
         $this->attributes['sub_total'] = $value;

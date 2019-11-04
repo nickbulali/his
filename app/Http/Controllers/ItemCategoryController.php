@@ -19,7 +19,7 @@ class ItemCategoryController extends Controller
             $itemCategory = ItemCategory::with('item')->where('description', 'LIKE', "%{$search}%")
                 ->paginate(10);
         } else {
-            $itemCategory = ItemCategory::with('item')->orderBy('id', 'ASC')->paginate(10);
+            $itemCategory = ItemCategory::with('item')->orderBy('id', 'ASC')->paginate(25);
         }
 
         return response()->json($itemCategory);
