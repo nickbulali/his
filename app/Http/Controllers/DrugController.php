@@ -87,7 +87,6 @@ class DrugController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-<<<<<<< HEAD:app/Http/Controllers/DrugController.php
             $drug = Drug::findOrFail($id);
             $drug->generic_name = $request->input('generic_name');
             $drug->trade_name = $request->input('trade_name');
