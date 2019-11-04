@@ -224,8 +224,8 @@ Route::middleware('auth:api')->group( function () {
     //VitalSigns
     Route::resource('vitalsigns', 'VitalSignsController');
 
-    //Xrays
-    Route::resource('xrays', 'XraysController');
+    //Radiology
+    Route::resource('/radiology', 'RadiologyController');
 
     //Billing|Invoices
     Route::resource('/invoice', 'InvoiceController');
