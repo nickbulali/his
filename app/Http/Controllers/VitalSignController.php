@@ -1,9 +1,9 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\VitalSign;
+use Carbon\Carbon;
 use App\Models\Queue;
+use App\Models\VitalSign;
 use Illuminate\Http\Request;
-use DB;
 class VitalSignController extends Controller
 {
     public function index(Request $request)
@@ -13,7 +13,9 @@ class VitalSignController extends Controller
             $vitalSigns = VitalSign::with('patient.name')->where('description', 'LIKE', "%{$search}%")
                 ->paginate(10);
         } else {
-            $vitalSigns = VitalSign::with('patient.name')->orderBy('id', 'ASC')->paginate(10);
+            $vitalSigns = VitalSigns::with('patient.name')->orderBy('id', 'ASC')->paginate(10)->groupBy(function($date) {
+            return Carbon::parse($date->created_at)->format('Y-m-d');
+        });
         }
 
         return response()->json($vitalSigns);
@@ -72,8 +74,8 @@ class VitalSignController extends Controller
      */
     public function show($id)
     {
-        $vitalSigns = VitalSign::findOrFail($id);
-        return response()->json($vitalSigns);
+        $vitalSign = VitalSign::wherePatientId($id)->get();
+        return response()->json($vitalSign);
     }
     /**
      * Update the specified resource in storage.
@@ -85,7 +87,6 @@ class VitalSignController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-    
     ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {

@@ -2,10 +2,21 @@
 namespace App\Http\Controllers;
 use App\Models\Drug;
 use Illuminate\Http\Request;
+use DB;
 class DrugController extends Controller
 {
     public function index(Request $request)
     {
+
+  if ($request->query('search')) {
+            $search = $request->query('search');
+            $drugs = Drugs::where('trade_name', 'LIKE', "%{$search}%")
+                ->get();
+        } else {
+            $drugs = Drugs::get();
+        }
+        return response()->json($drugs);
+
     }
     /**
      * Store a newly created resource in storage.
@@ -22,6 +33,7 @@ class DrugController extends Controller
             'strength_unit' => 'required',
             'dosage_form'=> 'required',
             'administration_route'=> 'required',
+             'price'=> 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -63,17 +75,19 @@ class DrugController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-              'generic_name' => 'required',
+            'generic_name' => 'required',
             'trade_name' => 'required',
             'strength_value' => 'required',
             'strength_unit' => 'required',
             'dosage_form'=> 'required',
             'administration_route'=> 'required',
+            'price'=> 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
+<<<<<<< HEAD:app/Http/Controllers/DrugController.php
             $drug = Drug::findOrFail($id);
             $drug->generic_name = $request->input('generic_name');
             $drug->trade_name = $request->input('trade_name');
@@ -81,6 +95,7 @@ class DrugController extends Controller
             $drug->strength_unit = $request->input('strength_unit');
             $drug->dosage_form = $request->input('dosage_form');
             $drug->administration_route = $request->input('administration_route');
+            $drugs->price = $request->input('price');
             try {
                 $drug->save();
                 return response()->json($drug);

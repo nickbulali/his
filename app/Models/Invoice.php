@@ -10,8 +10,8 @@ class Invoice extends Model
     use HasManyRelation;
 
     protected $fillable = [
-        'customer_id', 'date', 'due_date', 'discount',
-        'terms_and_conditions', 'reference'
+        'patient_id', 'date', 'due_date', 'discount','tax',
+        'description','status'
     ];
 
     protected $guarded = [
@@ -23,10 +23,12 @@ class Invoice extends Model
         return $this->belongsTo(Patient::class);
     }
 
-    public function items()
+
+     public function items()
     {
         return $this->hasMany(InvoiceItem::class);
     }
+
 
     public function setSubTotalAttribute($value)
     {
@@ -34,4 +36,5 @@ class Invoice extends Model
         $discount = $this->attributes['discount'];
         $this->attributes['total'] = $value - $discount;
     }
+
 }

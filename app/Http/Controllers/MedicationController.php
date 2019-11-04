@@ -1,12 +1,32 @@
 <?php
 namespace App\Http\Controllers;
 use App\Models\Medication;
+use App\Models\Patient;
+use App\Models\Dosage;
+use App\Models\Drugs;
+use Auth;
 use Illuminate\Http\Request;
 class MedicationController extends Controller
 {
     public function index(Request $request)
+
     {
-    }
+
+        if ($request->query('search')) {
+            $search = $request->query('search');
+            $Medications = Medications::whereHas('patient.name', function ($query) use ($search) {
+                $query->where('text', 'LIKE', "%{$search}%")->orWhere('family', 'LIKE', "%{$search}%");
+            })->with('dosage', 'drugs', 'medication_status', 'patient.name')
+            ->paginate(25);
+        } 
+        else {
+          $Medications = Medications::with('patient.name')->with('dosage')->with('drugs')->with('medication_status')
+          ->paginate(25);
+      }
+      return response()->json($Medications);  
+  }
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -16,16 +36,8 @@ class MedicationController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'patient_id' => 'required',
-            'medication_status_id' => 'required',
-            'drug_id' => 'required',
-            'prescribed_by' => 'required',
-            'dosage_id'=> 'required',
-            'quantity' => 'required',
-            'start_time' => 'required',
-            'end_time'=> 'required',
-            'refill'=> 'required',
-            'comments'=> 'required',
+
+
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -51,6 +63,7 @@ class MedicationController extends Controller
             }
         }
     }
+
     /**
      * Display the specified resource.
      *

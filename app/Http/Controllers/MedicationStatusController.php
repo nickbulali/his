@@ -6,6 +6,8 @@ class MedicationStatusController extends Controller
 {
     public function index(Request $request)
     {
+         $MedicationStatus = MedicationStatus::orderBy('id', 'ASC')->get();
+        return response()->json($MedicationStatus);
     }
     /**
      * Store a newly created resource in storage.

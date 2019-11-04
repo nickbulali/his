@@ -1,16 +1,18 @@
+
+
 <?php
+use GuzzleHttp\Client;
 
-/*
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-// error: Unable to prepare route [api/user] for serialization. Uses Closure
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
+Route::get('/json-api', function() {
+	$client = new Client();
 
-/*Route::get('/api/customers', 'CustomerController@search');
-Route::get('/api/products', 'ProductController@search');
+	$response = $client->request('GET', 'https://desertebs.com/api/dummy/posts');
+	$statusCode = $response->getStatusCode();
+	$body = $response->getBody()->getContents();
 
-Route::resource('/api/invoices', 'InvoiceController');*/
+	return $body;
+
+
+});
+
+Route::get('json-api', 'ApiController@index');

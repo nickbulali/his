@@ -9,7 +9,7 @@ class LabTestType extends Model
         'created_at',
         'updated_at',
     ];
-
+protected $table = 'test_types';
     public function test()
     {
         return $this->hasMany('App\Models\Test');
@@ -17,7 +17,7 @@ class LabTestType extends Model
 
     public function testTypeCategory()
     {
-        return $this->hasOne('App\Models\TestTypeCategory', 'id', 'test_type_category_id');
+        return $this->hasOne('App\Models\LabTestTypeCategory', 'id', 'test_type_category_id');
     }
 
     public function specimenTypes()

@@ -7,35 +7,22 @@ use App\Models\Patient;
 use App\Models\Encounter;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use App\Http\Resources\PatientResource;
-use App\Http\Resources\PatientCollection;
-
 class PatientController extends Controller
 {
     public function index(Request $request)
     {
-        $queried = null;
-        $frequency = null;
         if ($request->query('search')) {
             $search = $request->query('search');
-            $query = Patient::whereHas('name', function ($query) use ($search) {
+            $patient = Patient::whereHas('name', function ($query) use ($search) {
                 $query->where('given', 'LIKE', "%{$search}%")->orWhere('family', 'LIKE', "%{$search}%");
-            });
-            
-            $queried = clone $query;
-            $patient = $query->with('gender', 'name', 'maritalStatus', 'bloodGroup', 'allergies', 'familyHistory.conditionType')->paginate(11);
+            })->with('gender', 'name', 'maritalStatus', 'bloodGroup', 'allergies','diagnosis')
+                ->paginate(25);
         } else {
-            $patient = Patient::with('name', 'gender', 'maritalStatus', 'encounter.encounterClass', 'encounter.location', 'bloodGroup', 'allergies', 'medications.drugs', 'medications.dosage', 'familyHistory.conditionType', 'familyHistory.relation', 'socialHistory', 'environmentalHistory', 'smokingHistory', 'alcoholHistory')->orderBy('created_at', 'DESC')->paginate(11);
+            $patient = Patient::with('name', 'gender', 'maritalStatus', 'bloodGroup', 'allergies','diagnosis')->orderBy('created_at', 'DESC')->paginate(25);
+
+            
         }
-        if($queried!=null){
-            $frequency = Patient::frequency($queried);
-        }else{
-            $frequency = Patient::frequency();
-        }
-        return (new PatientCollection($patient))->additional(['meta' => [
-            'frequency' => $frequency,
-        ]]);
-        // return response()->json($patient);
+        return response()->json($patient);
     }
     /**
      * Store a newly created resource in storage.
@@ -54,9 +41,9 @@ class PatientController extends Controller
             return response()->json($validator, 422);
         } else {
             $name = new Name;
-            $name->text = $request->input('family_name');
-            $name->family = $request->input('family_name');
-            $name->given = $request->input('given_name');
+            $name->text = $request->input('family');
+            $name->family = $request->input('family');
+            $name->given = $request->input('given');
             try {
                 $name->save();
             } catch (\Illuminate\Database\QueryException $e) {
@@ -85,7 +72,7 @@ class PatientController extends Controller
      */
     public function show($id)
     {
-        $patient = Patient::with('name', 'gender', 'maritalStatus', 'encounter.encounterClass', 'encounter.location', 'bloodGroup', 'allergies', 'medications.drugs', 'medications.dosage', 'familyHistory.conditionType', 'familyHistory.relation', 'socialHistory', 'environmentalHistory', 'smokingHistory', 'alcoholHistory')->findOrFail($id);
+        $patient = Patient::with('name', 'gender', 'maritalStatus', 'encounter.encounterClass', 'encounter.location', 'bloodGroup', 'allergies','diagnosis')->findOrFail($id);
         return response()->json($patient);
     }
     /**
@@ -131,6 +118,19 @@ class PatientController extends Controller
             }
         }
     }
+
+
+ public function countPatients(Request $request)
+    {
+       
+            $Patient = Patient::count();
+        
+
+        return response()->json($Patient);
+    }
+
+
+
     /**
      * Remove the specified resource from storage.
      *
@@ -144,7 +144,7 @@ class PatientController extends Controller
             $patient->delete();
             return response()->json($patient, 200);
         } catch (\Illuminate\Database\QueryException $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
     /**
@@ -176,7 +176,7 @@ class PatientController extends Controller
                 $test = new Test;
                 $test->encounter_id = $encounter->id;
                 $test->test_type_id = $testTypeId;
-                $test->test_status_id = TestStatus::pending;
+                $test->test_status_id = '1';
                 $test->created_by = Auth::user()->id;
                 $test->requested_by = $request->input('practitioner_name');
                 $test->save();
@@ -189,20 +189,28 @@ class PatientController extends Controller
             }
         }
     }
-    public function get_patients()
-    {
+    public function get_patients(){
     //Registered patrients today
         $patient = Patient::whereDate('created_at', Carbon::today())->count();
         return response()->json( $patient);
     }
-    public function attachAllergy($patientId, $allergyId)
-    {
-        $patient= Patient::find($patientId);
-        try{
+    public function attachAllergy($patientId, $allergyId){
+         $patient= Patient::find($patientId);
+       try{
            $patient->allergies()->attach($allergyId);
            return redirect()->action('PatientController@show',['patientId' => $patientId]);
-        } catch (\Illuminate\Database\QueryException $e) {
+       } catch (\Illuminate\Database\QueryException $e) {
            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-        }
+       }
+    }
+
+        public function attachDiagnosis($patientId, $diagnosisId){
+         $patient= Patient::find($patientId);
+       try{
+           $patient->diagnosis()->attach($diagnosisId);
+           return redirect()->action('PatientController@show',['patientId' => $patientId]);
+       } catch (\Illuminate\Database\QueryException $e) {
+           return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+       }
     }
 }
