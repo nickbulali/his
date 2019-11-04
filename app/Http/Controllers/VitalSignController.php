@@ -1,19 +1,19 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\VitalSigns;
+use App\Models\VitalSign;
 use App\Models\Queue;
 use Illuminate\Http\Request;
 use DB;
-class VitalSignsController extends Controller
+class VitalSignController extends Controller
 {
     public function index(Request $request)
     {
         if ($request->query('search')) {
             $search = $request->query('search');
-            $vitalSigns = VitalSigns::with('patient.name')->where('description', 'LIKE', "%{$search}%")
+            $vitalSigns = VitalSign::with('patient.name')->where('description', 'LIKE', "%{$search}%")
                 ->paginate(10);
         } else {
-            $vitalSigns = VitalSigns::with('patient.name')->orderBy('id', 'ASC')->paginate(10);
+            $vitalSigns = VitalSign::with('patient.name')->orderBy('id', 'ASC')->paginate(10);
         }
 
         return response()->json($vitalSigns);
@@ -35,7 +35,7 @@ class VitalSignsController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $vitalSigns = new VitalSigns;
+            $vitalSigns = new VitalSign;
             $vitalSigns->patient_id = $request->input('patient_id');
 
             $vitalSigns->body_temperature = $request->input('body_temperature');
@@ -72,7 +72,7 @@ class VitalSignsController extends Controller
      */
     public function show($id)
     {
-        $vitalSigns = VitalSigns::findOrFail($id);
+        $vitalSigns = VitalSign::findOrFail($id);
         return response()->json($vitalSigns);
     }
     /**
@@ -91,7 +91,7 @@ class VitalSignsController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $vitalSigns = VitalSigns::findOrFail($id);
+            $vitalSigns = VitalSign::findOrFail($id);
             $vitalSigns->patient_id = $request->input('patient_id');
             $vitalSigns->body_temperature = $request->input('body_temperature');
             $vitalSigns->respiratory_rate = $request->input('respiratory_rate');
@@ -119,7 +119,7 @@ class VitalSignsController extends Controller
     public function destroy($id)
     {
         try {
-            $vitalSigns = VitalSigns::findOrFail($id);
+            $vitalSigns = VitalSign::findOrFail($id);
             $vitalSigns->delete();
             return response()->json($vitalSigns, 200);
         } catch (\Illuminate\Database\QueryException $e) {

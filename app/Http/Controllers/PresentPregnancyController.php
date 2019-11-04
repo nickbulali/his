@@ -1,13 +1,11 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\ConditionTypes;
+use App\Models\PresentPregnancy;
 use Illuminate\Http\Request;
-class ConditionTypesController extends Controller
+class PresentPregnancyController extends Controller
 {
     public function index(Request $request)
     {
-        $conditionTypes = ConditionTypes::orderBy('description', 'asc')->get();
-        return response()->json($conditionTypes);
     }
     /**
      * Store a newly created resource in storage.
@@ -18,19 +16,21 @@ class ConditionTypesController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'code_id' => 'required',
-            'description' => 'required',
+            'last_normal_menstrual_period' => 'required',
+            'expected_date_of_delivery' => 'required',
+            'gestation' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $conditionTypes = new ConditionTypes;
-            $conditionTypes->code_id = $request->input('code_id');
-            $conditionTypes->description = $request->input('description');
+            $PresentPregnancy = new PresentPregnancy;
+            $PresentPregnancy->reason_for_admission = $request->input('reason_for_admission');
+            $PresentPregnancy->expected_date_of_delivery = $request->input('expected_date_of_delivery');
+            $PresentPregnancy->gestation = $request->input('gestation');
             try {
-                $conditionTypes->save();
-                return response()->json($conditionTypes);
+                $PresentPregnancy->save();
+                return response()->json($PresentPregnancy);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -44,8 +44,8 @@ class ConditionTypesController extends Controller
      */
     public function show($id)
     {
-        $conditionTypes = ConditionTypes::findOrFail($id);
-        return response()->json($conditionTypes);
+        $PresentPregnancy = PresentPregnancy::findOrFail($id);
+        return response()->json($PresentPregnancy);
     }
     /**
      * Update the specified resource in storage.
@@ -57,19 +57,21 @@ class ConditionTypesController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'code_id' => 'required',
-            'description' => 'required',
+            'reason_for_admission' => 'required',
+            'expected_date_of_delivery' => 'required',
+            'gestation' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $conditionTypes = ConditionTypes::findOrFail($id);
-            $conditionTypes->code_id = $request->input('code_id');
-            $conditionTypes->description = $request->input('description');
+            $PresentPregnancy = PresentPregnancy::findOrFail($id);
+            $PresentPregnancy->reason_for_admission = $request->input('reason_for_admission');
+            $PresentPregnancy->expected_date_of_delivery = $request->input('expected_date_of_delivery');
+            $PresentPregnancy->gestation = $request->input('gestation');
             try {
-                $conditionTypes->save();
-                return response()->json($conditionTypes);
+                $PresentPregnancy->save();
+                return response()->json($PresentPregnancy);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -84,9 +86,9 @@ class ConditionTypesController extends Controller
     public function destroy($id)
     {
         try {
-            $conditionTypes = ConditionTypes::findOrFail($id);
-            $conditionTypes->delete();
-            return response()->json($conditionTypes, 200);
+            $PresentPregnancy = PresentPregnancy::findOrFail($id);
+            $PresentPregnancy->delete();
+            return response()->json($PresentPregnancy, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

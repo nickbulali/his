@@ -1,11 +1,14 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\PresentingComplaints;
+use App\Models\Condition;
 use Illuminate\Http\Request;
-class PresentingComplaintsController extends Controller
+class ConditionController extends Controller
 {
     public function index(Request $request)
     {
+        $conditions = Condition::orderBy('created_at', 'desc')
+                ->paginate(15);
+        return response()->json($conditions);
     }
     /**
      * Store a newly created resource in storage.
@@ -16,32 +19,34 @@ class PresentingComplaintsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'comment' => 'required',
+            'condition_type_id' => 'required',
+            'comments' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $PresentingComplaints = new PresentingComplaints;
-            $PresentingComplaints->comment = $request->input('comment');
+            $condition = new Conditions;
+            $condition->condition_type_id = $request->input('condition_type_id');
+            $condition->comments = $request->input('comments');
             try {
-                $PresentingComplaints->save();
-                return response()->json($PresentingComplaints);
+                $condition->save();
+                return response()->json($condition);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
     /**
-     * comment the specified resource.
+     * Display the specified resource.
      *
      * @param  int  id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $PresentingComplaints = PresentingComplaints::findOrFail($id);
-        return response()->json($PresentingComplaints);
+        $condition = Condition::findOrFail($id);
+        return response()->json($condition);
     }
     /**
      * Update the specified resource in storage.
@@ -53,17 +58,19 @@ class PresentingComplaintsController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'comment' => 'required',
+           'condition_type_id' => 'required',
+            'comments' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $PresentingComplaints = PresentingComplaints::findOrFail($id);
-            $PresentingComplaints->comment = $request->input('comment');
+            $condition = Condition::findOrFail($id);
+            $condition->condition_type_id = $request->input('condition_type_id');
+            $condition->comments = $request->input('comments');
             try {
-                $PresentingComplaints->save();
-                return response()->json($PresentingComplaints);
+                $condition->save();
+                return response()->json($condition);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -78,9 +85,9 @@ class PresentingComplaintsController extends Controller
     public function destroy($id)
     {
         try {
-            $PresentingComplaints = PresentingComplaints::findOrFail($id);
-            $PresentingComplaints->delete();
-            return response()->json($PresentingComplaints, 200);
+            $condition = Condition::findOrFail($id);
+            $condition->delete();
+            return response()->json($condition, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

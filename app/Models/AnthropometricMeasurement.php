@@ -2,7 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-class AnthropometricMeasurements extends Model
+class AnthropometricMeasurement extends Model
 {
     protected $table = 'anthropometric_measurements';
     protected $fillable = ['height','weight','body_mass_index','body_surface_area'];

@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\MedicationSheets;
+use App\Models\BodySystem;
 use Illuminate\Http\Request;
-class MedicationSheetsController extends Controller
+class BodySystemsController extends Controller
 {
     public function index(Request $request)
     {
@@ -16,19 +16,17 @@ class MedicationSheetsController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'medication_id' => 'required',
-            'time_due' => 'required',
+            'name' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $MedicationSheets = new MedicationSheets;
-            $MedicationSheets->medication_id = $request->input('medication_id');
-            $MedicationSheets->time_due = $request->input('time_due');
+            $bodySystem = new BodySystem;
+            $bodySystem->name = $request->input('name');
             try {
-                $MedicationSheets->save();
-                return response()->json($MedicationSheets);
+                $bodySystem->save();
+                return response()->json($bodySystem);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -42,8 +40,8 @@ class MedicationSheetsController extends Controller
      */
     public function show($id)
     {
-        $MedicationSheets = MedicationSheets::findOrFail($id);
-        return response()->json($MedicationSheets);
+        $bodySystem = BodySystems::findOrFail($id);
+        return response()->json($bodySystem);
     }
     /**
      * Update the specified resource in storage.
@@ -55,19 +53,17 @@ class MedicationSheetsController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-            'medication_id' => 'required',
-            'time_due' => 'required',
+            'name' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $MedicationSheets = MedicationSheets::findOrFail($id);
-            $MedicationSheets->medication_id = $request->input('medication_id');
-            $MedicationSheets->time_due = $request->input('time_due');
+            $bodySystem = BodySystems::findOrFail($id);
+            $bodySystem->name = $request->input('name');
             try {
-                $MedicationSheets->save();
-                return response()->json($MedicationSheets);
+                $bodySystem->save();
+                return response()->json($bodySystem);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -82,9 +78,9 @@ class MedicationSheetsController extends Controller
     public function destroy($id)
     {
         try {
-            $MedicationSheets = MedicationSheets::findOrFail($id);
-            $MedicationSheets->delete();
-            return response()->json($MedicationSheets, 200);
+            $bodySystem = BodySystems::findOrFail($id);
+            $bodySystem->delete();
+            return response()->json($bodySystem, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

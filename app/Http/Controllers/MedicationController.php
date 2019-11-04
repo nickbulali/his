@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\Medications;
+use App\Models\Medication;
 use Illuminate\Http\Request;
-class MedicationsController extends Controller
+class MedicationController extends Controller
 {
     public function index(Request $request)
     {
@@ -31,21 +31,21 @@ class MedicationsController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Medications = new Medications;
-            $Medications->patient_id = $request->input('patient_id');
-            $Medications->medication_status_id = $request->input('medication_status_id');
-            $Medications->drug_id = $request->input('drug_id');
-            $Medications->prescribed_by = $request->input('prescribed_by');
-            $Medications->test_type_id = $request->input('test_type_id');
-            $Medications->dosage_id = $request->input('dosage_id');
-            $Medications->quantity = $request->input('quantity');
-            $Medications->start_time = $request->input('start_time');
-            $Medications->end_time = $request->input('end_time');
-            $Medications->refill = $request->input('refill');
-            $Medications->comments = $request->input('comments');
+            $medication = new Medication;
+            $medication->patient_id = $request->input('patient_id');
+            $medication->medication_status_id = $request->input('medication_status_id');
+            $medication->drug_id = $request->input('drug_id');
+            $medication->prescribed_by = $request->input('prescribed_by');
+            $medication->test_type_id = $request->input('test_type_id');
+            $medication->dosage_id = $request->input('dosage_id');
+            $medication->quantity = $request->input('quantity');
+            $medication->start_time = $request->input('start_time');
+            $medication->end_time = $request->input('end_time');
+            $medication->refill = $request->input('refill');
+            $medication->comments = $request->input('comments');
             try {
-                $Medications->save();
-                return response()->json($Medications);
+                $medication->save();
+                return response()->json($medication);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -59,8 +59,8 @@ class MedicationsController extends Controller
      */
     public function show($id)
     {
-        $Medications = Medications::findOrFail($id);
-        return response()->json($Medications);
+        $medication = Medication::findOrFail($id);
+        return response()->json($medication);
     }
     /**
      * Update the specified resource in storage.
@@ -88,21 +88,21 @@ class MedicationsController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Medications = Medications::findOrFail($id);
-            $Medications->patient_id = $request->input('patient_id');
-            $Medications->medication_status_id = $request->input('medication_status_id');
-            $Medications->drug_id = $request->input('drug_id');
-            $Medications->prescribed_by = $request->input('prescribed_by');
-            $Medications->test_type_id = $request->input('test_type_id');
-            $Medications->dosage_id = $request->input('dosage_id');
-            $Medications->quantity = $request->input('quantity');
-            $Medications->start_time = $request->input('start_time');
-            $Medications->end_time = $request->input('end_time');
-            $Medications->refill = $request->input('refill');
-            $Medications->comments = $request->input('comments');
+            $medication = Medication::findOrFail($id);
+            $medication->patient_id = $request->input('patient_id');
+            $medication->medication_status_id = $request->input('medication_status_id');
+            $medication->drug_id = $request->input('drug_id');
+            $medication->prescribed_by = $request->input('prescribed_by');
+            $medication->test_type_id = $request->input('test_type_id');
+            $medication->dosage_id = $request->input('dosage_id');
+            $medication->quantity = $request->input('quantity');
+            $medication->start_time = $request->input('start_time');
+            $medication->end_time = $request->input('end_time');
+            $medication->refill = $request->input('refill');
+            $medication->comments = $request->input('comments');
             try {
-                $Medications->save();
-                return response()->json($Medications);
+                $medication->save();
+                return response()->json($medication);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -117,9 +117,9 @@ class MedicationsController extends Controller
     public function destroy($id)
     {
         try {
-            $Medications = Medications::findOrFail($id);
-            $Medications->delete();
-            return response()->json($Medications, 200);
+            $medication = Medication::findOrFail($id);
+            $medication->delete();
+            return response()->json($medication, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
