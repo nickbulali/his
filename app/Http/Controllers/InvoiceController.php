@@ -113,7 +113,6 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::with(['patient.name', 'items.item'])
             ->findOrFail($id);
-
         return response()
             ->json(['invoice' => $invoice]);
     }

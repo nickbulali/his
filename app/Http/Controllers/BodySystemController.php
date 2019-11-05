@@ -1,13 +1,11 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\DrugCatgeories;
+use App\Models\BodySystem;
 use Illuminate\Http\Request;
-class DrugCatgeoriesController extends Controller
+class BodySystemsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $DrugCatgeories = DrugCatgeories::orderBy('id', 'ASC')->paginate(10);
-        return response()->json($DrugCatgeories);
     }
     /**
      * Store a newly created resource in storage.
@@ -18,17 +16,17 @@ class DrugCatgeoriesController extends Controller
     public function store(Request $request)
     {
         $rules = [
-        	'description' => 'required',
+            'name' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-             $DrugCatgeories = new DrugCatgeories;
-             $DrugCatgeories->description = $request->input('description');
+            $bodySystem = new BodySystem;
+            $bodySystem->name = $request->input('name');
             try {
-                $DrugCatgeories->save();
-                return response()->json($DrugCatgeories);
+                $bodySystem->save();
+                return response()->json($bodySystem);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -42,8 +40,8 @@ class DrugCatgeoriesController extends Controller
      */
     public function show($id)
     {
-        $DrugCatgeories = DrugCatgeories::findOrFail($id);
-        return response()->json($DrugCatgeories);
+        $bodySystem = BodySystems::findOrFail($id);
+        return response()->json($bodySystem);
     }
     /**
      * Update the specified resource in storage.
@@ -55,17 +53,17 @@ class DrugCatgeoriesController extends Controller
     public function update(Request $request, $id)
     {
         $rules = [
-        	   'description' => 'required',
+            'name' => 'required',
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $DrugCatgeories = DrugCatgeories::findOrFail($id);
-            $DrugCatgeories->description = $request->input('description');
+            $bodySystem = BodySystems::findOrFail($id);
+            $bodySystem->name = $request->input('name');
             try {
-                $DrugCatgeories->save();
-                return response()->json($DrugCatgeories);
+                $bodySystem->save();
+                return response()->json($bodySystem);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -80,9 +78,9 @@ class DrugCatgeoriesController extends Controller
     public function destroy($id)
     {
         try {
-            $DrugCatgeories = DrugCatgeories::findOrFail($id);
-            $DrugCatgeories->delete();
-            return response()->json($DrugCatgeories, 200);
+            $bodySystem = BodySystems::findOrFail($id);
+            $bodySystem->delete();
+            return response()->json($bodySystem, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

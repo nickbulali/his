@@ -24,11 +24,11 @@ class MedicationStatusController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $MedicationStatus = new MedicationStatus;
-            $MedicationStatus->display = $request->input('display');
+            $medicationStatus = new MedicationStatus;
+            $medicationStatus->display = $request->input('display');
             try {
-                $MedicationStatus->save();
-                return response()->json($MedicationStatus);
+                $medicationStatus->save();
+                return response()->json($medicationStatus);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -42,8 +42,8 @@ class MedicationStatusController extends Controller
      */
     public function show($id)
     {
-        $MedicationStatus = MedicationStatus::findOrFail($id);
-        return response()->json($MedicationStatus);
+        $medicationStatus = MedicationStatus::findOrFail($id);
+        return response()->json($medicationStatus);
     }
     /**
      * Update the specified resource in storage.
@@ -61,11 +61,11 @@ class MedicationStatusController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $MedicationStatus = MedicationStatus::findOrFail($id);
-            $MedicationStatus->display = $request->input('display');
+            $medicationStatus = MedicationStatus::findOrFail($id);
+            $medicationStatus->display = $request->input('display');
             try {
-                $MedicationStatus->save();
-                return response()->json($MedicationStatus);
+                $medicationStatus->save();
+                return response()->json($medicationStatus);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -80,9 +80,9 @@ class MedicationStatusController extends Controller
     public function destroy($id)
     {
         try {
-            $MedicationStatus = MedicationStatus::findOrFail($id);
-            $MedicationStatus->delete();
-            return response()->json($MedicationStatus, 200);
+            $medicationStatus = MedicationStatus::findOrFail($id);
+            $medicationStatus->delete();
+            return response()->json($medicationStatus, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

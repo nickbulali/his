@@ -68,7 +68,7 @@ class ItemController extends Controller
      */
     public function show($id)
     {
-        $item = Item::findOrFail($id);
+        $item = Item::whereId($id)->get();
 
         return response()->json($item);
     }

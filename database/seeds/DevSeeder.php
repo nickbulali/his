@@ -7,7 +7,7 @@ use App\Models\EnvironmentalHistory;
 use App\Models\MedicationStatus;
 use App\Models\SocialHistory;
 use App\Models\EncounterClass;
-use App\Models\ConditionTypes;
+use App\Models\ConditionType;
 use App\Models\FamilyRelation;
 use App\Models\FamilyHistory;
 use App\Models\MaritalStatus;
@@ -26,7 +26,7 @@ use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\Gender;
 use App\Models\Dosage;
-use App\Models\Drugs;
+use App\Models\Drug;
 use App\Models\Name;
 use App\Models\Item;
 use App\User;
@@ -391,61 +391,61 @@ class DevSeeder extends Seeder
             'display' => 'Unknown'
         ]);
 
-        ConditionTypes::truncate();
+        ConditionType::truncate();
 
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '001',
             'description' => 'cystic fibrosis'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '002',
             'description' => 'alpha-and beta-thalassemias'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '003',
             'description' => 'sickle cell anemia'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '004',
             'description' => 'Marfan syndrome'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '005',
             'description' => 'fragile X syndrome'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '006',
             'description' => "Huntington's disease"
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '007',
             'description' => 'hemochromatosis'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '008',
             'description' => 'heart disease'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '009',
             'description' => 'high blood pressure'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '010',
             'description' => "Alzheimer's disease"
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '011',
             'description' => 'arthritis'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '012',
             'description' => 'diabetes'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '013',
             'description' => 'cancer'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '014',
             'description' => 'obesity'
         ]);
@@ -578,7 +578,7 @@ class DevSeeder extends Seeder
             'definition'=> 'The player of the role is a woman joined to a man (scoping person) in marriage'
         ]);
 
-        $conditionTypes = ConditionTypes::pluck('id');
+        $conditionTypes = ConditionType::pluck('id');
         $familyRelation = FamilyRelation::pluck('id');
         $patients = Patient::pluck('id');
 
@@ -595,9 +595,9 @@ class DevSeeder extends Seeder
             ]);
         }
 
-        Drugs::truncate();
+        Drug::truncate();
 
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'SODIUM CHLORIDE',
             'trade_name'    => '0.225% W/V SODIUM CHLORIDE (1/4 NORMAL SALINE)  INTRAVENOUS INFUSION BP (500ML BOTTLE)',
             'strength_value'=> '0.225',
@@ -605,7 +605,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Solution for infusion',
             'administration_route'=> 'Intravenous (not otherwise specified)'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'METRONIDAZOLE',
             'trade_name'    => '0.5% METRONIDAZOLE INJECTION USP',
             'strength_value'=> '5',
@@ -613,7 +613,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Solution for infusion',
             'administration_route'=> 'Intravenous (not otherwise specified)'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'SODIUM CHLORIDE',
             'trade_name'    => '0.9% W/V SODIUM CHLORIDE INJECTION B.P',
             'strength_value'=> '0.9',
@@ -621,7 +621,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Solution for injection',
             'administration_route'=> 'Parenteral'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'LIDOCAINE (LIGNOCAINE) HYDROCHLORIDE',
             'trade_name'    => '1% W-V LIDOCAINE HCL INJECTION USP',
             'strength_value'=> '1',
@@ -629,7 +629,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Solution for injection',
             'administration_route'=> 'Intravenous (not otherwise specified)'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'GLYCINE',
             'trade_name'    => '1.5% GLYCINE IRRIGATION USP',
             'strength_value'=> '1.5',
@@ -637,7 +637,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Irrigation solution',
             'administration_route'=> 'Topical'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'DEXTROSE, SODIUM CHLORIDE',
             'trade_name'    => '10% DEXTROSE AND 0.18% SODIUM CHLORIDE USP',
             'strength_value'=> '10, 0.18',
@@ -645,7 +645,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Solution for injection/infusion',
             'administration_route'=> 'Intravenous (not otherwise specified)'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'MANNITOL',
             'trade_name'    => '10% MANNITOL INTRAVENOUS INFUSION BP',
             'strength_value'=> '10',
@@ -653,7 +653,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Solution for injection/infusion',
             'administration_route'=> 'Intravenous (not otherwise specified)'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'POTASSIUM CHLORIDE',
             'trade_name'    => '15% W-V POTASSIUM CHLORIDE FOR INJ. USP',
             'strength_value'=> '15',
@@ -661,7 +661,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Solution for injection',
             'administration_route'=> 'Intravenous (not otherwise specified)'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'LIDOCAINE (LIGNOCAINE) HYDROCHLORIDE',
             'trade_name'    => '2% W-V LIDOCAINE HCL INJECTION USP',
             'strength_value'=> '2',
@@ -669,7 +669,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Solution for injection',
             'administration_route'=> 'Intravenous (not otherwise specified)'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'DEXTROSE',
             'trade_name'    => '25% W/V DEXTROSE INTRAVENOUS INFUSION USP (1000ML PP BAG)',
             'strength_value'=> '25',
@@ -677,7 +677,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Solution for infusion',
             'administration_route'=> 'Intravenous (not otherwise specified)'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'VITAMIN B1 (THIAMINE), VITAMIN B2 (RIBOFLAVIN), VITAMIN B6 (PYRIDOXINE), NICOTINAMIDE, CALCIUM PANTOTHENOL',
             'trade_name'    => '3V TABLETS',
             'strength_value'=> '100, 200, 0.2',
@@ -685,7 +685,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Tablet',
             'administration_route'=> 'Oral'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'ARIPIPRAZOLE',
             'trade_name'    => 'ABILIFY 10MG TABLET',
             'strength_value'=> '10',
@@ -693,7 +693,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Tablet',
             'administration_route'=> 'Oral'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'ACARBOSE',
             'trade_name'    => 'ACAROSE 100MG TABLETS',
             'strength_value'=> '100',
@@ -701,7 +701,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Tablet',
             'administration_route'=> 'Oral'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'ACETYLCYSTEINE',
             'trade_name'    => 'ACC 200MG POWDER FOR ORAL SOLUTION',
             'strength_value'=> '200',
@@ -709,7 +709,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Powder for oral solution',
             'administration_route'=> 'Oral'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'ZAFIRLUKAST',
             'trade_name'    => 'ACCOLATE 20 MG F.C.TAB',
             'strength_value'=> '20',
@@ -717,7 +717,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Film-coated tablet',
             'administration_route'=> 'Oral'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'QUINAPRIL, HYDROCHLOROTHIAZIDE',
             'trade_name'    => 'ACCUZIDE 20 F.C.TAB',
             'strength_value'=> '20, 12.5',
@@ -725,7 +725,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Film-coated tablet',
             'administration_route'=> 'Oral'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'CAPTOPRIL',
             'trade_name'    => 'ACETAB 25 MG TABLETS',
             'strength_value'=> '25',
@@ -733,7 +733,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Tablet',
             'administration_route'=> 'Oral'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'SODIUM CHLORIDE, POTASSIUM CHLORIDE, CALCIUM CHLORIDE, MAGNESIUM CHLORIDE, ACETIC ACID, DEXTROSE',
             'trade_name'    => 'ACETATE HEMODIALYSIS CAT.NO 3-085-005',
             'strength_value'=> '0',
@@ -741,7 +741,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Concentrate for haemodialysis solution',
             'administration_route'=> 'Hemodialysis'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'ACETYLCYSTEINE',
             'trade_name'    => 'ACETYLCYSTEINE EFFE INSTANT 200MG SACHET',
             'strength_value'=> '200',
@@ -749,7 +749,7 @@ class DevSeeder extends Seeder
             'dosage_form'   => 'Granules',
             'administration_route'=> 'Oral'
         ]);
-        Drugs::create([
+        Drug::create([
             'generic_name'  => 'DIHYDROXY ALUMINIUM SODIUM',
             'trade_name'    => 'ACICAL CHEWABLE TABLETS',
             'strength_value'=> '320',
@@ -780,7 +780,7 @@ class DevSeeder extends Seeder
 
         $patients = Patient::pluck('id');
         $medicationstatus = MedicationStatus::pluck('id');
-        $drugs = Drugs::pluck('id');
+        $drugs = Drug::pluck('id');
         $users = User::pluck('id');
         $dosage = Dosage::pluck('id');
 

@@ -1,9 +1,9 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\Drugs;
+use App\Models\Drug;
 use Illuminate\Http\Request;
 use DB;
-class DrugsController extends Controller
+class DrugController extends Controller
 {
     public function index(Request $request)
     {
@@ -39,16 +39,16 @@ class DrugsController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Drugs = new Drugs;
-            $Drugs->generic_name = $request->input('generic_name');
-            $Drugs->trade_name = $request->input('trade_name');
-            $Drugs->strength_value = $request->input('strength_value');
-            $Drugs->strength_unit = $request->input('strength_unit');
-            $Drugs->dosage_form = $request->input('dosage_form');
-            $Drugs->administration_route = $request->input('administration_route');
+            $drug = new Drug;
+            $drug->generic_name = $request->input('generic_name');
+            $drug->trade_name = $request->input('trade_name');
+            $drug->strength_value = $request->input('strength_value');
+            $drug->strength_unit = $request->input('strength_unit');
+            $drug->dosage_form = $request->input('dosage_form');
+            $drug->administration_route = $request->input('administration_route');
             try {
-                $Drugs->save();
-                return response()->json($Drugs);
+                $drug->save();
+                return response()->json($drug);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -62,8 +62,8 @@ class DrugsController extends Controller
      */
     public function show($id)
     {
-        $Drugs = Drugs::findOrFail($id);
-        return response()->json($Drugs);
+        $drug = Drug::findOrFail($id);
+        return response()->json($drug);
     }
     /**
      * Update the specified resource in storage.
@@ -87,17 +87,17 @@ class DrugsController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Drugs = Drugs::findOrFail($id);
-            $Drugs->generic_name = $request->input('generic_name');
-            $Drugs->trade_name = $request->input('trade_name');
-            $Drugs->strength_value = $request->input('strength_value');
-            $Drugs->strength_unit = $request->input('strength_unit');
-            $Drugs->dosage_form = $request->input('dosage_form');
-            $Drugs->administration_route = $request->input('administration_route');
-            $Drugs->price = $request->input('price');
+            $drug = Drug::findOrFail($id);
+            $drug->generic_name = $request->input('generic_name');
+            $drug->trade_name = $request->input('trade_name');
+            $drug->strength_value = $request->input('strength_value');
+            $drug->strength_unit = $request->input('strength_unit');
+            $drug->dosage_form = $request->input('dosage_form');
+            $drug->administration_route = $request->input('administration_route');
+            $drugs->price = $request->input('price');
             try {
-                $Drugs->save();
-                return response()->json($Drugs);
+                $drug->save();
+                return response()->json($drug);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -112,9 +112,9 @@ class DrugsController extends Controller
     public function destroy($id)
     {
         try {
-            $Drugs = Drugs::findOrFail($id);
-            $Drugs->delete();
-            return response()->json($Drugs, 200);
+            $drug = Drug::findOrFail($id);
+            $drug->delete();
+            return response()->json($drug, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

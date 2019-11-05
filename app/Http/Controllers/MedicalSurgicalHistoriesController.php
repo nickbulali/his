@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Controllers;
-use App\Models\MedicalSurgicalHistories;
+use App\Models\MedicalSurgicalHistory;
 use Illuminate\Http\Request;
-class MedicalSurgicalHistoriesController extends Controller
+class MedicalSurgicalHistoryController extends Controller
 {
     public function index(Request $request)
     {
@@ -22,11 +22,11 @@ class MedicalSurgicalHistoriesController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $MedicalSurgicalHistories = new MedicalSurgicalHistories;
-            $MedicalSurgicalHistories->comment = $request->input('comment');
+            $medicalSurgicalHistory = new MedicalSurgicalHistory;
+            $medicalSurgicalHistory->comment = $request->input('comment');
             try {
-                $MedicalSurgicalHistories->save();
-                return response()->json($MedicalSurgicalHistories);
+                $medicalSurgicalHistory->save();
+                return response()->json($medicalSurgicalHistory);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -40,8 +40,8 @@ class MedicalSurgicalHistoriesController extends Controller
      */
     public function show($id)
     {
-        $MedicalSurgicalHistories = MedicalSurgicalHistories::findOrFail($id);
-        return response()->json($MedicalSurgicalHistories);
+        $medicalSurgicalHistory = MedicalSurgicalHistory::findOrFail($id);
+        return response()->json($medicalSurgicalHistory);
     }
     /**
      * Update the specified resource in storage.
@@ -59,11 +59,11 @@ class MedicalSurgicalHistoriesController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $MedicalSurgicalHistories = MedicalSurgicalHistories::findOrFail($id);
-            $MedicalSurgicalHistories->comment = $request->input('comment');
+            $medicalSurgicalHistory = MedicalSurgicalHistory::findOrFail($id);
+            $medicalSurgicalHistory->comment = $request->input('comment');
             try {
-                $MedicalSurgicalHistories->save();
-                return response()->json($MedicalSurgicalHistories);
+                $medicalSurgicalHistory->save();
+                return response()->json($medicalSurgicalHistory);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -78,9 +78,9 @@ class MedicalSurgicalHistoriesController extends Controller
     public function destroy($id)
     {
         try {
-            $MedicalSurgicalHistories = MedicalSurgicalHistories::findOrFail($id);
-            $MedicalSurgicalHistories->delete();
-            return response()->json($MedicalSurgicalHistories, 200);
+            $medicalSurgicalHistory = MedicalSurgicalHistory::findOrFail($id);
+            $medicalSurgicalHistory->delete();
+            return response()->json($medicalSurgicalHistory, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
