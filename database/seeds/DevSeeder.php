@@ -7,7 +7,7 @@ use App\Models\EnvironmentalHistory;
 use App\Models\MedicationStatus;
 use App\Models\SocialHistory;
 use App\Models\EncounterClass;
-use App\Models\ConditionTypes;
+use App\Models\ConditionType;
 use App\Models\FamilyRelation;
 use App\Models\FamilyHistory;
 use App\Models\MaritalStatus;
@@ -391,61 +391,61 @@ class DevSeeder extends Seeder
             'display' => 'Unknown'
         ]);
 
-        ConditionTypes::truncate();
+        ConditionType::truncate();
 
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '001',
             'description' => 'cystic fibrosis'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '002',
             'description' => 'alpha-and beta-thalassemias'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '003',
             'description' => 'sickle cell anemia'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '004',
             'description' => 'Marfan syndrome'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '005',
             'description' => 'fragile X syndrome'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '006',
             'description' => "Huntington's disease"
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '007',
             'description' => 'hemochromatosis'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '008',
             'description' => 'heart disease'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '009',
             'description' => 'high blood pressure'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '010',
             'description' => "Alzheimer's disease"
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '011',
             'description' => 'arthritis'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '012',
             'description' => 'diabetes'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '013',
             'description' => 'cancer'
         ]);
-        ConditionTypes::create([
+        ConditionType::create([
             'code_id' => '014',
             'description' => 'obesity'
         ]);
@@ -578,7 +578,7 @@ class DevSeeder extends Seeder
             'definition'=> 'The player of the role is a woman joined to a man (scoping person) in marriage'
         ]);
 
-        $conditionTypes = ConditionTypes::pluck('id');
+        $conditionTypes = ConditionType::pluck('id');
         $familyRelation = FamilyRelation::pluck('id');
         $patients = Patient::pluck('id');
 
