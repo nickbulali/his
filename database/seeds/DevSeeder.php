@@ -26,7 +26,7 @@ use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\Gender;
 use App\Models\Dosage;
-use App\Models\Drugs;
+use App\Models\Drug;
 use App\Models\Name;
 use App\Models\Item;
 use App\User;

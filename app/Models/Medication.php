@@ -25,7 +25,7 @@ class Medications extends Model
     }
     public function Drugs()
     {
-        return $this->belongsTo('App\Models\Drugs', 'drug_id', 'id');
+        return $this->belongsTo('App\Models\Drug', 'drug_id', 'id');
     }
     public function medication_status()
     {

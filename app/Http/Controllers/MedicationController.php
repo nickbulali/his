@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 use App\Models\Medication;
 use App\Models\Patient;
 use App\Models\Dosage;
-use App\Models\Drugs;
+use App\Models\Drug;
 use Auth;
 use Illuminate\Http\Request;
 class MedicationController extends Controller
