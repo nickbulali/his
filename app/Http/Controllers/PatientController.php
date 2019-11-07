@@ -119,13 +119,9 @@ class PatientController extends Controller
         }
     }
 
-
- public function countPatients(Request $request)
+    public function countPatients(Request $request)
     {
-       
-            $Patient = Patient::count();
-        
-
+        $Patient = Patient::count();
         return response()->json($Patient);
     }
 
@@ -147,6 +143,7 @@ class PatientController extends Controller
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
+
     /**
      * @param  \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
@@ -172,7 +169,7 @@ class PatientController extends Controller
             $encounter->bed_no = $request->input('bed_no');
             $encounter->save();
             foreach ($request->input('testTypeIds') as $testTypeId) {
-         //save order items in tests
+            //save order items in tests
                 $test = new Test;
                 $test->encounter_id = $encounter->id;
                 $test->test_type_id = $testTypeId;
