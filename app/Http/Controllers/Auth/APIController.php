@@ -119,7 +119,7 @@ class APIController extends Controller
 
     public function getUser()
     {
-        return auth()->user();
+        return auth()->user()->load('roles.permissions', 'gender');
     }
 
     public function signupActivate($token)
