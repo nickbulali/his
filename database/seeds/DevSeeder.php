@@ -6,20 +6,21 @@ use Faker\Factory;
 use App\Models\EnvironmentalHistory;
 use App\Models\LabTestTypeCategory;
 use App\Models\MedicationStatus;
-use App\Models\SocialHistory;
 use App\Models\EncounterClass;
-use App\Models\ConditionType;
 use App\Models\FamilyRelation;
+use App\Models\SocialHistory;
 use App\Models\FamilyHistory;
+use App\Models\ConditionType;
 use App\Models\MaritalStatus;
 use App\Models\ItemCategory;
+use App\Models\SpecimenType;
 use App\Models\InvoiceItem;
 use App\Models\QueueStatus;
+use App\Models\LabTestType;
 use App\Models\Medication;
 use App\Models\BloodGroup;
 use App\Models\Encounter;
 use App\Models\Location;
-use App\Models\TestType;
 use App\Models\Allergy;
 use App\Models\Alcohol;
 use App\Models\Smoking;
@@ -1066,29 +1067,6 @@ class DevSeeder extends Seeder
             }
         }
 
-        //Gender table
-        Gender::truncate();
-        Gender::create([
-            'active' => 1,
-            'code' => 'male',
-            'display' => 'Male'
-        ]);
-        Gender::create([
-            'active' => 1,
-            'code' => 'female',
-            'display' => 'Female'
-        ]);
-        Gender::create([
-            'active' => 1,
-            'code' => 'both',
-            'display' => 'Both'
-        ]);
-        Gender::create([
-            'active' => 1,
-            'code' => 'unknown',
-            'display' => 'Unknown'
-        ]);
-
         //Marital Status Table
         MaritalStatus::create([
             'active' => 1,
@@ -1143,622 +1121,457 @@ class DevSeeder extends Seeder
         $specimenTypeUrine = SpecimenType::create(['name' => 'Urine']);
 
         /* Test Categories table - These map on to the lab sections */
-        $test_categories = TestTypeCategory::create(['name' => 'PARASITOLOGY']);
-        $testTypeCategoryMicrobiology = TestTypeCategory::create(['name' => 'MICROBIOLOGY']);
-        $testTypeCategoryHematology = TestTypeCategory::create(['name' => 'HEMATOLOGY']);
-        $testTypeCategorySerology = TestTypeCategory::create(['name' => 'SEROLOGY']);
-        $testTypeCategoryTransfusion = TestTypeCategory::create(['name' => 'BLOOD TRANSFUSION']);
-        $testTypeCategoryChemistry = TestTypeCategory::create(['name' => 'CHEMISTRY']);
+        $test_categories = LabTestTypeCategory::create(['name' => 'PARASITOLOGY']);
+        $testTypeCategoryMicrobiology = LabTestTypeCategory::create(['name' => 'MICROBIOLOGY']);
+        $testTypeCategoryHematology = LabTestTypeCategory::create(['name' => 'HEMATOLOGY']);
+        $testTypeCategorySerology = LabTestTypeCategory::create(['name' => 'SEROLOGY']);
+        $testTypeCategoryTransfusion = LabTestTypeCategory::create(['name' => 'BLOOD TRANSFUSION']);
+        $testTypeCategoryChemistry = LabTestTypeCategory::create(['name' => 'CHEMISTRY']);
         $this->command->info('Lab Sections seeded');
 
-        $testTypeHIV = TestType::create(['name' => 'HIV', 'test_type_category_id' => $testTypeCategorySerology->id]);
-        $testTypeBS = TestType::create(['name' => 'BS for mps', 'test_type_category_id' => $test_categories->id]);
-        $testTypeUrinalysis = TestType::create(['name' => 'Urinalysis', 'test_type_category_id' => $test_categories->id]);
-        $testTypeWBC = TestType::create(['name' => 'WBC', 'test_type_category_id' => $test_categories->id]);
-        $test_types_lfts = TestType::create(['name' => 'LFTS', 'test_type_category_id' => $testTypeCategoryChemistry->id]);
-        $test_types_rfts = TestType::create(['name' => 'RFTS', 'test_type_category_id' => $testTypeCategoryChemistry->id]);
-        $test_types_lipid_profile = TestType::create(['name' => 'LIPID PROFILE', 'test_type_category_id' => $testTypeCategoryChemistry->id]);
+        $testTypeHIV = LabTestType::create(['name' => 'HIV', 'lab_test_type_category_id' => $testTypeCategorySerology->id]);
+        $testTypeBS = LabTestType::create(['name' => 'BS for mps', 'lab_test_type_category_id' => $test_categories->id]);
+        $testTypeUrinalysis = LabTestType::create(['name' => 'Urinalysis', 'lab_test_type_category_id' => $test_categories->id]);
+        $testTypeWBC = LabTestType::create(['name' => 'WBC', 'lab_test_type_category_id' => $test_categories->id]);
+        $test_types_lfts = LabTestType::create(['name' => 'LFTS', 'lab_test_type_category_id' => $testTypeCategoryChemistry->id]);
+        $test_types_rfts = LabTestType::create(['name' => 'RFTS', 'lab_test_type_category_id' => $testTypeCategoryChemistry->id]);
+        $test_types_lipid_profile = LabTestType::create(['name' => 'LIPID PROFILE', 'lab_test_type_category_id' => $testTypeCategoryChemistry->id]);
 
         $this->command->info('test_types seeded');
 
-        $testTypeGXM = TestType::create(['name' => 'GXM', 'test_type_category_id' => $test_categories->id]);
-        $measureGXM = Measure::create(['measure_type_id' => MeasureType::free_text, 'test_type_id' => $testTypeGXM->id, 'name' => 'GXM', 'unit' => '']);
-        $measureBloodGroup = Measure::create(
-            ['measure_type_id' => MeasureType::alphanumeric, 'test_type_id' => $testTypeGXM->id,
-                'name' => 'Blood Grouping',
-                'unit' => '', ]);
-        MeasureRange::create(['measure_id' => $measureBloodGroup->id, 'display' => 'O-']);
-        MeasureRange::create(['measure_id' => $measureBloodGroup->id, 'display' => 'O+']);
-        MeasureRange::create(['measure_id' => $measureBloodGroup->id, 'display' => 'A-']);
-        MeasureRange::create(['measure_id' => $measureBloodGroup->id, 'display' => 'A+']);
-        MeasureRange::create(['measure_id' => $measureBloodGroup->id, 'display' => 'B-']);
-        MeasureRange::create(['measure_id' => $measureBloodGroup->id, 'display' => 'B+']);
-        MeasureRange::create(['measure_id' => $measureBloodGroup->id, 'display' => 'AB-']);
-        MeasureRange::create(['measure_id' => $measureBloodGroup->id, 'display' => 'AB+']);
+        $testTypeGXM = LabTestType::create(['name' => 'GXM', 'lab_test_type_category_id' => $test_categories->id]);
 
-        $measuresUrinalysisData = [
-            // Urine Microscopy
-            ['measure_type_id' => MeasureType::free_text, 'test_type_id' => $testTypeUrinalysis->id,
-                'name' => 'Pus cells', 'unit' => '', ],
-            ['measure_type_id' => MeasureType::free_text, 'test_type_id' => $testTypeUrinalysis->id,
-                'name' => 'S. haematobium', 'unit' => '', ],
-            ['measure_type_id' => MeasureType::free_text, 'test_type_id' => $testTypeUrinalysis->id,
-                'name' => 'T. vaginalis', 'unit' => '', ],
-            ['measure_type_id' => MeasureType::free_text, 'test_type_id' => $testTypeUrinalysis->id,
-                'name' => 'Yeast cells', 'unit' => '', ],
-            ['measure_type_id' => MeasureType::free_text, 'test_type_id' => $testTypeUrinalysis->id,
-                'name' => 'Red blood cells', 'unit' => '', ],
-            ['measure_type_id' => MeasureType::free_text, 'test_type_id' => $testTypeUrinalysis->id,
-                'name' => 'Bacteria', 'unit' => '', ],
-            ['measure_type_id' => MeasureType::free_text, 'test_type_id' => $testTypeUrinalysis->id,
-                'name' => 'Spermatozoa', 'unit' => '', ],
-            ['measure_type_id' => MeasureType::free_text, 'test_type_id' => $testTypeUrinalysis->id,
-                'name' => 'Epithelial cells', 'unit' => '', ],
-            // Urine Chemistry
-            ['measure_type_id' => MeasureType::free_text, 'test_type_id' => $testTypeUrinalysis->id,
-                'name' => 'Glucose', 'unit' => '', ],
-            ['measure_type_id' => MeasureType::free_text, 'test_type_id' => $testTypeUrinalysis->id,
-                'name' => 'Ketones', 'unit' => '', ],
-            ['measure_type_id' => MeasureType::free_text, 'test_type_id' => $testTypeUrinalysis->id,
-                'name' => 'Proteins', 'unit' => '', ],
-            ['measure_type_id' => MeasureType::free_text, 'test_type_id' => $testTypeUrinalysis->id,
-                'name' => 'Blood', 'unit' => '', ],
-            ['measure_type_id' => MeasureType::free_text, 'test_type_id' => $testTypeUrinalysis->id,
-                'name' => 'Bilirubin', 'unit' => '', ],
-            ['measure_type_id' => MeasureType::free_text, 'test_type_id' => $testTypeUrinalysis->id,
-                'name' => 'Urobilinogen Phenlpyruvic acid', 'unit' => '', ],
-            ['measure_type_id' => MeasureType::free_text, 'test_type_id' => $testTypeUrinalysis->id,
-                'name' => 'pH', 'unit' => '', ],
-        ];
-
-        foreach ($measuresUrinalysisData as $measureU) {
-            $measuresUrinalysis[] = Measure::create($measureU);
-        }
-
-        \DB::table('test_type_mappings')->insert(
-            ['test_type_id' => $testTypeUrinalysis->id, 'specimen_type_id' => $specimenTypeUrine->id]);
-
-        $measuresWBCData = [
-            ['measure_type_id' => MeasureType::numeric,
-                'test_type_id' => $testTypeWBC->id,
-                'name' => 'WBC',
-                'unit' => 'x10³/µL', ],
-            ['measure_type_id' => MeasureType::numeric,
-                'test_type_id' => $testTypeWBC->id,
-                'name' => 'Lym', 'unit' => 'L', ],
-            ['measure_type_id' => MeasureType::numeric,
-                'test_type_id' => $testTypeWBC->id,
-                'name' => 'Mon', 'unit' => '*', ],
-            ['measure_type_id' => MeasureType::numeric,
-                'test_type_id' => $testTypeWBC->id,
-                'name' => 'Neu', 'unit' => '*', ],
-            ['measure_type_id' => MeasureType::numeric,
-                'test_type_id' => $testTypeWBC->id,
-                'name' => 'Eos', 'unit' => '', ],
-            ['measure_type_id' => MeasureType::numeric,
-                'test_type_id' => $testTypeWBC->id,
-                'name' => 'Baso', 'unit' => '', ],
-        ];
-
-        foreach ($measuresWBCData as $value) {
-            $measuresWBC[] = Measure::create($value);
-        }
-
-        $measureRangesWBC = [
-            ['measure_id' => $measuresWBC[0]->id, 'age_min' => 0, 'age_max' => 100, 'gender_id' => Gender::both,
-                'low' => 4, 'high' => 11, ],
-            ['measure_id' => $measuresWBC[1]->id, 'age_min' => 0, 'age_max' => 100, 'gender_id' => Gender::both,
-                'low' => 1.5, 'high' => 4, ],
-            ['measure_id' => $measuresWBC[2]->id, 'age_min' => 0, 'age_max' => 100, 'gender_id' => Gender::both,
-                'low' => 0.1, 'high' => 9, ],
-            ['measure_id' => $measuresWBC[3]->id, 'age_min' => 0, 'age_max' => 100, 'gender_id' => Gender::both,
-                'low' => 2.5, 'high' => 7, ],
-            ['measure_id' => $measuresWBC[4]->id, 'age_min' => 0, 'age_max' => 100, 'gender_id' => Gender::both,
-                'low' => 0, 'high' => 6, ],
-            ['measure_id' => $measuresWBC[5]->id, 'age_min' => 0, 'age_max' => 100, 'gender_id' => Gender::both,
-                'low' => 0, 'high' => 2, ],
-            ];
-
-        foreach ($measureRangesWBC as $value) {
-            MeasureRange::create($value);
-        }
-
-        $this->command->info('measures seeded');
-
-        /* Measures table */
-        $measureHIV = [
-            [
-                'measure_type_id' => MeasureType::alphanumeric,
-                'test_type_id' => $testTypeHIV->id,
-                'name' => 'Screening',
-                'unit' => '',
-            ],
-            [
-                'measure_type_id' => MeasureType::alphanumeric,
-                'test_type_id' => $testTypeHIV->id,
-                'name' => 'Confirmatory Test (Statpak)',
-                'unit' => '',
-            ],
-            [
-                'measure_type_id' => MeasureType::alphanumeric,
-                'test_type_id' => $testTypeHIV->id,
-                'name' => 'Unigold',
-                'unit' =>'',
-            ],
-        ];
-
-        foreach ($measureHIV as $measure) {
-            $id = Measure::create($measure)->id;
-            MeasureRange::create(['measure_id' => $id, 'display' => 'Reactive']);
-            MeasureRange::create(['measure_id' => $id, 'display' => 'Non Reactive']);
-        }
-
-        $measureBSforMPS = Measure::create([
-            'measure_type_id' => MeasureType::alphanumeric,
-            'test_type_id' => $testTypeBS->id,
-            'name' => 'BS for mps',
-            'unit' => '', ]);
-
-        $positive = Interpretation::create([
-            'code' => 'positive',
-            'name' => 'Positive',
-        ]);
-        $negative = Interpretation::create([
-            'code' => 'negative',
-            'name' => 'Negative',
-        ]);
-
-        MeasureRange::create([
-            'measure_id' => $measureBSforMPS->id,
-            'display' => 'No mps seen',
-            'interpretation_id' => $negative->id,
-        ]);
-        MeasureRange::create([
-            'measure_id' => $measureBSforMPS->id,
-            'display' => '+',
-            'interpretation_id' => $positive->id,
-        ]);
-        MeasureRange::create([
-            'measure_id' => $measureBSforMPS->id,
-            'display' => '++',
-            'interpretation_id' => $positive->id,
-        ]);
-        MeasureRange::create([
-            'measure_id' => $measureBSforMPS->id,
-
-            'display' => '+++',
-            'interpretation_id' => $positive->id,
-        ]);
-
-        /* test_type_mappings table */
-        \DB::table('test_type_mappings')->insert(
-            ['test_type_id' => $testTypeHIV->id, 'specimen_type_id' => $specimenTypeBlood->id]);
-        \DB::table('test_type_mappings')->insert(
-            ['test_type_id' => $testTypeBS->id, 'specimen_type_id' => $specimenTypeBlood->id]);
-        \DB::table('test_type_mappings')->insert(
-            ['test_type_id' => $testTypeGXM->id, 'specimen_type_id' => $specimenTypeBlood->id]);
-        \DB::table('test_type_mappings')->insert(
-            ['test_type_id' => $testTypeWBC->id, 'specimen_type_id' => $specimenTypeBlood->id]);
+        /* lab_test_type_specimen_type table */
+        \DB::table('lab_test_type_specimen_type')->insert(
+            ['lab_test_type_id' => $testTypeHIV->id, 'specimen_type_id' => $specimenTypeBlood->id]);
+        \DB::table('lab_test_type_specimen_type')->insert(
+            ['lab_test_type_id' => $testTypeBS->id, 'specimen_type_id' => $specimenTypeBlood->id]);
+        \DB::table('lab_test_type_specimen_type')->insert(
+            ['lab_test_type_id' => $testTypeGXM->id, 'specimen_type_id' => $specimenTypeBlood->id]);
+        \DB::table('lab_test_type_specimen_type')->insert(
+            ['lab_test_type_id' => $testTypeWBC->id, 'specimen_type_id' => $specimenTypeBlood->id]);
+        \DB::table('lab_test_type_specimen_type')->insert(
+            ['lab_test_type_id' => $testTypeUrinalysis->id, 'specimen_type_id' => $specimenTypeUrine->id]);
 
         $this->command->info('Test Type Mappings Seeded');
 
 
         /* Test Types for prevalence */
-        $test_types_salmonella = TestType::create(['name' => 'Salmonella Antigen Test', 'test_type_category_id' => $test_categories->id]);
-        $test_types_direct = TestType::create(['name' => 'Direct COOMBS Test', 'test_type_category_id' => $testTypeCategoryTransfusion->id]);
-        $test_types_du = TestType::create(['name' => 'DU Test', 'test_type_category_id' => $testTypeCategoryTransfusion->id]);
-        $test_types_sickling = TestType::create(['name' => 'Sickling Test', 'test_type_category_id' => $testTypeCategoryHematology->id]);
-        $test_types_borrelia = TestType::create(['name' => 'Borrelia', 'test_type_category_id' => $test_categories->id]);
-        $test_types_vdrl = TestType::create(['name' => 'VDRL', 'test_type_category_id' => $testTypeCategorySerology->id]);
-        $test_types_pregnancy = TestType::create(['name' => 'Pregnancy Test', 'test_type_category_id' => $testTypeCategorySerology->id]);
-        $test_types_brucella = TestType::create(['name' => 'Brucella', 'test_type_category_id' => $testTypeCategorySerology->id]);
-        $test_types_pylori = TestType::create(['name' => 'H. Pylori', 'test_type_category_id' => $testTypeCategorySerology->id]);
+        $test_types_salmonella = LabTestType::create(['name' => 'Salmonella Antigen Test', 'lab_test_type_category_id' => $test_categories->id]);
+        $test_types_direct = LabTestType::create(['name' => 'Direct COOMBS Test', 'lab_test_type_category_id' => $testTypeCategoryTransfusion->id]);
+        $test_types_du = LabTestType::create(['name' => 'DU Test', 'lab_test_type_category_id' => $testTypeCategoryTransfusion->id]);
+        $test_types_sickling = LabTestType::create(['name' => 'Sickling Test', 'lab_test_type_category_id' => $testTypeCategoryHematology->id]);
+        $test_types_borrelia = LabTestType::create(['name' => 'Borrelia', 'lab_test_type_category_id' => $test_categories->id]);
+        $test_types_vdrl = LabTestType::create(['name' => 'VDRL', 'lab_test_type_category_id' => $testTypeCategorySerology->id]);
+        $test_types_pregnancy = LabTestType::create(['name' => 'Pregnancy Test', 'lab_test_type_category_id' => $testTypeCategorySerology->id]);
+        $test_types_brucella = LabTestType::create(['name' => 'Brucella', 'lab_test_type_category_id' => $testTypeCategorySerology->id]);
+        $test_types_pylori = LabTestType::create(['name' => 'H. Pylori', 'lab_test_type_category_id' => $testTypeCategorySerology->id]);
 
         $this->command->info('Test Types seeded');
 
         /* Test Types and specimen types relationship for prevalence */
-        \DB::insert('INSERT INTO test_type_mappings (test_type_id, specimen_type_id) VALUES (?, ?)',
+        \DB::insert('INSERT INTO lab_test_type_specimen_type (lab_test_type_id, specimen_type_id) VALUES (?, ?)',
             [$test_types_salmonella->id, $specimenTypeBlood->id]);
-        \DB::insert('INSERT INTO test_type_mappings (test_type_id, specimen_type_id) VALUES (?, ?)',
+        \DB::insert('INSERT INTO lab_test_type_specimen_type (lab_test_type_id, specimen_type_id) VALUES (?, ?)',
             [$test_types_direct->id, $specimenTypeBlood->id]);
-        \DB::insert('INSERT INTO test_type_mappings (test_type_id, specimen_type_id) VALUES (?, ?)',
+        \DB::insert('INSERT INTO lab_test_type_specimen_type (lab_test_type_id, specimen_type_id) VALUES (?, ?)',
             [$test_types_du->id, $specimenTypeBlood->id]);
-        \DB::insert('INSERT INTO test_type_mappings (test_type_id, specimen_type_id) VALUES (?, ?)',
+        \DB::insert('INSERT INTO lab_test_type_specimen_type (lab_test_type_id, specimen_type_id) VALUES (?, ?)',
             [$test_types_sickling->id, $specimenTypeBlood->id]);
-        \DB::insert('INSERT INTO test_type_mappings (test_type_id, specimen_type_id) VALUES (?, ?)',
+        \DB::insert('INSERT INTO lab_test_type_specimen_type (lab_test_type_id, specimen_type_id) VALUES (?, ?)',
             [$test_types_borrelia->id, $specimenTypeUrine->id]);
-        \DB::insert('INSERT INTO test_type_mappings (test_type_id, specimen_type_id) VALUES (?, ?)',
+        \DB::insert('INSERT INTO lab_test_type_specimen_type (lab_test_type_id, specimen_type_id) VALUES (?, ?)',
             [$test_types_vdrl->id, $specimenTypeBlood->id]);
-        \DB::insert('INSERT INTO test_type_mappings (test_type_id, specimen_type_id) VALUES (?, ?)',
+        \DB::insert('INSERT INTO lab_test_type_specimen_type (lab_test_type_id, specimen_type_id) VALUES (?, ?)',
             [$test_types_pregnancy->id, $specimenTypeUrine->id]);
-        \DB::insert('INSERT INTO test_type_mappings (test_type_id, specimen_type_id) VALUES (?, ?)',
+        \DB::insert('INSERT INTO lab_test_type_specimen_type (lab_test_type_id, specimen_type_id) VALUES (?, ?)',
             [$test_types_brucella->id, $specimenTypeBlood->id]);
-        \DB::insert('INSERT INTO test_type_mappings (test_type_id, specimen_type_id) VALUES (?, ?)',
+        \DB::insert('INSERT INTO lab_test_type_specimen_type (lab_test_type_id, specimen_type_id) VALUES (?, ?)',
             [$test_types_pylori->id, $specimenTypeStool->id]);
-        \DB::insert('INSERT INTO test_type_mappings (test_type_id, specimen_type_id) VALUES (?, ?)',
+        \DB::insert('INSERT INTO lab_test_type_specimen_type (lab_test_type_id, specimen_type_id) VALUES (?, ?)',
             [$test_types_lfts->id, $specimenTypeBlood->id]);
-        \DB::insert('INSERT INTO test_type_mappings (test_type_id, specimen_type_id) VALUES (?, ?)',
+        \DB::insert('INSERT INTO lab_test_type_specimen_type (lab_test_type_id, specimen_type_id) VALUES (?, ?)',
             [$test_types_lipid_profile->id, $specimenTypeBlood->id]);
-        \DB::insert('INSERT INTO test_type_mappings (test_type_id, specimen_type_id) VALUES (?, ?)',
+        \DB::insert('INSERT INTO lab_test_type_specimen_type (lab_test_type_id, specimen_type_id) VALUES (?, ?)',
             [$test_types_rfts->id, $specimenTypeUrine->id]);
         $this->command->info('TestTypes/SpecimenTypes seeded');
 
 
-        $testTypeCBC = TestType::create([
+        $testTypeCBC = LabTestType::create([
             'name' => 'CBC',
-            'test_type_category_id' => $testTypeCategoryHematology->id,
+            'lab_test_type_category_id' => $testTypeCategoryHematology->id,
         ]);
 
-        /* test_type_mappings table */
-        \DB::table('test_type_mappings')->insert(
-            ['test_type_id' => $testTypeCBC->id, 'specimen_type_id' => $specimenTypeBlood->id]);
+        /* lab_test_type_specimen_type table */
+        \DB::table('lab_test_type_specimen_type')->insert(
+            ['lab_test_type_id' => $testTypeCBC->id, 'specimen_type_id' => $specimenTypeBlood->id]);
 
         // test types
-        $testTypeAppearance = TestType::create([
+        $testTypeAppearance = LabTestType::create([
             'name' => 'Appearance',
-            'test_type_category_id' => $testTypeCategoryMicrobiology->id,
+            'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id,
         ]);
-        $testTypeCultureAndSensitivity = TestType::create([
+        $testTypeCultureAndSensitivity = LabTestType::create([
             'name' => 'Culture and Sensitivity',
             'culture' => 1,
-            'test_type_category_id' => $testTypeCategoryMicrobiology->id,
+            'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id,
         ]);
-        $testTypeGramStain = TestType::create([
+        $testTypeGramStain = LabTestType::create([
             'name' => 'Gram Stain',
-            'test_type_category_id' => $testTypeCategoryMicrobiology->id,
+            'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id,
         ]);
-        $testTypeIndiaInkStain = TestType::create([
+        $testTypeIndiaInkStain = LabTestType::create([
             'name' => 'India Ink Stain',
-            'test_type_category_id' => $testTypeCategoryMicrobiology->id,
+            'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id,
         ]);
-        $testTypeProtein = TestType::create([
+        $testTypeProtein = LabTestType::create([
             'name' => 'Protein',
-            'test_type_category_id' => $testTypeCategoryMicrobiology->id,
+            'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id,
         ]);
-        $testTypeWetPreparation = TestType::create([
+        $testTypeWetPreparation = LabTestType::create([
             'name' => 'Wet preparation (saline preparation)',
-            'test_type_category_id' => $testTypeCategoryMicrobiology->id,
+            'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id,
         ]);
-        $testTypeWetSalineIodinePrep = TestType::create([
+        $testTypeWetSalineIodinePrep = LabTestType::create([
             'name' => 'Wet Saline Iodine Prep',
-            'test_type_category_id' => $testTypeCategoryMicrobiology->id,
+            'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id,
         ]);
-        $testTypeWhiteBloodCellCount = TestType::create([
+        $testTypeWhiteBloodCellCount = LabTestType::create([
             'name' => 'White Blood Cell Count',
-            'test_type_category_id' => $testTypeCategoryMicrobiology->id,
+            'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id,
         ]);
-        $testTypeZNStain = TestType::create([
+        $testTypeZNStain = LabTestType::create([
             'name' => 'ZN Stain',
-            'test_type_category_id' => $testTypeCategoryMicrobiology->id,
+            'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id,
         ]);
-        $testTypeModifiedZn = TestType::create([
+        $testTypeModifiedZn = LabTestType::create([
             'name' => 'Modified ZN',
-            'test_type_category_id' => $testTypeCategoryMicrobiology->id,
+            'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id,
         ]);
 
-        $testTypeCrag = TestType::create(['name' => 'Crag', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        $testTypeDifferential = TestType::create(['name' => 'Differential', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        $testTypeTotalCellCount = TestType::create(['name' => 'Total Cell Count', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        $testTypeLymphocytes = TestType::create(['name' => 'Lymphocytes', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        $testTypeQuantitativeCulture = TestType::create(['name' => 'Quantitative Culture', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        $testTypeRBC = TestType::create(['name' => 'RBC Count', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        $testTypeTPHA = TestType::create(['name' => 'TPHA', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeCrag = LabTestType::create(['name' => 'Crag', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeDifferential = LabTestType::create(['name' => 'Differential', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeTotalCellCount = LabTestType::create(['name' => 'Total Cell Count', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeLymphocytes = LabTestType::create(['name' => 'Lymphocytes', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeQuantitativeCulture = LabTestType::create(['name' => 'Quantitative Culture', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeRBC = LabTestType::create(['name' => 'RBC Count', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeTPHA = LabTestType::create(['name' => 'TPHA', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
 
         /* Urine Chemistry */
-        $testTypeHCG = TestType::create(['name' => 'HCG', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        $testTypeBilirubin = TestType::create(['name' => 'Bilirubin', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        $testTypeBlood = TestType::create(['name' => 'Blood', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        $testTypeGlucose = TestType::create(['name' => 'Glucose', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        $testTypeKetones = TestType::create(['name' => 'Ketones', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        $testTypeLeukocytes = TestType::create(['name' => 'Leukocytes', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        $testTypeMicroscopy = TestType::create(['name' => 'Microscopy', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        $testTypeNitrite = TestType::create(['name' => 'Nitrite', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        $testTypePH = TestType::create(['name' => 'pH', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        // $testTypeProtein = TestType::create(["name" => "Protein","test_type_category_id" => $testTypeCategoryMicrobiology->id,]);
-        $testTypeSpecificGravity = TestType::create(['name' => 'Specific Gravity', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        $testTypeUrobilinogen = TestType::create(['name' => 'Urobilinogen', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeHCG = LabTestType::create(['name' => 'HCG', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeBilirubin = LabTestType::create(['name' => 'Bilirubin', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeBlood = LabTestType::create(['name' => 'Blood', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeGlucose = LabTestType::create(['name' => 'Glucose', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeKetones = LabTestType::create(['name' => 'Ketones', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeLeukocytes = LabTestType::create(['name' => 'Leukocytes', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeMicroscopy = LabTestType::create(['name' => 'Microscopy', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeNitrite = LabTestType::create(['name' => 'Nitrite', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypePH = LabTestType::create(['name' => 'pH', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        // $testTypeProtein = LabTestType::create(["name" => "Protein","lab_test_type_category_id" => $testTypeCategoryMicrobiology->id,]);
+        $testTypeSpecificGravity = LabTestType::create(['name' => 'Specific Gravity', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeUrobilinogen = LabTestType::create(['name' => 'Urobilinogen', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
 
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUrine->id,
-            'test_type_id' => $testTypeHCG->id,
+            'lab_test_type_id' => $testTypeHCG->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUrine->id,
-            'test_type_id' => $testTypeBilirubin->id,
+            'lab_test_type_id' => $testTypeBilirubin->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUrine->id,
-            'test_type_id' => $testTypeBlood->id,
+            'lab_test_type_id' => $testTypeBlood->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUrine->id,
-            'test_type_id' => $testTypeGlucose->id,
+            'lab_test_type_id' => $testTypeGlucose->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUrine->id,
-            'test_type_id' => $testTypeKetones->id,
+            'lab_test_type_id' => $testTypeKetones->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUrine->id,
-            'test_type_id' => $testTypeLeukocytes->id,
+            'lab_test_type_id' => $testTypeLeukocytes->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUrine->id,
-            'test_type_id' => $testTypeMicroscopy->id,
+            'lab_test_type_id' => $testTypeMicroscopy->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUrine->id,
-            'test_type_id' => $testTypeNitrite->id,
+            'lab_test_type_id' => $testTypeNitrite->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUrine->id,
-            'test_type_id' => $testTypePH->id,
+            'lab_test_type_id' => $testTypePH->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUrine->id,
-            'test_type_id' => $testTypeProtein->id,
+            'lab_test_type_id' => $testTypeProtein->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUrine->id,
-            'test_type_id' => $testTypeSpecificGravity->id,
+            'lab_test_type_id' => $testTypeSpecificGravity->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUrine->id,
-            'test_type_id' => $testTypeUrobilinogen->id,
+            'lab_test_type_id' => $testTypeUrobilinogen->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeStool->id,
-            'test_type_id' => $testTypeCultureAndSensitivity->id,
+            'lab_test_type_id' => $testTypeCultureAndSensitivity->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeStool->id,
-            'test_type_id' => $testTypeAppearance->id,
+            'lab_test_type_id' => $testTypeAppearance->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeStool->id,
-            'test_type_id' => $testTypeModifiedZn->id,
+            'lab_test_type_id' => $testTypeModifiedZn->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUrine->id,
-            'test_type_id' => $testTypeCultureAndSensitivity->id,
+            'lab_test_type_id' => $testTypeCultureAndSensitivity->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUrine->id,
-            'test_type_id' => $testTypeAppearance->id,
+            'lab_test_type_id' => $testTypeAppearance->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeCSF->id,
-            'test_type_id' => $testTypeAppearance->id,
+            'lab_test_type_id' => $testTypeAppearance->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeCSF->id,
-            'test_type_id' => $testTypeProtein->id,
+            'lab_test_type_id' => $testTypeProtein->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeCSF->id,
-            'test_type_id' => $testTypeIndiaInkStain->id,
+            'lab_test_type_id' => $testTypeIndiaInkStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeCSF->id,
-            'test_type_id' => $testTypeWhiteBloodCellCount->id,
+            'lab_test_type_id' => $testTypeWhiteBloodCellCount->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeCSF->id,
-            'test_type_id' => $testTypeGramStain->id,
+            'lab_test_type_id' => $testTypeGramStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeCSF->id,
-            'test_type_id' => $testTypeZNStain->id,
+            'lab_test_type_id' => $testTypeZNStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeCSF->id,
-            'test_type_id' => $testTypeCultureAndSensitivity->id,
+            'lab_test_type_id' => $testTypeCultureAndSensitivity->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeCSF->id,
-            'test_type_id' => $testTypeCrag->id,
+            'lab_test_type_id' => $testTypeCrag->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeCSF->id,
-            'test_type_id' => $testTypeDifferential->id,
+            'lab_test_type_id' => $testTypeDifferential->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeCSF->id,
-            'test_type_id' => $testTypeTotalCellCount->id,
+            'lab_test_type_id' => $testTypeTotalCellCount->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeCSF->id,
-            'test_type_id' => $testTypeLymphocytes->id,
+            'lab_test_type_id' => $testTypeLymphocytes->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeCSF->id,
-            'test_type_id' => $testTypeTPHA->id,
+            'lab_test_type_id' => $testTypeTPHA->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeCSF->id,
-            'test_type_id' => $testTypeQuantitativeCulture->id,
+            'lab_test_type_id' => $testTypeQuantitativeCulture->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeCSF->id,
-            'test_type_id' => $testTypeRBC->id,
+            'lab_test_type_id' => $testTypeRBC->id,
         ]);
 
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypePusSwab->id,
-            'test_type_id' => $testTypeGramStain->id,
+            'lab_test_type_id' => $testTypeGramStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypePusSwab->id,
-            'test_type_id' => $testTypeAppearance->id,
+            'lab_test_type_id' => $testTypeAppearance->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypePusSwab->id,
-            'test_type_id' => $testTypeZNStain->id,
+            'lab_test_type_id' => $testTypeZNStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypePusSwab->id,
-            'test_type_id' => $testTypeCultureAndSensitivity->id,
+            'lab_test_type_id' => $testTypeCultureAndSensitivity->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeWoundSwab->id,
-            'test_type_id' => $testTypeGramStain->id,
+            'lab_test_type_id' => $testTypeGramStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeWoundSwab->id,
-            'test_type_id' => $testTypeAppearance->id,
+            'lab_test_type_id' => $testTypeAppearance->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeWoundSwab->id,
-            'test_type_id' => $testTypeZNStain->id,
+            'lab_test_type_id' => $testTypeZNStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeWoundSwab->id,
-            'test_type_id' => $testTypeCultureAndSensitivity->id,
+            'lab_test_type_id' => $testTypeCultureAndSensitivity->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUretheralSwab->id,
-            'test_type_id' => $testTypeWetPreparation->id,
+            'lab_test_type_id' => $testTypeWetPreparation->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUretheralSwab->id,
-            'test_type_id' => $testTypeWetSalineIodinePrep->id,
+            'lab_test_type_id' => $testTypeWetSalineIodinePrep->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUretheralSwab->id,
-            'test_type_id' => $testTypeAppearance->id,
+            'lab_test_type_id' => $testTypeAppearance->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUretheralSwab->id,
-            'test_type_id' => $testTypeGramStain->id,
+            'lab_test_type_id' => $testTypeGramStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeUretheralSwab->id,
-            'test_type_id' => $testTypeCultureAndSensitivity->id,
+            'lab_test_type_id' => $testTypeCultureAndSensitivity->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeHVS->id,
-            'test_type_id' => $testTypeWetPreparation->id,
+            'lab_test_type_id' => $testTypeWetPreparation->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeHVS->id,
-            'test_type_id' => $testTypeAppearance->id,
+            'lab_test_type_id' => $testTypeAppearance->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeHVS->id,
-            'test_type_id' => $testTypeGramStain->id,
+            'lab_test_type_id' => $testTypeGramStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeHVS->id,
-            'test_type_id' => $testTypeCultureAndSensitivity->id,
+            'lab_test_type_id' => $testTypeCultureAndSensitivity->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeEyeSwab->id,
-            'test_type_id' => $testTypeGramStain->id,
+            'lab_test_type_id' => $testTypeGramStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeEyeSwab->id,
-            'test_type_id' => $testTypeCultureAndSensitivity->id,
+            'lab_test_type_id' => $testTypeCultureAndSensitivity->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeEyeSwab->id,
-            'test_type_id' => $testTypeAppearance->id,
+            'lab_test_type_id' => $testTypeAppearance->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeEarSwab->id,
-            'test_type_id' => $testTypeAppearance->id,
+            'lab_test_type_id' => $testTypeAppearance->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeEarSwab->id,
-            'test_type_id' => $testTypeGramStain->id,
+            'lab_test_type_id' => $testTypeGramStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeEarSwab->id,
-            'test_type_id' => $testTypeCultureAndSensitivity->id,
+            'lab_test_type_id' => $testTypeCultureAndSensitivity->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeThroatSwab->id,
-            'test_type_id' => $testTypeAppearance->id,
+            'lab_test_type_id' => $testTypeAppearance->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeThroatSwab->id,
-            'test_type_id' => $testTypeGramStain->id,
+            'lab_test_type_id' => $testTypeGramStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeThroatSwab->id,
-            'test_type_id' => $testTypeCultureAndSensitivity->id,
+            'lab_test_type_id' => $testTypeCultureAndSensitivity->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeAspirates->id,
-            'test_type_id' => $testTypeProtein->id,
+            'lab_test_type_id' => $testTypeProtein->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeAspirates->id,
-            'test_type_id' => $testTypeGramStain->id,
+            'lab_test_type_id' => $testTypeGramStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeAspirates->id,
-            'test_type_id' => $testTypeAppearance->id,
+            'lab_test_type_id' => $testTypeAppearance->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeAspirates->id,
-            'test_type_id' => $testTypeZNStain->id,
+            'lab_test_type_id' => $testTypeZNStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeAspirates->id,
-            'test_type_id' => $testTypeCultureAndSensitivity->id,
+            'lab_test_type_id' => $testTypeCultureAndSensitivity->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeBAL->id,
-            'test_type_id' => $testTypeAppearance->id,
+            'lab_test_type_id' => $testTypeAppearance->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeBAL->id,
-            'test_type_id' => $testTypeGramStain->id,
+            'lab_test_type_id' => $testTypeGramStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeBAL->id,
-            'test_type_id' => $testTypeZNStain->id,
+            'lab_test_type_id' => $testTypeZNStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeBAL->id,
-            'test_type_id' => $testTypeCultureAndSensitivity->id,
+            'lab_test_type_id' => $testTypeCultureAndSensitivity->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeSputum->id,
-            'test_type_id' => $testTypeZNStain->id,
+            'lab_test_type_id' => $testTypeZNStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeSputum->id,
-            'test_type_id' => $testTypeAppearance->id,
+            'lab_test_type_id' => $testTypeAppearance->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeSputum->id,
-            'test_type_id' => $testTypeGramStain->id,
+            'lab_test_type_id' => $testTypeGramStain->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeSputum->id,
-            'test_type_id' => $testTypeCultureAndSensitivity->id,
+            'lab_test_type_id' => $testTypeCultureAndSensitivity->id,
         ]);
-        $this->command->info('test_type_mappings seeded');
+        $this->command->info('lab_test_type_specimen_type seeded');
 
-        $testTypeRPR = TestType::create(['name' => 'RPR', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
-        $testTypeSerumCrag = TestType::create(['name' => 'Serum Crag', 'test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeRPR = LabTestType::create(['name' => 'RPR', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
+        $testTypeSerumCrag = LabTestType::create(['name' => 'Serum Crag', 'lab_test_type_category_id' => $testTypeCategoryMicrobiology->id]);
 
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeBlood->id,
-            'test_type_id' => $testTypeRPR->id,
+            'lab_test_type_id' => $testTypeRPR->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeBlood->id,
-            'test_type_id' => $testTypeSerumCrag->id,
+            'lab_test_type_id' => $testTypeSerumCrag->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeBlood->id,
-            'test_type_id' => $testTypeTPHA->id,
+            'lab_test_type_id' => $testTypeTPHA->id,
         ]);
-        \DB::table('test_type_mappings')->insert([
+        \DB::table('lab_test_type_specimen_type')->insert([
             'specimen_type_id' => $specimenTypeBlood->id,
-            'test_type_id' => $testTypeCultureAndSensitivity->id,
+            'lab_test_type_id' => $testTypeCultureAndSensitivity->id,
         ]);
         $this->command->info('more blood associated type types and measures seeded');
 
@@ -1767,12 +1580,17 @@ class DevSeeder extends Seeder
         $this->command->info('Tests Seeding...');
 
         for ($i = 0; $i < (int) env('DEV_TEST_NO', 100); $i++) {
-            $testTypeId = \App\Models\TestType::inRandomOrder()->first()->id;
+            $testType = \App\Models\LabTestType::inRandomOrder()->first();
+
+
             $user_id = \App\User::inRandomOrder()->first()->id;
-            $specimenTypeId = \App\Models\TestTypeMapping::where('test_type_id', $testTypeId)->first()->specimen_type_id;
-            $specimen = factory(App\Models\Specimen::class)->create([
-                'specimen_type_id' => $specimenTypeId,
-            ]);
+// dd(\DB::table('lab_test_type_specimen_type')->where('lab_test_type_id', $testType->id)->first()->specimen_type_id);
+if (\DB::table('lab_test_type_specimen_type')->where('lab_test_type_id', $testType->id)->count()>0) {
+            $specimenTypeId = \DB::table('lab_test_type_specimen_type')->where('lab_test_type_id', $testType->id)->first()->specimen_type_id;
+}else{
+    dd($testType);
+    dd('trouble');
+}
 
             $test_status = rand(1, 4);
             $created_at = date('Y-m-d H:i:s', strtotime('-'.rand(0, 10).' days'));
@@ -1781,7 +1599,7 @@ class DevSeeder extends Seeder
                     $tested_by = null;
                     $verified_by = null;
                     $time_started = null;
-                    $specimen_id = null;
+                    $specimen_type_id = null;
                     $time_completed = null;
                     $time_verified = null;
                     break;
@@ -1790,7 +1608,7 @@ class DevSeeder extends Seeder
                     $tested_by = null;
                     $verified_by = null;
                     $time_started = date('Y-m-d H:i:s', strtotime($created_at.'+'.rand(20, 1800).' minutes'));
-                    $specimen_id = $specimen->id;
+                    $specimen_type_id = $specimenTypeId;
                     $time_completed = null;
                     $time_verified = null;
                     break;
@@ -1799,7 +1617,7 @@ class DevSeeder extends Seeder
                     $tested_by = \App\User::inRandomOrder()->first()->id;
                     $verified_by = null;
                     $time_started = date($created_at, strtotime('+'.rand(20, 1800).' minutes'));
-                    $specimen_id = $specimen->id;
+                    $specimen_type_id = $specimenTypeId;
                     $time_completed = date('Y-m-d H:i:s', strtotime($time_started.'+'.rand(10, 3600).' minutes'));
                     $time_verified = null;
                     break;
@@ -1808,7 +1626,7 @@ class DevSeeder extends Seeder
                     $tested_by = \App\User::inRandomOrder()->first()->id;
                     $verified_by = \App\User::where('id', '!=', $tested_by)->inRandomOrder()->first()->id;
                     $time_started = date('Y-m-d H:i:s', strtotime($created_at.'+'.rand(20, 1800).' minutes'));
-                    $specimen_id = $specimen->id;
+                    $specimen_type_id = $specimenTypeId;
                     $time_completed = date('Y-m-d H:i:s', strtotime($time_started.'+'.rand(20, 3600).' minutes'));
                     $time_verified = date('Y-m-d H:i:s', strtotime($time_completed.'+'.rand(5, 3600).' minutes'));
                     break;
@@ -1817,15 +1635,15 @@ class DevSeeder extends Seeder
                     $tested_by = null;
                     $verified_by = null;
                     $time_started = null;
-                    $specimen_id = null;
+                    $specimen_type_id = null;
                     $time_completed = null;
                     $time_verified = null;
                     break;
             }
 
             factory(\App\Models\Test::class)->create([
-                'test_type_id' => $testTypeId,
-                'specimen_id' => $specimen_id,
+                'lab_test_type_id' => $testType->id,
+                'specimen_type_id' => $specimen_type_id,
                 'test_status_id' => $test_status,
                 'created_by' => $user_id,
                 'tested_by' => $tested_by,

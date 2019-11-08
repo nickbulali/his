@@ -16,7 +16,6 @@ trait SetUp
     public function setup():void{
         parent::Setup();
         $this->seed('DevSeeder');
-        $this->setVariables();
         \Laravel\Passport\Passport::actingAs(\App\User::find(1),['create-servers']);
     }
 }
