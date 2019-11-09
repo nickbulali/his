@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 class Test extends Model
 {
     public $fillable = ['identifier'];
+    protected $table = 'tests';
 
     public function testType()
     {
