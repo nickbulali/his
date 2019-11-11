@@ -477,9 +477,7 @@ class CreateEmrTables extends Migration
         Schema::create('vital_signs', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('encounter_id')->unsigned();
-
             $table->integer('patient_id')->unsigned();
-
             $table->string('body_temperature');
             $table->string('respiratory_rate');
             $table->string('heart_rate');
@@ -489,11 +487,10 @@ class CreateEmrTables extends Migration
             $table->string('body_mass_index');
             $table->string('body_surface_area');
             $table->timestamps();
-        $table->foreign('patient_id')->references('id')->on('patients');
+            $table->foreign('patient_id')->references('id')->on('patients');
         });
 
-
-         Schema::create('appointment', function (Blueprint $table) {
+        Schema::create('appointment', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('patient_id')->unsigned();
             $table->integer('user_id')->unsigned();
@@ -505,7 +502,7 @@ class CreateEmrTables extends Migration
             $table->foreign('user_id')->references('id')->on('users');
         });
 
-    Schema::create('appointment_status', function (Blueprint $table) {
+        Schema::create('appointment_status', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code');
             $table->string('display');
