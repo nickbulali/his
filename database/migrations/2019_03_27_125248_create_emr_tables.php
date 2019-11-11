@@ -281,6 +281,10 @@ class CreateEmrTables extends Migration
             $table->timestamps();
         });
 
+        Schema::create('lab_test_type_specimen_type', function (Blueprint $table) {
+            $table->integer('lab_test_type_id')->unsigned();
+            $table->integer('specimen_type_id')->unsigned();
+        });
         /*
          * @system HISv1.0 defined
          * @example wards|clinics|healthunits
@@ -341,29 +345,6 @@ class CreateEmrTables extends Migration
 
         /*
          * @system HISv1.0 defined
-         * @specimen_status_id available|unavailable|unsatisfactory|entered-in-error
-         * @identifier External Identifier
-         * @accession_identifier Identifier assigned by the lab
-         * @parent_id Specimen from which this specimen originated
-         */
-        Schema::create('specimens', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('identifier')->nullable();
-            $table->string('accession_identifier')->nullable();
-            $table->integer('specimen_type_id')->unsigned();
-            $table->integer('received_by')->unsigned();
-            $table->string('collected_by')->nullable();
-            $table->timestamp('time_collected')->nullable();
-            $table->timestamp('time_received')->nullable();
-
-            $table->foreign('specimen_type_id')->references('id')->on('specimen_types');
-            $table->foreign('received_by')->references('id')->on('users');
-            $table->timestamps();
-        });
-
-
-        /*
-         * @system HISv1.0 defined
          * @identifier Unique ID for external records
          * @todo organize to have this information comming from blis especially for incomplete tests
          */
@@ -371,10 +352,9 @@ class CreateEmrTables extends Migration
             $table->increments('id');
             $table->integer('encounter_id')->unsigned();
             $table->string('identifier')->nullable();
-            $table->integer('test_type_id')->unsigned();
-            $table->integer('specimen_id')->unsigned()->nullable();
-            // todo: study possiblity of depending on blis for this
-            // $table->integer('test_status_id')->unsigned()->default(\App\Models\TestStatus::pending);
+            $table->integer('lab_test_type_id')->unsigned();
+            $table->integer('test_status_id')->unsigned()->nullable();
+            $table->integer('specimen_type_id')->unsigned()->nullable();
             $table->uuid('created_by')->nullable();
             $table->string('tested_by')->nullable();
             $table->string('verified_by')->nullable();
@@ -391,9 +371,7 @@ class CreateEmrTables extends Migration
             $table->index('tested_by');
             $table->index('verified_by');
             $table->foreign('encounter_id')->references('id')->on('encounters');
-            $table->foreign('test_type_id')->references('id')->on('lab_test_types');
-            $table->foreign('specimen_id')->references('id')->on('specimens');
-            // $table->foreign('test_status_id')->references('id')->on('test_statuses');
+            $table->foreign('lab_test_type_id')->references('id')->on('lab_test_types');
         });
 
         /*
@@ -903,7 +881,7 @@ class CreateEmrTables extends Migration
           ['id' => '4', 'active'=>'0', 'code' => 'unknown', 'display' => 'Unknown'],
         ];
         foreach ($genders as $gender) {
-            // \App\Models\Gender::create($gender);
+            \App\Models\Gender::create($gender);
         }
 
         /* encounter class table */
