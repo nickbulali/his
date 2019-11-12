@@ -1,7 +1,11 @@
 <?php
+
 namespace App\Models;
 
+
+
 use Zizaco\Entrust\EntrustRole;
+
 class Role extends EntrustRole
 {
     /**
@@ -12,9 +16,9 @@ class Role extends EntrustRole
         return Role::find(1);
     }
 
-    public function permissionRole()
+    public function users()
     {
-        return $this->hasMany('App\Models\PermissionRole');
+        return $this->belongsToMany('App\User');
     }
 
     public function permissions()

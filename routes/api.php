@@ -144,10 +144,10 @@ use Illuminate\Http\Request;
     Route::get('queuestats', 'QueueController@stats');
 
     //Permission
-    Route::resource('permission', 'PermissionController');
-    Route::get('permissionrole/attach', 'PermissionRoleController@attach');
-    Route::get('permissionrole/detach', 'PermissionRoleController@detach');
-    Route::get('permissionrole', 'PermissionRoleController@index');
+        Route::resource('permission', 'PermissionController');
+        Route::get('permissionrole/attach', 'PermissionRoleController@attach');
+        Route::get('permissionrole/detach', 'PermissionRoleController@detach');
+        Route::get('permissionrole', 'PermissionRoleController@index');
 
     //Presenting Complaints
     Route::resource('presentingcomplaints', 'PresentingComplaintsController');
