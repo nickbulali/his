@@ -10,10 +10,10 @@ class DrugController extends Controller
 
   if ($request->query('search')) {
             $search = $request->query('search');
-            $drugs = Drugs::where('trade_name', 'LIKE', "%{$search}%")
+            $drugs = Drug::where('trade_name', 'LIKE', "%{$search}%")
                 ->get();
         } else {
-            $drugs = Drugs::get();
+            $drugs = Drug::get();
         }
         return response()->json($drugs);
 

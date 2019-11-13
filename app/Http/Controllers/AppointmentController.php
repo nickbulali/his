@@ -59,7 +59,7 @@ class AppointmentController extends Controller
             $Appointment->user_id = $request->input('user_id');
             $Appointment->appointment_date = $request->input('appointment_date');
             $Appointment->appointment_time = $request->input('appointment_time');
-
+            $Appointment->status = 'Pending';
        
             try {
                 $Appointment->save();

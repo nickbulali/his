@@ -82,7 +82,7 @@ use Illuminate\Http\Request;
     Route::resource('drugcategories', 'DrugCategoriesController');
 
     //Drugs
-    Route::resource('drugs', 'DrugsController');
+    Route::resource('drugs', 'DrugController');
 
     //Encounter
     Route::resource('encounterclass', 'EncounterClassController');
@@ -115,7 +115,7 @@ use Illuminate\Http\Request;
     Route::resource('medicalsurgicalhistories', 'MedicalSurgicalHistoriesController');
 
     //Medications
-    Route::resource('medications', 'MedicationsController');
+    Route::resource('medications', 'MedicationController');
 
     //Medication Sheets
     Route::resource('medicationsheets', 'MedicalSheetsController');
