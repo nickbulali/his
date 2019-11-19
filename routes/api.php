@@ -107,6 +107,7 @@ use Illuminate\Http\Request;
     //Lab Test Types
     Route::resource('labtesttype', 'LabTestTypeController');
     Route::resource('labtesttypecategory', 'LabTestTypeCategoryController');
+    Route::resource('tests', 'TestController');
 
     //Location
     Route::resource('location', 'LocationController');
