@@ -1,22 +1,28 @@
 <?php
+
 namespace App\Http\Controllers;
+
+
 use App\Models\Permission;
 use Illuminate\Http\Request;
+
 class PermissionController extends Controller
 {
     public function index(Request $request)
     {
         if ($request->query('search')) {
             $search = $request->query('search');
-            $permissions = Permission::with('permissionRole')
+            $permissions = Permission::with('roles')
                 ->where('name', 'LIKE', "%{$search}%")
                 ->paginate(10);
         } else {
-            $permissions = Permission::with('permissionRole')
+            $permissions = Permission::with('roles')
                 ->orderBy('id', 'ASC')->paginate(10);
         }
+
         return response()->json($permissions);
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -27,6 +33,7 @@ class PermissionController extends Controller
     {
         $rules = [
             'name' => 'required',
+
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -36,14 +43,17 @@ class PermissionController extends Controller
             $permission->name = $request->input('name');
             $permission->display_name = $request->input('display_name');
             $permission->description = $request->input('description');
+
             try {
                 $permission->save();
+
                 return response()->json($permission);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
+
     /**
      * Display the specified resource.
      *
@@ -53,8 +63,10 @@ class PermissionController extends Controller
     public function show($id)
     {
         $permission = Permission::findOrFail($id);
+
         return response()->json($permission);
     }
+
     /**
      * Update the specified resource in storage.
      *
@@ -66,6 +78,7 @@ class PermissionController extends Controller
     {
         $rules = [
             'name' => 'required',
+
         ];
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -75,14 +88,17 @@ class PermissionController extends Controller
             $permission->name = $request->input('name');
             $permission->display_name = $request->input('display_name');
             $permission->description = $request->input('description');
+
             try {
                 $permission->save();
+
                 return response()->json($permission);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
         }
     }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -94,6 +110,7 @@ class PermissionController extends Controller
         try {
             $permission = Permission::findOrFail($id);
             $permission->delete();
+
             return response()->json($permission, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

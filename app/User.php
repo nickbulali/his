@@ -66,10 +66,10 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\Name', 'created_by');
     }
 
-    public function loader()
-    {
-        return User::find($this->id)->load(
-            'specimenReceived', 'specimenCollected'
-        );
-    }
+    // public function loader()
+    // {
+    //     return User::find($this->id)->load(
+    //         'specimenReceived', 'specimenCollected'
+    //     );
+    // }
 }

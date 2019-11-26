@@ -14,16 +14,16 @@ class MedicationController extends Controller
 
         if ($request->query('search')) {
             $search = $request->query('search');
-            $Medications = Medications::whereHas('patient.name', function ($query) use ($search) {
+            $Medication = Medication::whereHas('patient.name', function ($query) use ($search) {
                 $query->where('text', 'LIKE', "%{$search}%")->orWhere('family', 'LIKE', "%{$search}%");
             })->with('dosage', 'drugs', 'medication_status', 'patient.name')
             ->paginate(25);
         } 
         else {
-          $Medications = Medications::with('patient.name')->with('dosage')->with('drugs')->with('medication_status')
+          $Medication = Medication::with('patient.name')->with('dosage')->with('drugs')->with('medication_status')
           ->paginate(25);
       }
-      return response()->json($Medications);  
+      return response()->json($Medication);  
   }
 
 

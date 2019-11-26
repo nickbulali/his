@@ -15,15 +15,15 @@ use Illuminate\Http\Request;
     Route::resource('diagnosis', 'DiagnosisController');
     Route::resource('medications', 'MedicationsController');
     Route::resource('radiology', 'RadiologyController');
-    Route::resource('vitalsigns', 'VitalSignsController');
+    Route::resource('vitalsigns', 'VitalSignController');
     Route::post('/register', 'Auth\APIController@register');
     Route::post('/login', 'Auth\APIController@login');
     Route::get('/auth/signup/activate/{token}', 'Auth\APIController@signupActivate');
-   // Route::get('users/count/{id}', 'InvoiceController@countUsers');
+    // Route::get('users/count/{id}', 'InvoiceController@countUsers');
     Route::get('/users/count', 'UserController@countUsers');
     Route::get('/patient/count', 'PatientController@countPatients');
-     Route::get('/appointment/count', 'AppointmentController@countAppointments');
-         Route::get('/appointment/report', 'AppointmentController@report');
+    Route::get('/appointment/count', 'AppointmentController@countAppointments');
+    Route::get('/appointment/report', 'AppointmentController@report');
     Route::middleware('auth:api')->group( function () {
     Route::post('/logout', 'Auth\APIController@logout');
     Route::get('/get-user', 'Auth\APIController@getUser');
@@ -40,8 +40,8 @@ use Illuminate\Http\Request;
 
     //Allergies
     Route::resource('allergy', 'AllergyController');
-     //Diagnosis
-   Route::resource('diagnosis', 'DiagnosisController');
+    //Diagnosis
+    Route::resource('diagnosis', 'DiagnosisController');
     //AntenatalHistory
     Route::resource('antenatalhistory', 'AntenatalHistoryController');
 
@@ -82,7 +82,7 @@ use Illuminate\Http\Request;
     Route::resource('drugcategories', 'DrugCategoriesController');
 
     //Drugs
-    Route::resource('drugs', 'DrugsController');
+    Route::resource('drugs', 'DrugController');
 
     //Encounter
     Route::resource('encounterclass', 'EncounterClassController');
@@ -107,6 +107,7 @@ use Illuminate\Http\Request;
     //Lab Test Types
     Route::resource('labtesttype', 'LabTestTypeController');
     Route::resource('labtesttypecategory', 'LabTestTypeCategoryController');
+    Route::resource('tests', 'TestController');
 
     //Location
     Route::resource('location', 'LocationController');
@@ -115,7 +116,7 @@ use Illuminate\Http\Request;
     Route::resource('medicalsurgicalhistories', 'MedicalSurgicalHistoriesController');
 
     //Medications
-    Route::resource('medications', 'MedicationsController');
+    Route::resource('medications', 'MedicationController');
 
     //Medication Sheets
     Route::resource('medicationsheets', 'MedicalSheetsController');
@@ -133,21 +134,21 @@ use Illuminate\Http\Request;
     Route::resource('organization', 'OrganizationController');
 
     //Patient
-    Route::resource('patient/testrequest', 'PatientController');
+    Route::get('patient/testrequest', 'PatientController@testRequest');
     Route::resource('patient/get_patients', 'PatientController');
     Route::resource('patient', 'PatientController');
     Route::post('patient/testrequest', 'PatientController@testRequest');
     Route::get('patient/{patientId}/allergy/{allergyId}', 'PatientController@attachAllergy');
-  Route::get('patient/{patientId}/diagnosis/{diagnosisId}', 'PatientController@attachDiagnosis');
+    Route::get('patient/{patientId}/diagnosis/{diagnosisId}', 'PatientController@attachDiagnosis');
     //Queue
     Route::resource('queue', 'QueueController');
     Route::get('queuestats', 'QueueController@stats');
 
     //Permission
-    Route::resource('permission', 'PermissionController');
-    Route::get('permissionrole/attach', 'PermissionRoleController@attach');
-    Route::get('permissionrole/detach', 'PermissionRoleController@detach');
-    Route::get('permissionrole', 'PermissionRoleController@index');
+        Route::resource('permission', 'PermissionController');
+        Route::get('permissionrole/attach', 'PermissionRoleController@attach');
+        Route::get('permissionrole/detach', 'PermissionRoleController@detach');
+        Route::get('permissionrole', 'PermissionRoleController@index');
 
     //Presenting Complaints
     Route::resource('presentingcomplaints', 'PresentingComplaintsController');
@@ -168,7 +169,7 @@ use Illuminate\Http\Request;
     Route::get('roleuser/attach', 'RoleUserController@attach');
     Route::get('roleuser/detach', 'RoleUserController@detach');
     Route::get('roleuser', 'RoleUserController@index');
-       Route::resource('test', 'TestController');
+    Route::resource('test', 'TestController');
     //Smoking
     Route::resource('smoking', 'SmokingController');
 
@@ -191,10 +192,7 @@ use Illuminate\Http\Request;
     Route::resource('test', 'TestController');
 
     //VitalSigns
-    Route::resource('vitalsigns', 'VitalSignsController');
-
-    //Xrays
-    Route::resource('xrays', 'XraysController');
+    Route::resource('vitalsigns', 'VitalSignController');
 
     //Billing|Invoices
     Route::resource('invoice', 'InvoiceController');
@@ -202,32 +200,26 @@ use Illuminate\Http\Request;
     Route::resource('item-category', 'ItemCategoryController');
 
     Route::resource('/expense-category', 'ExpensesCategoryController');
-
     Route::resource('/expenses', 'ExpenseController');
-
     Route::resource('item', 'ItemController');
 
-
     //Appointment
-      Route::resource('appointment', 'AppointmentController');
-  
+    Route::resource('appointment', 'AppointmentController');
 
-
-      //Users
-       Route::resource('users', 'UserController');
-       Route::post('user/image', 'UserController@profilepic');
+    //Users
+    Route::resource('users', 'UserController');
+    Route::post('user/image', 'UserController@profilepic');
    
-      //Inventory
+    //Inventory
+    Route::resource('supplier', 'SupplierController');
+    Route::resource('supplies', 'SuppliesController');
+    Route::resource('stock', 'StockController');
+    Route::resource('request', 'RequestController');
+    Route::resource('issueStock', 'StockIssueController');
+    Route::get('stockDetails/{id}', 'StockController@stockDetails');
+    Route::get('requestIssue/{id}', 'RequestController@requestIssue');
 
-Route::resource('supplier', 'SupplierController');
-Route::resource('supplies', 'SuppliesController');
-Route::resource('stock', 'StockController');
-Route::resource('request', 'RequestController');
-Route::resource('issueStock', 'StockIssueController');
-Route::get('stockDetails/{id}', 'StockController@stockDetails');
-Route::get('requestIssue/{id}', 'RequestController@requestIssue');
-
-Route::post('/mpesa-post', 'MpesaController@newRequest');
-Route::get('add-to-log', 'HomeController@myTestAddToLog');
-Route::get('logActivity', 'HomeController@logActivity');
+    Route::post('/mpesa-post', 'MpesaController@newRequest');
+    Route::get('add-to-log', 'HomeController@myTestAddToLog');
+    Route::get('logActivity', 'HomeController@logActivity');
 });

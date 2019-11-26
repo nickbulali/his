@@ -9,7 +9,9 @@ class LabTestType extends Model
         'created_at',
         'updated_at',
     ];
-protected $table = 'test_types';
+
+    protected $table = 'lab_test_types';
+
     public function test()
     {
         return $this->hasMany('App\Models\Test');
