@@ -9,7 +9,7 @@ class Radiology extends Model
     // todo: remove x-ray as independent concept
     // todo: these details need be updates
     protected $fillable = ['encounter_id','image_url','comments'];
-
+}
 
 namespace App\Models;
 
