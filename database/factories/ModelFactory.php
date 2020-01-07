@@ -117,18 +117,6 @@ $factory->define(\App\Models\Lot::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(\App\Models\ControlTest::class, function (Faker\Generator $faker) {
-    return [
-        'lot_id' => factory(\App\Models\Lot::class)->create()->id,
-        'tested_by' => \App\User::inRandomOrder()->first()->id,
-        'test_type_id' => factory(\App\Models\TestType::class)->create()->id,
-        'control_test_status_id' => \App\Models\ControlTestStatus::completed,
-        'time_started' => date('Y-m-d H:i:s'),
-        'time_completed' => date('Y-m-d H:i:s'),
-        'time_verified' => date('Y-m-d H:i:s'),
-    ];
-});
-
 $factory->define(\App\Models\Result::class, function (Faker\Generator $faker) {
     return [
         'test_id' => null,

@@ -24,7 +24,7 @@ class EncounterController extends Controller
             $encounters = Encounter::with(
                 'patient.name',
                 'patient.gender',
-                'tests.testType.specimenTypes'
+                'tests.labTestType.specimenTypes'
             )->orderBy('created_at', 'DESC')->paginate(10);
         }
         return response()->json($encounters);
@@ -130,7 +130,6 @@ class EncounterController extends Controller
                 $test = new Test;
                 $test->encounter_id = $request->input('encounter_id');
                 $test->test_type_id = $testTypeId;
-                $test->test_status_id = TestStatus::pending;
                 $test->created_by = Auth::user()->id;
                 $test->requested_by = $request->input('practitioner_name');
                 $test->save();
@@ -150,7 +149,7 @@ class EncounterController extends Controller
                 'patient.gender',
                 'encounterClass',
                 'location',
-                'tests.testType.specimenTypes'
+                'tests.labTestType.specimenTypes'
             )->orderBy('created_at', 'DESC')->paginate(4);
 
         return response()->json($encounters);

@@ -72,7 +72,9 @@ class PatientController extends Controller
      */
     public function show($id)
     {
-        $patient = Patient::with('name', 'gender', 'maritalStatus', 'encounter.encounterClass', 'encounter.location', 'bloodGroup', 'allergies','diagnosis')->findOrFail($id);
+        $patient = Patient::with('name','gender',
+            'maritalStatus','encounter.encounterClass','encounter.tests',
+            'encounter.location','bloodGroup','allergies','diagnosis')->findOrFail($id);
         return response()->json($patient);
     }
     /**
@@ -150,32 +152,45 @@ class PatientController extends Controller
      */
     public function testRequest(Request $request)
     {
-        $rules = [
-            'patient_id' => 'required',
-            'location_id'    => 'required',
-            'encounter_class_id'  => 'required',
-            'practitioner_name'  => 'required',
-            'testTypeIds' => 'required',
-        ];
+        if ($request->input('encounter_class_id')) {
+            $rules = [
+                'patient_id' => 'required',
+                'location_id'    => 'required',
+                'encounter_class_id'  => 'required',
+                'testTypeIds' => 'required',
+            ];
+        }else{
+            $rules = [
+                'patient_id' => 'required',
+                'testTypeIds' => 'required',
+            ];
+        }
+
         $validator = \Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $encounter = new Encounter;
-            $encounter->patient_id = $request->input('patient_id');
-            $encounter->location_id = $request->input('location_id');
-            $encounter->practitioner_name = $request->input('practitioner_name');
-            $encounter->encounter_class_id = $request->input('encounter_class_id');
-            $encounter->bed_no = $request->input('bed_no');
-            $encounter->save();
+            if ($request->input('encounter_class_id')) {
+                $encounter = new Encounter;
+                $encounter->patient_id = $request->input('patient_id');
+                $encounter->location_id = $request->input('location_id');
+                // assume user is the practitioner
+                $encounter->practitioner_name = Auth::user()->name;
+                $encounter->encounter_class_id = $request->input('encounter_class_id');
+                $encounter->bed_no = $request->input('bed_no');
+                $encounter->save();
+            }else{
+                // use latest encounter of the patient
+                $encounter = Encounter::where('patient_id',$request->input('patient_id'))->orderBy('created_at','desc')->first();
+            }
             foreach ($request->input('testTypeIds') as $testTypeId) {
             //save order items in tests
                 $test = new Test;
                 $test->encounter_id = $encounter->id;
-                $test->test_type_id = $testTypeId;
+                $test->lab_test_type_id = $testTypeId;
                 $test->test_status_id = '1';
                 $test->created_by = Auth::user()->id;
-                $test->requested_by = $request->input('practitioner_name');
+                $test->requested_by = Auth::user()->name;
                 $test->save();
             }
             try {
@@ -186,7 +201,7 @@ class PatientController extends Controller
             }
         }
     }
-    public function get_patients(){
+    public function getPatients(){
     //Registered patrients today
         $patient = Patient::whereDate('created_at', Carbon::today())->count();
         return response()->json( $patient);

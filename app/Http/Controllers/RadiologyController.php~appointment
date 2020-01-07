@@ -12,13 +12,13 @@ class RadiologyController extends Controller
     {
         if ($request->query('search')) {
             $search = $request->query('search');
-            $Radiology = Radiology::where('name', 'LIKE', "%{$search}%")
+            $radiology = Radiology::where('name', 'LIKE', "%{$search}%")
                 ->paginate(10);
         } else {
-            $Radiology = Radiology::orderBy('id', 'ASC')->paginate(10);
+            $radiology = Radiology::orderBy('id', 'ASC')->paginate(10);
         }
 
-        return response()->json($Radiology);
+        return response()->json($radiology);
     }
 
     /**
@@ -39,16 +39,16 @@ class RadiologyController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Radiology = new Radiology;
-            $Radiology->testname = $request->input('testname');
-            $Radiology->shortname = $request->input('shortname');
-            $Radiology->testtype = $request->input('testtype');
-            $Radiology->category = $request->input('category');
-            $Radiology->charge = $request->input('charge');
+            $radiology = new Radiology;
+            $radiology->testname = $request->input('testname');
+            $radiology->shortname = $request->input('shortname');
+            $radiology->testtype = $request->input('testtype');
+            $radiology->category = $request->input('category');
+            $radiology->charge = $request->input('charge');
             try {
-                $Radiology->save();
+                $radiology->save();
 
-                return response()->json($Radiology);
+                return response()->json($radiology);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -63,9 +63,9 @@ class RadiologyController extends Controller
      */
     public function show($id)
     {
-        $Radiology = Radiology::findOrFail($id);
+        $radiology = Radiology::findOrFail($id);
 
-        return response()->json($Radiology);
+        return response()->json($radiology);
     }
 
     /**
@@ -87,17 +87,17 @@ class RadiologyController extends Controller
         if ($validator->fails()) {
             return response()->json($validator, 422);
         } else {
-            $Radiology = Radiology::findOrFail($id);
-            $Radiology->testname = $request->input('testname');
-            $Radiology->shortname = $request->input('shortname');
-            $Radiology->testtype = $request->input('testtype');
-            $Radiology->category = $request->input('category');
-            $Radiology->charge = $request->input('charge');
+            $radiology = Radiology::findOrFail($id);
+            $radiology->testname = $request->input('testname');
+            $radiology->shortname = $request->input('shortname');
+            $radiology->testtype = $request->input('testtype');
+            $radiology->category = $request->input('category');
+            $radiology->charge = $request->input('charge');
 
             try {
-                $Radiology->save();
+                $radiology->save();
 
-                return response()->json($Radiology);
+                return response()->json($radiology);
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
             }
@@ -113,10 +113,10 @@ class RadiologyController extends Controller
     public function destroy($id)
     {
         try {
-            $Radiology = Radiology::findOrFail($id);
-            $Radiology->delete();
+            $radiology = Radiology::findOrFail($id);
+            $radiology->delete();
 
-            return response()->json($Radiology, 200);
+            return response()->json($radiology, 200);
         } catch (\Illuminate\Database\QueryException $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
         }

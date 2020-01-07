@@ -24,19 +24,12 @@ class LabTestType extends Model
 
     public function specimenTypes()
     {
-        return $this->belongsToMany('App\Models\SpecimenType', 'test_type_mappings');
-    }
-
-    public function measures()
-    {
-        return $this->hasMany('App\Models\Measure');
+        return $this->belongsToMany('App\Models\SpecimenType', 'lab_test_type_specimen_type');
     }
 
     public function loader()
     {
         return TestType::find($this->id)->load(
-            'measures.measureType',
-            'measures.measureRanges.gender',
             'testTypeCategory',
             'specimenTypes'
         );

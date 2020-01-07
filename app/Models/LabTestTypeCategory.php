@@ -10,7 +10,7 @@ class LabTestTypeCategory extends Model
         'updated_at',
     ];
 
-    public function testTypes()
+    public function labTestTypes()
     {
         return $this->hasMany('App\Models\LabTestType');
     }

@@ -8,4 +8,3 @@ class EnvironmentalHistory extends Model
     protected $fillable = ['patient_id', 'description', 'start_date', 'end_date'];
     public $timestamps = false;
 }
-

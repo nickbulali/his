@@ -17,7 +17,7 @@ class SpecimenTypeController extends Controller
     }
     public function specimencollection($id)
     {
-        $testTypes = SpecimenType::with('testTypes')->whereId($id)->get();
+        $testTypes = SpecimenType::with('labTestTypes')->whereId($id)->get();
         return response()->json($testTypes);
     }
     /**

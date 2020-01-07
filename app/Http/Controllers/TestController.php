@@ -22,14 +22,17 @@ class TestController extends Controller
                 $request->query('date_to')
             );
         } else {
+\Log::info(Test::with(
+                'encounter.patient.name',
+                'encounter.patient.gender',
+                'specimenType',
+                'labTestType'
+            )->orderBy('created_at', 'DESC')->get());
             $tests = Test::with(
                 'encounter.patient.name',
                 'encounter.patient.gender',
-
-                 'testType',
-                'testStatus.testPhase'
-  
-                
+                'specimenType',
+                'labTestType'
             )->orderBy('created_at', 'DESC')->paginate(25);
         }
         return response()->json($tests);
@@ -60,7 +63,7 @@ class TestController extends Controller
             $test->encounter_id = $request->input('encounter_id');
             $test->identifier = $request->input('identifier');
             $test->test_type_id = $request->input('test_type_id');
-            $test->specimen_id = $request->input('specimen_id');
+            $test->specimen_type_id = $request->input('specimen_type_id');
             $test->test_status_id = $request->input('test_status_id');
             $test->created_by = $request->input('created_by');
             $test->tested_by = $request->input('tested_by');
@@ -115,7 +118,7 @@ class TestController extends Controller
             $test->encounter_id = $request->input('encounter_id');
             $test->identifier = $request->input('identifier');
             $test->test_type_id = $request->input('test_type_id');
-            $test->specimen_id = $request->input('specimen_id');
+            $test->specimen_type_id = $request->input('specimen_type_id');
             $test->test_status_id = $request->input('test_status_id');
             $test->created_by = $request->input('created_by');
             $test->tested_by = $request->input('tested_by');
@@ -127,40 +130,6 @@ class TestController extends Controller
             $test->time_sent = $request->input('time_sent');
             try {
                 $test->save();
-                return response()->json($test->loader());
-            } catch (\Illuminate\Database\QueryException $e) {
-                return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
-            }
-        }
-    }
-    public function specimenCollection(Request $request)
-    {
-        $rules = [
-            'test_id' => 'required',
-            'specimen_type_id' => 'required',
-            'collected_by' => 'required',
-            'time_collected' => 'required',
-            'time_received' => 'required',
-        ];
-        $validator = \Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json($validator, 422);
-        } else {
-            $specimen = new Specimen;
-            $specimen->identifier = SpecimenTracker::identifier();
-            $specimen->accession_identifier = $request->input('accession_identifier');
-            $specimen->specimen_type_id = $request->input('specimen_type_id');
-            $specimen->parent_id = $request->input('parent_id');
-            $specimen->received_by = Auth::user()->id;
-            $specimen->collected_by = $request->input('collected_by');
-            $specimen->time_collected = $request->input('time_collected');
-            $specimen->time_received = $request->input('time_received');
-            $specimen->save();
-            $test = Test::find($request->input('test_id'));
-            $test->specimen_id = $specimen->id;
-            $test->save();
-            try {
-                $specimen->save();
                 return response()->json($test->loader());
             } catch (\Illuminate\Database\QueryException $e) {
                 return response()->json(['status' => 'error', 'message' => $e->getMessage()]);

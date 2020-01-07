@@ -11,7 +11,7 @@ class LabTestTypeCategoryController extends Controller
             $LabTestTypeCategory = LabTestTypeCategory::where('name', 'LIKE', "%{$search}%")
                 ->paginate(10);
         } else {
-            $LabTestTypeCategory = LabTestTypeCategory::orderBy('id', 'ASC')->paginate(10);
+            $LabTestTypeCategory = LabTestTypeCategory::with('labTestTypes')->orderBy('id', 'ASC')->paginate(10);
         }
         return response()->json($LabTestTypeCategory);
     }

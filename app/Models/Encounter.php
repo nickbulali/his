@@ -36,7 +36,7 @@ class Encounter extends Model
         return Encounter::find($this->id)->load(
             'patient.name',
             'patient.gender',
-            'tests.testType.specimenTypes'
+            'tests.labTestType.specimenTypes'
         );
     }
 
@@ -53,7 +53,7 @@ class Encounter extends Model
         $encounters = Test::with(
             'patient.name',
             'patient.gender',
-            'tests.testType.specimenTypes'
+            'tests.labTestType.specimenTypes'
         )->where(function ($q) use ($searchString) {
             $q->whereHas('patient', function ($q) use ($searchString) {
                 $q->where(function ($q) use ($searchString) {

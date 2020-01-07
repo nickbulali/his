@@ -7,19 +7,14 @@ class Test extends Model
 {
     public $fillable = ['identifier'];
 
-    public function testType()
+    public function labTestType()
     {
         return $this->belongsTo('App\Models\LabTestType');
     }
 
-    public function specimen()
+    public function specimenType()
     {
-        return $this->belongsTo('App\Models\Specimen');
-    }
-
-    public function specimenRejection()
-    {
-        return $this->hasOne('App\Models\SpecimenRejection');
+        return $this->belongsTo('App\Models\SpecimenType');
     }
 
     /*
@@ -62,14 +57,6 @@ class Test extends Model
         return $this->hasMany('App\Models\Result');
     }
 
-    /*
-     * Test Status relationship
-     */
-    public function testStatus()
-    {
-        return $this->belongsTo('App\Models\TestStatus');
-    }
-
     public function encounter()
     {
         return $this->belongsTo('App\Models\Encounter');
@@ -80,16 +67,9 @@ class Test extends Model
         return Test::find($this->id)->load(
             'encounter.patient.name',
             'encounter.patient.gender',
-            'results.measure.measureType',
-            'results.measureRange',
-            'specimenRejection',
-            'specimen.referral',
+            'results',
             'specimen.specimenType',
-            'testStatus.testPhase',
-            'testType.measures.results',
-            'testType.measures.measureType',
-            'testType.measures.measureRanges',
-            'testType.specimenTypes'
+            'labTestType'
         );
     }
 
@@ -107,16 +87,9 @@ class Test extends Model
         $tests = Test::with(
             'encounter.patient.name',
             'encounter.patient.gender',
-            'results.measure.measureType',
-            'results.measure.measureRanges',
-            'specimen.referral',
-            'specimenRejection',
-            'testStatus.testPhase',
+            'results',
             'specimen.specimenType',
-            'testType.measures.results',
-            'testType.measures.measureType',
-            'testType.measures.measureRanges',
-            'testType.specimenTypes'
+            'labTestType'
         )->where(function ($q) use ($searchString) {
             $q->whereHas('encounter', function ($q) use ($searchString) {
                 $q->whereHas('patient', function ($q) use ($searchString) {
@@ -142,14 +115,6 @@ class Test extends Model
                 });
             });
         });
-
-        if ($testStatusId > 0) {
-            $tests = $tests->where(function ($q) use ($testStatusId) {
-                $q->whereHas('testStatus.testPhase', function ($q) use ($testStatusId) {
-                    $q->where('id', '=', $testStatusId); //Filter by test status
-                });
-            });
-        }
 
         if ($dateFrom || $dateTo) {
             $tests = $tests->where(function ($q) use ($dateFrom, $dateTo) {
