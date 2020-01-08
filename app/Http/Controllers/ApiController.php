@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
-use App\Util\Post
+use App\Util\Post;
+
 class ApiController extends Controller
 {
     public function index()
