@@ -169,7 +169,6 @@ use Illuminate\Http\Request;
     Route::get('roleuser/attach', 'RoleUserController@attach');
     Route::get('roleuser/detach', 'RoleUserController@detach');
     Route::get('roleuser', 'RoleUserController@index');
-    Route::resource('test', 'TestController');
     //Smoking
     Route::resource('smoking', 'SmokingController');
 

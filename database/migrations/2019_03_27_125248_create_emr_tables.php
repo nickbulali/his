@@ -41,7 +41,7 @@ class CreateEmrTables extends Migration
             $table->timestamps();
         });
 
-         Schema::create('diagnosis', function (Blueprint $table) {
+        Schema::create('diagnosis', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('encounter_id')->unsigned();
             $table->integer('condition_id')->unsigned();
@@ -52,7 +52,7 @@ class CreateEmrTables extends Migration
         });
 
 
-         Schema::create('diagnosis_patient', function (Blueprint $table) {
+        Schema::create('diagnosis_patient', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('diagnosis_id')->unsigned();
             $table->integer('patient_id')->unsigned();
@@ -84,9 +84,9 @@ class CreateEmrTables extends Migration
             $table->timestamps();
         });
 
-       /*
-        * Create table for associating permissions to roles (Many-to-Many)
-        */
+        /*
+         * Create table for associating permissions to roles (Many-to-Many)
+         */
         Schema::create('permission_role', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('permission_id')->unsigned();
@@ -270,13 +270,10 @@ class CreateEmrTables extends Migration
             $table->increments('id');
             $table->string('name', 100);
             $table->string('description', 100)->nullable();
-            $table->boolean('culture')->default(0);
             $table->integer('lab_test_type_category_id')->unsigned();
             $table->boolean('active')->default(1);
-
             $table->foreign('lab_test_type_category_id')
                 ->references('id')->on('lab_test_type_categories');
-
             $table->softDeletes();
             $table->timestamps();
         });
@@ -353,7 +350,6 @@ class CreateEmrTables extends Migration
             $table->integer('encounter_id')->unsigned();
             $table->string('identifier')->nullable();
             $table->integer('lab_test_type_id')->unsigned();
-            $table->integer('test_status_id')->unsigned()->nullable();
             $table->integer('specimen_type_id')->unsigned()->nullable();
             $table->uuid('created_by')->nullable();
             $table->string('tested_by')->nullable();
@@ -480,7 +476,7 @@ class CreateEmrTables extends Migration
             $table->foreign('user_id')->references('id')->on('users');
         });
 
-        Schema::create('appointment_status', function (Blueprint $table) {
+       Schema::create('appointment_status', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code');
             $table->string('display');
@@ -544,39 +540,22 @@ class CreateEmrTables extends Migration
         });
 
         /*
-         * todo:confirm appropriateness of the fields
+         * todo: includes alcohol, smoking, and other drugs
          */
-        Schema::create('alcohol', function (Blueprint $table) {
+        Schema::create('substance_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('patient_id')->unsigned();
-            $table->string('kind');
-            $table->string('frequency');
-            $table->string('quantity');
-            $table->string('start_date');
-            $table->string('end_date');
+            $table->string('name');
         });
 
         /*
-         * todo:confirm appropriateness of the fields
+         * todo: includes alcohol, smoking, and other drugs
          */
-        Schema::create('smoking', function (Blueprint $table) {
+        Schema::create('substance_abuse', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('patient_id')->unsigned();
-            $table->string('kind');
+            $table->integer('substance_type_id')->unsigned();
             $table->string('frequency');
             $table->string('quantity');
-            $table->string('start_date');
-            $table->string('end_date');
-        });
-
-        /*
-         * todo:confirm appropriateness of the fields
-         */
-        Schema::create('drug_abuse', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('encounter_id')->unsigned();
-            $table->string('kind');
-            $table->string('frequency');
             $table->string('start_date');
             $table->string('end_date');
         });

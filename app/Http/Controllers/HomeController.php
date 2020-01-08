@@ -15,12 +15,12 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
     }
-  public function myTestAddToLog()
+
+    public function myTestAddToLog()
     {
         \LogActivity::addToLog('My Testing Add To Log.');
         dd('log insert successfully.');
     }
-
 
     /**
      * Show the application dashboard.
