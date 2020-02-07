@@ -26,9 +26,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         Passport::routes();
-        Passport::useTokenModel(Token::class);
-        Passport::useClientModel(Client::class);
-        Passport::useAuthCodeModel(AuthCode::class);
-        Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
+        // Passport::useTokenModel(Token::class);
+        // Passport::useClientModel(Client::class);
+        // Passport::useAuthCodeModel(AuthCode::class);
+        // Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
     }
 }

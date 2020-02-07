@@ -325,30 +325,30 @@ class DevSeeder extends Seeder
         }
 
         //Smoking Histories
-        Smoking::truncate();
-        for ($i = 0; $i < 50; $i++){
-            Smoking::create([
-                'patient_id' => $faker->randomElement($patients),
-                'kind' => $faker->word,
-                'frequency' => $faker->word,
-                'quantity' => $faker->randomDigit,
-                'start_date'  => $faker->date($format = 'Y-m-d', $max = 'now'),
-                'end_date'  => $faker->date($format = 'Y-m-d', $max = 'now')
-            ]);
-        }
+        // Smoking::truncate();
+        // for ($i = 0; $i < 50; $i++){
+        //     Smoking::create([
+        //         'patient_id' => $faker->randomElement($patients),
+        //         'kind' => $faker->word,
+        //         'frequency' => $faker->word,
+        //         'quantity' => $faker->randomDigit,
+        //         'start_date'  => $faker->date($format = 'Y-m-d', $max = 'now'),
+        //         'end_date'  => $faker->date($format = 'Y-m-d', $max = 'now')
+        //     ]);
+        // }
 
         //Smoking Histories
-        Alcohol::truncate();
-        for ($i = 0; $i < 50; $i++){
-            Smoking::create([
-                'patient_id' => $faker->randomElement($patients),
-                'kind' => $faker->word,
-                'frequency' => $faker->word,
-                'quantity' => $faker->randomDigit,
-                'start_date'  => $faker->date($format = 'Y-m-d', $max = 'now'),
-                'end_date'  => $faker->date($format = 'Y-m-d', $max = 'now')
-            ]);
-        }
+        // Alcohol::truncate();
+        // for ($i = 0; $i < 50; $i++){
+        //     Alcohol::create([
+        //         'patient_id' => $faker->randomElement($patients),
+        //         'kind' => $faker->word,
+        //         'frequency' => $faker->word,
+        //         'quantity' => $faker->randomDigit,
+        //         'start_date'  => $faker->date($format = 'Y-m-d', $max = 'now'),
+        //         'end_date'  => $faker->date($format = 'Y-m-d', $max = 'now')
+        //     ]);
+        // }
 
         //Social Histories
         SocialHistory::truncate();

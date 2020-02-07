@@ -221,4 +221,17 @@ use Illuminate\Http\Request;
     Route::post('/mpesa-post', 'MpesaController@newRequest');
     Route::get('add-to-log', 'HomeController@myTestAddToLog');
     Route::get('logActivity', 'HomeController@logActivity');
+
+    //Beds
+    Route::resource('bed', 'BedController');
+ 
+    //Ward
+    Route::resource('ward', 'WardController');
+
+    //bedAllocation controller
+    Route::resource('bedAllocation', 'bedAllocationController');
+    Route::get('discharge/{id}', 'bedAllocationController@discharge');
+
+
+
 });

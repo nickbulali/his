@@ -817,6 +817,33 @@ class CreateEmrTables extends Migration
             $table->increments('id');
             $table->integer('encounter_id')->unsigned();
         });
+        // wards migration table 
+        Schema::create('wards', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer('ward_no');
+            $table->timestamps();
+        });
+
+        //beds migration table
+        Schema::create('beds', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer('bed_no');
+            $table->integer('ward_no');
+            $table->integer('status')->unsigned()->default('1');
+            $table->timestamps();
+            // $table->foreign('ward_no')->references('id')->on('wards');
+        });
+
+        // bed allocation table
+        Schema::create('bed_allocation', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('patient_name');
+            $table->integer('bed_no');
+            $table->string('start_date');
+            $table->string('start_time');
+            $table->integer('status')->unsigned()->default('1');
+            $table->timestamps();
+        });
 
         \Illuminate\Support\Facades\Artisan::call('passport:install');
         \Illuminate\Support\Facades\Artisan::call('storage:link');
