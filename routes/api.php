@@ -233,5 +233,17 @@ use Illuminate\Http\Request;
     Route::get('discharge/{id}', 'bedAllocationController@discharge');
 
 
+    //Anc signs 
+    Route::resource('anc_signs', 'anc_signsController');
+
+    //Anc services
+    Route::resource('anc_service', 'anc_serviceController');
+
+    //Out-Patient Registration
+    Route::resource('outPatientRegistration', 'outPatientRegistrationController');
+
+    //Next Of Kin 
+    Route::resource('nextOfKin', 'nextOfKinController');
+ 
 
 });

@@ -845,6 +845,45 @@ class CreateEmrTables extends Migration
             $table->timestamps();
         });
 
+        //ANC outpatient screening and vital signs 
+        Schema::create('anc_signs', function (Blueprint $table){
+            $table->bigIncrements('id');
+            $table->integer('s_pressure');
+            $table->integer('d_pressure');
+            $table->integer('temperature');
+            $table->integer('height');
+            $table->integer('weight');
+            $table->String('notes');
+            $table->String('supplementation');
+            $table->String('visual');
+            $table->String('fever');
+            $table->String('hiv');
+            $table->String('tb');
+            $table->timestamps();
+        });
+
+        //Anc out-patient service
+        Schema::create('anc_service', function (Blueprint $table){
+            $table->bigIncrements('id');
+            $table->String('condition');
+            $table->String('m_diagnosis');
+            $table->String('o_diagnosis');
+            $table->String('classification');
+            $table->String('treatment');
+            $table->integer('prescription_no');
+            $table->String('outcome');
+            $table->String('referral_from');
+            $table->String('refer');
+            $table->String('referral_to')->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->date('referred_date')->nullable();
+            $table->String('notes');
+            $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
+        });
+
+
+
         \Illuminate\Support\Facades\Artisan::call('passport:install');
         \Illuminate\Support\Facades\Artisan::call('storage:link');
 
